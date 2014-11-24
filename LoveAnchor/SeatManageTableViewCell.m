@@ -25,11 +25,11 @@
 {
         self.iconImageView = [[UIImageView alloc]initWithFrame:CGRectMake(30, 10, 75, 40)];
         self.iconImageView.backgroundColor = [UIColor clearColor];
-    self.iconImageView.tag = 101;
+        self.iconImageView.tag = 101;
         [self.contentView addSubview:self.iconImageView];
         
         self.timeLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 55, 75, 15)];
-        self.timeLabel.text = @"有效期;30天";
+        self.timeLabel.text = @"有效期:30天";
         self.timeLabel.tag = 102;
         self.timeLabel.font = [UIFont systemFontOfSize:12];
         self.timeLabel.textAlignment = NSTextAlignmentCenter;
@@ -61,36 +61,21 @@
 
 - (void)buttonClick:(UIButton *)button
 {
-    if (button.selected) {
-        [self.useButton setTitle:@"禁用" forState:UIControlStateNormal];
-    } else {
-        [self.useButton setTitle:@"启用" forState:UIControlStateNormal];
+    if (self.UseButtonClickBlock) {
+        self.UseButtonClickBlock();
     }
 }
 
-- (void)setCellData:(NSArray *)modelArray
+- (void)setCellData:(SeatManageModel *)model
 {
-    for (int i = 0; i < [modelArray count]; i++) {
-        SeatManageModel *model = [modelArray objectAtIndex:i];
-        UIImageView *imageView = (UIImageView *)[self.contentView viewWithTag:101];
-        [imageView setImageWithURL:[NSURL URLWithString:model.pic_url]];
-        
-//        UILabel *nickLabel = (UILabel *)[self.contentView viewWithTag:102];
-//        nickLabel.text = [NSString stringWithFormat:@"%@",model.nick_name];
-//        
-//        UILabel *rankingLabel = (UILabel *)[self.contentView viewWithTag:103];
-//        rankingLabel.text = [NSString stringWithFormat:@"%@",model.finance];
-//        
-//        UILabel *roomLabel = (UILabel *)[self.contentView viewWithTag:104];
-//        roomLabel.text = [NSString stringWithFormat:@"%@",(model._id)];
-        
-    }
+    UIImageView *imageView = (UIImageView *)[self.contentView viewWithTag:101];
+    [imageView setImageWithURL:[NSURL URLWithString:model.pic_url]];
+    
+    NSString *time = [CommonHelp getTimeInterval:model.time.longLongValue/1000];
+    UILabel *timeLabel = (UILabel *)[self.contentView viewWithTag:102];
+    timeLabel.text = [NSString stringWithFormat:@"有限期:%@天",time];
 }
 
-
-- (void)awakeFromNib
-{
-}
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
 {
     [super setSelected:selected animated:animated];

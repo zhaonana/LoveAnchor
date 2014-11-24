@@ -20,4 +20,6 @@
  */
 + (NSInteger)getLevelWithCoin:(NSInteger)coin isRich:(BOOL)isRich;
 
++ (NSString *)getTimeInterval:(NSTimeInterval)time;
+
 @end

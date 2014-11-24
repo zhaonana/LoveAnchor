@@ -7,14 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "SeatManageModel.h"
 
 @interface SeatManageTableViewCell : UITableViewCell
 
 @property (nonatomic, strong) UIImageView *iconImageView;
-@property (nonatomic, strong) UILabel *timeLabel;
-@property (nonatomic, strong) UIButton *useButton;
-@property (nonatomic, strong) UIButton *continueButton;
+@property (nonatomic, strong) UILabel     *timeLabel;
+@property (nonatomic, strong) UIButton    *useButton;
+@property (nonatomic, strong) UIButton    *continueButton;
+@property (nonatomic, copy) void (^UseButtonClickBlock)();
 
-- (void)setCellData:(NSArray *)modelArray;
+- (void)setCellData:(SeatManageModel *)model;
 
 @end

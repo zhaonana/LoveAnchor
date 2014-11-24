@@ -17,11 +17,12 @@
     UIScrollView *scrollerView;
     UIButton *forbiddenButton;
 //    UIButton *continueButton;
+    UITableView *_tableView;
     LoginModel *model;
-    NSMutableArray *allSeatImageArray;
-    NSMutableArray *allSeatIDArray;
+    NSMutableArray *allSeatArray;
     NSMutableArray *carArray;
-    int curr;
+    NSMutableArray *mySeatArray;
+    NSString *currId;
     int newTag;
 }
 
@@ -31,11 +32,13 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
     NSData *myEncodedObject = [[NSUserDefaults standardUserDefaults] objectForKey:@"books"];
     model = [NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
     
-    [self allRequest];
-    [self request];
+    [self requestWithParams:[NSString stringWithFormat:@"show/cars_list"] tag:100];
+    [self requestWithParams:[NSString stringWithFormat:@"user/car_info/%@",model.access_token] tag:101];
+    [self showUI];
 }
 
 - (void)showUI
@@ -57,46 +60,65 @@
     label.textAlignment = NSTextAlignmentCenter;
     [self.navigationController.navigationBar addSubview:label];
     
-    UITableView *tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-    tableView.delegate = self;
-    tableView.dataSource = self;
-    tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
-    [self.view addSubview:tableView];
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+    _tableView.delegate = self;
+    _tableView.dataSource = self;
+    _tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    [self.view addSubview:_tableView];
 }
 - (void)buttonClick:(UIButton *)button
 {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
-#pragma mark - tableViewDelegate
--(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+#pragma mark - UITableViewDelegate
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *identifier = @"SeatManageTableViewCell";
     SeatManageTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
         cell = [[SeatManageTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
+    SeatManageModel *seat = [mySeatArray objectAtIndex:indexPath.row];
+    [cell setCellData:seat];
+    
+    __block SeatManageViewController *seatSelf = self;
+    if (seat._id.intValue == currId.intValue) {
+        [cell.useButton setTitle:@"禁用" forState:UIControlStateNormal];
+        [cell.useButton setTitle:@"禁用" forState:UIControlStateHighlighted];
+        cell.UseButtonClickBlock = ^() {
+            [seatSelf requestWithParams:[NSString stringWithFormat:@"shop/unset_curr_car/%@",model.access_token] tag:103];
+        };
+    } else {
+        [cell.useButton setTitle:@"启用" forState:UIControlStateNormal];
+        [cell.useButton setTitle:@"启用" forState:UIControlStateHighlighted];
+        cell.UseButtonClickBlock = ^() {
+            [seatSelf requestWithParams:[NSString stringWithFormat:@"shop/set_curr_car/%@/%@",model.access_token,seat._id] tag:102];
+        };
+    }
+
     return cell;
 }
 
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
 }
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 75;
 }
--(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return carArray.count;
+    return mySeatArray.count;
 }
+
 #pragma mark - 数据解析
-//全部座驾
-- (void)allRequest
+- (void)requestWithParams:(NSString *)params tag:(int)tag;
 {
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://ttapi.izhubo.com/show/cars_list"]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/%@",params]];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     request.delegate = self;
-    request.tag = 100;
+    request.tag = tag;
     [request setTimeOutSeconds:100];
     [request startAsynchronous];
 }
@@ -112,35 +134,61 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    if (request.tag == 100) {
-        NSLog(@"所有 = %@",request.responseString);
-        id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
-        if ([result isKindOfClass:[NSDictionary class]]) {
-            allSeatImageArray = [NSMutableArray array];
-            allSeatIDArray = [NSMutableArray array];
-            NSArray *allSeatArray = [result objectForKey:@"data"];
-            NSLog(@"所有 == %@",allSeatArray);
-            for (NSDictionary *dict in allSeatArray) {
-                [allSeatImageArray addObject:[dict objectForKey:@"pic_url"]];
-                [allSeatIDArray addObject:[dict objectForKey:@"_id"]];
+    id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+    switch (request.tag) {
+        case 100: {
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSArray *dataArray = [result objectForKey:@"data"];
+                allSeatArray = [NSMutableArray array];
+                for (NSDictionary *dict in dataArray) {
+                    SeatManageModel *allSeat = [[SeatManageModel alloc] init];
+                    allSeat.pic_url = [dict objectForKey:@"pic_url"];
+                    allSeat._id = [dict objectForKey:@"_id"];
+                    [allSeatArray addObject:allSeat];
+                }
             }
-            NSLog(@"所有图片 == %@",allSeatImageArray);
-            NSLog(@"所有ID == %@",allSeatIDArray);
         }
-    } else if (request.tag == 101){
-        NSLog(@"zuojia == %@",request.responseString);
-        id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
-        if ([result isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *seatDict = [result objectForKey:@"data"];
-            NSLog(@"data= %@",seatDict);
-            NSDictionary *dic = [seatDict objectForKey:@"car"];
-            carArray = [NSMutableArray arrayWithArray:dic.allKeys];
-            [carArray removeObject:@"curr"];
-            curr = [[dic objectForKey:@"curr"] intValue];
-            NSLog(@"car= %@",carArray);
-            NSLog(@"car= %ld",carArray.count);
-            [self showUI];
+            break;
+        case 101: {
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *seatDict = [result objectForKey:@"data"];
+                NSDictionary *dic = [seatDict objectForKey:@"car"];
+                currId = [dic objectForKey:@"curr"];
+                carArray = [NSMutableArray arrayWithArray:dic.allKeys];
+                [carArray removeObject:@"curr"];
+                mySeatArray = [[NSMutableArray alloc] initWithCapacity:0];
+                for (NSString *ids in carArray) {
+                    for (SeatManageModel *seat in allSeatArray) {
+                        if (seat._id.intValue == ids.intValue) {
+                            seat.time = [dic objectForKey:ids];
+                            [mySeatArray addObject:seat];
+                        }
+                    }
+                }
+            }
+            [_tableView reloadData];
         }
+            break;
+        case 102: { //启用座驾
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSString *code = [result objectForKey:@"code"];
+                if (code.intValue == 1) {
+                    [self requestWithParams:[NSString stringWithFormat:@"user/car_info/%@",model.access_token] tag:101];
+                }
+            }
+        }
+            break;
+        case 103: { //禁用座驾
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSString *code = [result objectForKey:@"code"];
+                if (code.intValue == 1) {
+                    [self requestWithParams:[NSString stringWithFormat:@"user/car_info/%@",model.access_token] tag:101];
+                }
+            }
+        }
+            break;
+        default:
+            break;
     }
 }
 

@@ -7,11 +7,7 @@
 //
 
 #import "RankingListViewController.h"
-#import <QuartzCore/QuartzCore.h>
-#import "RankingTableViewCell.h"
-#import "RankingModel.h"
-#import "DatumViewController.h"
-#import "SliderViewController.h"
+
 @interface RankingListViewController ()
 {
     //排行榜下拉菜单底图

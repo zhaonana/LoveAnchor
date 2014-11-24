@@ -7,12 +7,6 @@
 //
 
 #import "LeftMenuViewController.h"
-#import "PersonageViewController.h"
-#import "TopUpViewController.h"
-#import "SetViewController.h"
-#import "LoginViewController.h"
-#import "StoreViewController.h"
-
 
 @interface LeftMenuViewController ()
 

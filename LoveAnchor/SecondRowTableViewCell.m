@@ -7,8 +7,7 @@
 //
 
 #import "SecondRowTableViewCell.h"
-#import "AllModel.h"
-#import "UIImageView+WebCache.h"
+
 @implementation SecondRowTableViewCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

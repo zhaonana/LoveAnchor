@@ -7,8 +7,7 @@
 //
 
 #import "DatumViewController.h"
-#import "OneCell.h"
-#import "TwoCell.h"
+
 
 @interface DatumViewController ()
 {

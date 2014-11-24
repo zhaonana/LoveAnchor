@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class AllModel;
+
 @protocol FirstRowTableViewCellDelegate <NSObject>
 
 - (void)firstClick:(AllModel *)allModel;

@@ -7,12 +7,7 @@
 //
 
 #import "StoreViewController.h"
-#import "StorecollectionVIewCell.h"
-#import <QuartzCore/QuartzCore.h>
-#import "YellowVCollectionViewCell.h"
-#import "ASIHTTPRequest.h"
-#import "TopUpViewController.h"
-#import "UIImageView+WebCache.h"
+
 @interface StoreViewController ()
 {
     UISegmentedControl *_segmented;

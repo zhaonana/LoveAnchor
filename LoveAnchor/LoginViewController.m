@@ -7,13 +7,6 @@
 //
 
 #import "LoginViewController.h"
-#import "RegisterViewController.h"
-#import <QuartzCore/QuartzCore.h>
-#import "UIImageView+WebCache.h"
-#import "ASIHTTPRequest.h"
-#import "LoginModel.h"
-#import "PersonageViewController.h"
-
 
 @interface LoginViewController ()<ASIHTTPRequestDelegate>
 {
@@ -21,7 +14,6 @@
     UITextField *_passTextField;
     UITextField *_validationTextField;
     UIImageView *_imageView;
-    UIImageView *_hintImage;
     
     NSString *_imageURL;
     NSString *_getAuth_key;
@@ -135,9 +127,6 @@
     _validationTextField.delegate = self;
     [YZImageView addSubview:_validationTextField];
     
-    _hintImage = [[UIImageView alloc]initWithFrame:CGRectMake(130, 15, 17, 17)];
-    [YZImageView addSubview:_hintImage];
-    
     _imageView = [[UIImageView alloc]initWithFrame:CGRectMake(240, 12, 55, 20)];
     _imageView.userInteractionEnabled = YES;
     _imageView.tag = 6;
@@ -209,18 +198,6 @@
     [WBButton addSubview:image1];
 }
 
--(void)textFieldDidEndEditing:(UITextField *)textField
-{
-    if (textField.tag == 100) {
-        [self verifyTheVerificationCode];
-        if (_validationTextField.text.length == 0) {
-            _hintImage.hidden = YES;
-        } else {
-            _hintImage.hidden = NO;
-        }
-    }
-    
-}
 - (void)topClick:(UITapGestureRecognizer *)sender
 {
     [self updateTheVerificationCode];
@@ -236,13 +213,8 @@
         UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:registerController];
         [self presentViewController:nc animated:NO completion:nil];
     } else if (button.tag == 102) {
-        
         if ((_nameTextField.text.length >=6 && _nameTextField.text.length <= 18) &&(_passTextField.text.length >= 6 && _passTextField.text.length <= 20)) {
-            [self LoginRequest];
-        PersonageViewController *personage = [[PersonageViewController alloc]init];
-        [personage setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:personage];
-        [self presentViewController:nc animated:YES completion:nil];
+            [self verifyTheVerificationCode];
         } else {
             UIAlertView *alert = [[UIAlertView alloc]init];
             alert.title = @"提示";
@@ -261,6 +233,7 @@
     [textField resignFirstResponder];
     return YES;
 }
+
 
 #pragma mark - 登陆
 - (void)LoginRequest
@@ -325,7 +298,7 @@
         if ([verifyResult isKindOfClass:[NSDictionary class]]) {
             int verifyJson = [[verifyResult objectForKey:@"code"] intValue];
             if (verifyJson == 1) {
-                _hintImage.image = [UIImage imageNamed:@"dui"];
+                [self LoginRequest];
             } else {
                 [self updateTheVerificationCode];
                 UIAlertView *alert = [[UIAlertView alloc]init];
@@ -333,8 +306,7 @@
                 alert.message = @"验证码输入错误";
                 [alert addButtonWithTitle:@"确定"];
                 [alert show];
-                _hintImage.image = [UIImage imageNamed:@"cuowu"];
-                    }
+            }
             }
     } else if (request.tag ==2) {
         NSData *data = [request responseData];
@@ -349,7 +321,12 @@
         if ([loginResult isKindOfClass:[NSDictionary class]]) {
             NSDictionary *loginJson = [loginResult objectForKey:@"data"];
             int code = [[loginResult objectForKey:@"code"] intValue];
-            if (code == 30312) {
+            if (code == 1) {
+                PersonageViewController *personage = [[PersonageViewController alloc]init];
+                [personage setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+                UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:personage];
+                [self presentViewController:nc animated:YES completion:nil];
+            } else if (code == 30312) {
                 UIAlertView *alert = [[UIAlertView alloc]init];
                 alert.title = @"提示";
                 alert.message = @"用户名不存在";

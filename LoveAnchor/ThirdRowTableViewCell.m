@@ -7,8 +7,6 @@
 //
 
 #import "ThirdRowTableViewCell.h"
-#import "AllModel.h"
-#import "UIImageView+WebCache.h"
 
 @implementation ThirdRowTableViewCell
 

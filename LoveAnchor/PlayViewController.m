@@ -243,24 +243,25 @@
     [self.view addSubview:_sofaView];
     
     for (int i = 0; i < 4; i++) {
-        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0+i*80, 10, 80, 15)];
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.frame = CGRectMake(i*80, 0, _sofaView.frame.size.width/4, _sofaView.frame.size.height);
+        [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [_sofaView addSubview:button];
+        
+        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 80, 15)];
         titleLabel.text = @"虚位以待";
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.font = [UIFont systemFontOfSize:12];
-        [_sofaView addSubview:titleLabel];
+        [button addSubview:titleLabel];
         
-        UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(12+i*77, 30, 65, 65)];
-        imageView.image = [UIImage imageNamed:@"touxiang2"];
-        [_sofaView addSubview:imageView];
+        UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(7.5, 30, 65, 65)];
+        imageView.image = [UIImage imageNamed:@"xuweiyidai"];
+        [button addSubview:imageView];
         
-        UILabel *QLabel = [[UILabel alloc]initWithFrame:CGRectMake(27+i*76, 100, 38, 18)];
-        QLabel.text = @"抢座";
-        QLabel.textColor = [UIColor whiteColor];
-        QLabel.backgroundColor = textFontColor;
-        QLabel.font = [UIFont systemFontOfSize:12];
-        QLabel.textAlignment = NSTextAlignmentCenter;
-        [_sofaView addSubview:QLabel];
+        UIImageView *QImageView = [[UIImageView alloc]initWithFrame:CGRectMake(21, 100, 38, 18)];
+        QImageView.image = [UIImage imageNamed:@"qiangzuo"];
+        [button addSubview:QImageView];
     }
     
     

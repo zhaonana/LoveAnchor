@@ -7,8 +7,6 @@
 //
 
 #import "SeatManageTableViewCell.h"
-#import "SeatManageModel.h"
-#import "UIImageView+WebCache.h"
 
 @implementation SeatManageTableViewCell
 

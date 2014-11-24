@@ -13,10 +13,9 @@
 #ifdef __OBJC__
     #import <UIKit/UIKit.h>
     #import <Foundation/Foundation.h>
-
+    #import "ASIFormDataRequest.h"
     #import "SliderViewController.h"
     #import "ASIHttpRequest.h"
-    #import "CommonHelp.h"
     #import "TabBarViewController.h"
     #import "XDSSegmentedViewController.h"
     #import "LeftMenuViewController.h"
@@ -60,6 +59,9 @@
     #import "BadgeModel.h"
     #import "SeatManageModel.h"
     #import "DynamicModel.h"
+    #import <QuartzCore/QuartzCore.h>
+    #import "UIImageView+WebCache.h"
+    #import "HZAreaPickerView.h"
 
 #endif
 

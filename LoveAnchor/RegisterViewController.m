@@ -7,11 +7,6 @@
 //
 
 #import "RegisterViewController.h"
-#import "VerifyViewController.h"
-#import "ASIHTTPRequest.h"
-#import "RegisterModel.h"
-#import "UIImageView+WebCache.h"
-#import "PersonageViewController.h"
 
 @interface RegisterViewController ()<UIScrollViewDelegate,UITextFieldDelegate,ASIHTTPRequestDelegate> {
     UIScrollView *_rootScrollView;

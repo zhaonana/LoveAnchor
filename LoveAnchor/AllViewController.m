@@ -8,13 +8,6 @@
 
 #import "AllViewController.h"
 
-#import "FirstRowTableViewCell.h"
-#import "SecondRowTableViewCell.h"
-#import "ThirdRowTableViewCell.h"
-#import "PlayViewController.h"
-#import "HomePageViewController.h"
-#import "AllModel.h"
-
 @interface AllViewController () <ThirdRowTableViewCellDelegate,FirstRowTableViewCellDelegate,SecondRowTableViewCellDelegate>
 {
     NSMutableArray *_dataArray;

@@ -7,7 +7,6 @@
 //
 
 #import "YellowVCollectionViewCell.h"
-#import <QuartzCore/QuartzCore.h>
 
 @implementation YellowVCollectionViewCell
 

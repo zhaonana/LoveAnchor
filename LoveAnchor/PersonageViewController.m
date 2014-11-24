@@ -7,16 +7,6 @@
 //
 
 #import "PersonageViewController.h"
-#import <QuartzCore/QuartzCore.h>
-#import "ModificationViewController.h"
-#import "HZAreaPickerView.h"
-#import "StoreViewController.h"
-#import "TopUpViewController.h"
-#import "ConversionViewController.h"
-#import "UIImageView+WebCache.h"
-#import "ASIFormDataRequest.h"
-#import "BadgeModel.h"
-#import "SeatManageViewController.h"
 
 @interface PersonageViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,HZAreaPickerDelegate>
 {

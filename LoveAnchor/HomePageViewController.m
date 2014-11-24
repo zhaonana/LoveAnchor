@@ -8,11 +8,6 @@
 
 #import "HomePageViewController.h"
 
-#import "AllViewController.h"
-#import "AttentionViewController.h"
-#import "SliderViewController.h"
-
-
 @interface HomePageViewController ()
 {
     UISwipeGestureRecognizer *leftSwipeGestureRecognizer;

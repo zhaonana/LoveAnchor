@@ -8,13 +8,6 @@
 
 #import "AttentionViewController.h"
 
-#import "FirstRowTableViewCell.h"
-#import "SecondRowTableViewCell.h"
-#import "ThirdRowTableViewCell.h"
-#import "AllModel.h"
-#import "PlayViewController.h"
-#import "HomePageViewController.h"
-
 @interface AttentionViewController ()<ASIHTTPRequestDelegate,ThirdRowTableViewCellDelegate,FirstRowTableViewCellDelegate,SecondRowTableViewCellDelegate>
 {
     LoginModel *model;

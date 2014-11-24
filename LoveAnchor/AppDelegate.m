@@ -7,10 +7,6 @@
 //
 
 #import "AppDelegate.h"
-//#import "SliderViewController.h"
-//#import "TabBarViewController.h"
-//#import "LeftMenuViewController.h"
-//#import "RightMenuViewController.h"
 
 @implementation AppDelegate
 

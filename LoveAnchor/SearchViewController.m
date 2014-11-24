@@ -84,12 +84,14 @@
     segImageView.backgroundColor = [UIColor lightGrayColor];
     [self.view addSubview:segImageView];
     
-     _tableView= [[UITableView alloc]initWithFrame:CGRectMake(0, 45, kScreenWidth, kScreenHeight-64-49-44) style:UITableViewStylePlain];
+    _tableView= [[UITableView alloc]initWithFrame:CGRectMake(0, 45, kScreenWidth, kScreenHeight-64-49-44) style:UITableViewStylePlain];
     _tableView.delegate = self;
     _tableView.dataSource = self;
     _tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     [self.view addSubview:_tableView];
-
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tap:)];
+    [_tableView addGestureRecognizer:tap];
 }
 
 #pragma mark - 点击事件
@@ -100,12 +102,12 @@
         case 0:
             segPage = 0;
             _searchBar.placeholder = @"请输入昵称";
-//            [self requestWithTag:btnPage andTag1:0];
+            //            [self requestWithTag:btnPage andTag1:0];
             break;
         case 1:
             segPage = 1;
             _searchBar.placeholder = @"请输入房间号";
-//            [self requestWithTag:btnPage andTag1:1];
+            //            [self requestWithTag:btnPage andTag1:1];
             break;
             
         default:
@@ -114,10 +116,12 @@
 }
 - (void)buttonClick
 {
+    [_searchBar resignFirstResponder];
+    [self initSet];
     [self requestWithTag:btnPage andTag1:segPage];
 }
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)tap:(UITapGestureRecognizer *)tap
 {
     [_searchBar resignFirstResponder];
 }
@@ -126,23 +130,24 @@
 - (void)requestWithTag:(NSInteger)tag andTag1:(NSInteger)tag1
 {
     
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[_dic objectForKey:[NSString stringWithFormat:@"%ld",tag]][tag1]]];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[_dic objectForKey:[NSString stringWithFormat:@"%ld",(long)tag]][tag1]]];
     request.delegate = self;
     [request startAsynchronous];
     [request setTimeOutSeconds:[_dataArray count]];
 }
 
--(void)requestFinished:(ASIHTTPRequest *)request
+- (void)requestFinished:(ASIHTTPRequest *)request
 {
-    //[_dataArray removeAllObjects];
+    [_dataArray removeAllObjects];
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData  options:NSJSONReadingMutableContainers error:nil];
     if ([result isKindOfClass:[NSDictionary class]]) {
         NSArray *allData = [result objectForKey:@"data"];
         NSMutableArray *allData_mutable = [NSMutableArray array];
-
+        
         for (NSDictionary *dict in allData) {
             SearchModel *model = [[SearchModel alloc]init];
             [model setValuesForKeysWithDictionary:dict];
+            model.bean_count_total = [model.finance objectForKey:@"bean_count_total"];
             [allData_mutable addObject:model];
         }
         for (int i = 0; i < [allData_mutable count]; i++) {
@@ -154,7 +159,7 @@
 }
 
 
-#pragma mark - tableViewDelegate
+#pragma mark - UITableViewDelegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *modelArray = [_dataArray objectAtIndex:indexPath.row];
@@ -173,9 +178,20 @@
     return [_dataArray count];
 }
 
--(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 55;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [_searchBar resignFirstResponder];
+}
+
+#pragma mark - UISearchBarDelegate methods
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    [self buttonClick];
 }
 
 - (void)didReceiveMemoryWarning

@@ -10,7 +10,7 @@
 
 #import "AllViewController.h"
 #import "AttentionViewController.h"
-#import "XHDrawerController.h"
+#import "SliderViewController.h"
 
 
 @interface HomePageViewController ()
@@ -72,11 +72,11 @@
 - (void)handleSwipes:(UISwipeGestureRecognizer *)handle
 {
     if (handle.direction == UISwipeGestureRecognizerDirectionLeft) {
-        [self right];
+        [self rightClick];
     }
 
     if (handle.direction == UISwipeGestureRecognizerDirectionRight) {
-        [self left];
+        [self leftClick];
     }
 }
 
@@ -84,23 +84,34 @@
 {
     NSLog(@"别点了 要着火了");
     if (button.tag == 1000) {
-        [self left];
+        [self leftClick];
         
     } else {
-        [self right];
+        [self rightClick];
     }
 
 }
 
-- (void)left {
-    [self.drawerController toggleDrawerSide:XHDrawerSideLeft animated:YES completion:NULL];
+- (void)leftClick {
+    if (!_leftisVisible) {
+        [[SliderViewController sharedSliderController] leftItemClick];
+        _leftisVisible = YES;
+    }else{
+        [[SliderViewController sharedSliderController]  showContentControllerWithModel:@"TabBarViewController"];
+        _leftisVisible = NO;
+    }
 }
 
-- (void)right {
-    [self.drawerController toggleDrawerSide:XHDrawerSideRight animated:YES completion:^(BOOL finished) {
-        
-    }];
+- (void)rightClick {
+    if (!_rightisVisible) {
+        [[SliderViewController sharedSliderController] rightItemClick];
+        _rightisVisible = YES;
+    }else {
+        [[SliderViewController sharedSliderController] showContentControllerWithModel:@"TabBarViewController"];
+        _rightisVisible = NO;
+    }
 }
+
 
 - (void)didReceiveMemoryWarning
 {

@@ -17,7 +17,7 @@
 
 @interface ThirdRowTableViewCell : UITableViewCell
 
-@property (nonatomic) id <ThirdRowTableViewCellDelegate> delegate;
+@property (nonatomic,strong) id <ThirdRowTableViewCellDelegate> delegate;
 
 @property (nonatomic,strong) NSArray *modelArray;
 

@@ -238,6 +238,7 @@
 		F7B5B8A319F1019C0006ACCB /* ziV@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F7B5B89F19F1019C0006ACCB /* ziV@2x.png */; };
 		F7B70E5E1A1C5F680064D56E /* SeatManageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F7B70E5D1A1C5F680064D56E /* SeatManageModel.m */; };
 		F7B70E611A1C9F910064D56E /* DynamicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F7B70E601A1C9F910064D56E /* DynamicModel.m */; };
+		F7B70E641A1E0F970064D56E /* SliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7B70E631A1E0F970064D56E /* SliderViewController.m */; };
 		F7BE18E819E52C32009C6C8C /* shangchengbag.png in Resources */ = {isa = PBXBuildFile; fileRef = F7BE18E619E52C32009C6C8C /* shangchengbag.png */; };
 		F7BE18E919E52C32009C6C8C /* shangchengbag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F7BE18E719E52C32009C6C8C /* shangchengbag@2x.png */; };
 		F7BE18FE19E6B720009C6C8C /* cuowu.png in Resources */ = {isa = PBXBuildFile; fileRef = F7BE18EA19E6B720009C6C8C /* cuowu.png */; };
@@ -314,8 +315,6 @@
 		F7CC09EA19A75405003298FF /* ThirdRowTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CC09E919A75405003298FF /* ThirdRowTableViewCell.m */; };
 		F7CD8DDC1A1B413D00E7E953 /* SeatManageTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F7CD8DDB1A1B413D00E7E953 /* SeatManageTableViewCell.m */; };
 		F7D87F8A1A072E77007E4F03 /* ModificationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7D87F891A072E77007E4F03 /* ModificationViewController.m */; };
-		F7D87F911A077A5A007E4F03 /* XHDrawerController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7D87F8D1A077A5A007E4F03 /* XHDrawerController.m */; };
-		F7D87F921A077A5A007E4F03 /* XHZoomDrawerView.m in Sources */ = {isa = PBXBuildFile; fileRef = F7D87F901A077A5A007E4F03 /* XHZoomDrawerView.m */; };
 		F7EE30701A16005500676571 /* BadgeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F7EE306F1A16005500676571 /* BadgeModel.m */; };
 /* End PBXBuildFile section */
 
@@ -601,6 +600,8 @@
 		F7B70E5D1A1C5F680064D56E /* SeatManageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeatManageModel.m; sourceTree = "<group>"; };
 		F7B70E5F1A1C9F910064D56E /* DynamicModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicModel.h; sourceTree = "<group>"; };
 		F7B70E601A1C9F910064D56E /* DynamicModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicModel.m; sourceTree = "<group>"; };
+		F7B70E621A1E0F970064D56E /* SliderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SliderViewController.h; sourceTree = "<group>"; };
+		F7B70E631A1E0F970064D56E /* SliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderViewController.m; sourceTree = "<group>"; };
 		F7BE18E619E52C32009C6C8C /* shangchengbag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shangchengbag.png; sourceTree = "<group>"; };
 		F7BE18E719E52C32009C6C8C /* shangchengbag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shangchengbag@2x.png"; sourceTree = "<group>"; };
 		F7BE18EA19E6B720009C6C8C /* cuowu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cuowu.png; sourceTree = "<group>"; };
@@ -715,11 +716,6 @@
 		F7CD8DDB1A1B413D00E7E953 /* SeatManageTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeatManageTableViewCell.m; sourceTree = "<group>"; };
 		F7D87F881A072E77007E4F03 /* ModificationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModificationViewController.h; sourceTree = "<group>"; };
 		F7D87F891A072E77007E4F03 /* ModificationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModificationViewController.m; sourceTree = "<group>"; };
-		F7D87F8C1A077A5A007E4F03 /* XHDrawerController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHDrawerController.h; sourceTree = "<group>"; };
-		F7D87F8D1A077A5A007E4F03 /* XHDrawerController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHDrawerController.m; sourceTree = "<group>"; };
-		F7D87F8E1A077A5A007E4F03 /* XHDrawerControllerHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHDrawerControllerHeader.h; sourceTree = "<group>"; };
-		F7D87F8F1A077A5A007E4F03 /* XHZoomDrawerView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XHZoomDrawerView.h; sourceTree = "<group>"; };
-		F7D87F901A077A5A007E4F03 /* XHZoomDrawerView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XHZoomDrawerView.m; sourceTree = "<group>"; };
 		F7EE306E1A16005500676571 /* BadgeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BadgeModel.h; sourceTree = "<group>"; };
 		F7EE306F1A16005500676571 /* BadgeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BadgeModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -756,7 +752,6 @@
 			isa = PBXGroup;
 			children = (
 				F79E7D7B1A0B6DF700DDBFC5 /* areapicker */,
-				F7D87F8B1A077A5A007E4F03 /* Source */,
 				F7456E221998609100CF28E8 /* LoveAnchor */,
 				F7456E3B1998609100CF28E8 /* LoveAnchorTests */,
 				F7456E1B1998609100CF28E8 /* Frameworks */,
@@ -797,6 +792,8 @@
 			children = (
 				F7456E2B1998609100CF28E8 /* AppDelegate.h */,
 				F7456E2C1998609100CF28E8 /* AppDelegate.m */,
+				F7B70E621A1E0F970064D56E /* SliderViewController.h */,
+				F7B70E631A1E0F970064D56E /* SliderViewController.m */,
 				F71890FB1A14D431005ECCA9 /* CommonHelp.h */,
 				F71890FC1A14D439005ECCA9 /* CommonHelp.m */,
 				F7456E4B1998672700CF28E8 /* TabBarViewController.h */,
@@ -1117,14 +1114,14 @@
 			children = (
 				F7456F0A19986AB100CF28E8 /* RankingListViewController.h */,
 				F7456F0B19986AB100CF28E8 /* RankingListViewController.m */,
+				F7C7CC8A19AC5FE0003FCC03 /* RankingTableViewCell.h */,
+				F7C7CC8B19AC5FE0003FCC03 /* RankingTableViewCell.m */,
 				F75D701219F242E0004C144B /* DatumViewController.h */,
 				F75D701319F242E0004C144B /* DatumViewController.m */,
 				F75D703119F25A49004C144B /* OneCell.h */,
 				F75D703219F25A49004C144B /* OneCell.m */,
 				F75D703419F26503004C144B /* TwoCell.h */,
 				F75D703519F26503004C144B /* TwoCell.m */,
-				F7C7CC8A19AC5FE0003FCC03 /* RankingTableViewCell.h */,
-				F7C7CC8B19AC5FE0003FCC03 /* RankingTableViewCell.m */,
 			);
 			name = "排行榜";
 			sourceTree = "<group>";
@@ -1304,18 +1301,6 @@
 				F7C7CCE219ADB2F9003FCC03 /* RightMenuViewController.m */,
 			);
 			name = "右菜单";
-			sourceTree = "<group>";
-		};
-		F7D87F8B1A077A5A007E4F03 /* Source */ = {
-			isa = PBXGroup;
-			children = (
-				F7D87F8C1A077A5A007E4F03 /* XHDrawerController.h */,
-				F7D87F8D1A077A5A007E4F03 /* XHDrawerController.m */,
-				F7D87F8E1A077A5A007E4F03 /* XHDrawerControllerHeader.h */,
-				F7D87F8F1A077A5A007E4F03 /* XHZoomDrawerView.h */,
-				F7D87F901A077A5A007E4F03 /* XHZoomDrawerView.m */,
-			);
-			path = Source;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1650,7 +1635,6 @@
 				F7B5B89B19EFC0C80006ACCB /* OneTableViewCell.m in Sources */,
 				F7C7CCAD19AD8FE7003FCC03 /* ASIDownloadCache.m in Sources */,
 				F7456E2D1998609100CF28E8 /* AppDelegate.m in Sources */,
-				F7D87F921A077A5A007E4F03 /* XHZoomDrawerView.m in Sources */,
 				F703DB371A174D5200C53D4C /* SeatManageViewController.m in Sources */,
 				F7C7CCB219AD8FE7003FCC03 /* Reachability.m in Sources */,
 				F7CC09E419A74CC0003298FF /* FirstRowTableViewCell.m in Sources */,
@@ -1673,7 +1657,6 @@
 				F75D703619F26503004C144B /* TwoCell.m in Sources */,
 				F7C7CCE019ADB2D3003FCC03 /* LeftMenuViewController.m in Sources */,
 				F7C7CCAE19AD8FE7003FCC03 /* ASIFormDataRequest.m in Sources */,
-				F7D87F911A077A5A007E4F03 /* XHDrawerController.m in Sources */,
 				F7C7CCE919ADC0F4003FCC03 /* SetViewController.m in Sources */,
 				F75D701419F242E0004C144B /* DatumViewController.m in Sources */,
 				F71890FD1A14D439005ECCA9 /* CommonHelp.m in Sources */,
@@ -1690,6 +1673,7 @@
 				F7456E4D1998672700CF28E8 /* TabBarViewController.m in Sources */,
 				F759245219C196B0004DC4D6 /* SearchModel.m in Sources */,
 				F7493F0819AC494E005739CD /* DynamicTableViewCell.m in Sources */,
+				F7B70E641A1E0F970064D56E /* SliderViewController.m in Sources */,
 				F7C7CCCE19AD9007003FCC03 /* SDWebImagePrefetcher.m in Sources */,
 				F79E7D7A1A0B6DE900DDBFC5 /* HZLocation.m in Sources */,
 				F7BEBDA319E8E67100D7CCE3 /* StoreViewController.m in Sources */,

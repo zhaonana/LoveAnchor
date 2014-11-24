@@ -16,7 +16,7 @@
 
 @interface SecondRowTableViewCell : UITableViewCell
 
-@property (nonatomic) id <SecondRowTableViewCellDelegate> delegate;
+@property (nonatomic,strong) id <SecondRowTableViewCellDelegate> delegate;
 @property (nonatomic,strong)NSArray *modelArray;
 
 - (void)setCellData:(NSArray *)modelArray;

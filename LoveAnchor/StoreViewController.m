@@ -610,6 +610,10 @@
     } else if (request.tag == 102) {
         NSLog(@"座驾 == %@",request.responseString);
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+        [imageArray removeAllObjects];
+        [namaArray removeAllObjects];
+        [moneyArray removeAllObjects];
+        [IDArray removeAllObjects];
         if ([result isKindOfClass:[NSDictionary class]]) {
             NSArray *seatArray = [result objectForKey:@"data"];
             for (NSDictionary *dic in seatArray) {

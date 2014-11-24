@@ -32,43 +32,48 @@
 {
     [super viewDidLoad];
     
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    imageView.userInteractionEnabled = YES;
+    imageView.image = [UIImage imageNamed:@"zhuyebeijing"];
+    [self.view addSubview:imageView];
+    
     UITableView *leftTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 200, self.view.frame.size.width-70, 132) style:UITableViewStylePlain];
     leftTableView.backgroundColor = [UIColor clearColor];
     leftTableView.scrollEnabled = NO;
     leftTableView.delegate = self;
     leftTableView.dataSource = self;
     leftTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
-    [self.view addSubview:leftTableView];
+    [imageView addSubview:leftTableView];
     
     UIButton *headButton = [UIButton buttonWithType:UIButtonTypeCustom];
     headButton.frame = CGRectMake(92, 45, 70, 70);
     headButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"touxiang"]];
     [headButton addTarget:self action:@selector(buttonClick) forControlEvents:UIControlEventTouchUpInside];
-    [self.view addSubview:headButton];
+    [imageView addSubview:headButton];
     
     UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(90, 122, 80, 16)];
     nameLabel.text = @"钢铁侠13号";
     nameLabel.font = [UIFont systemFontOfSize:15.0f];
     nameLabel.textColor = [UIColor whiteColor];
-    [self.view addSubview:nameLabel];
+    [imageView addSubview:nameLabel];
     
     UILabel *balanceLabel = [[UILabel alloc]initWithFrame:CGRectMake(90, 144, 38, 16)];
     balanceLabel.text = @"余额:";
     balanceLabel.font = [UIFont systemFontOfSize:15.0f];
     balanceLabel.textColor = [UIColor whiteColor];
-    [self.view addSubview:balanceLabel];
+    [imageView addSubview:balanceLabel];
     
     UILabel *numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(135, 144, 44, 16)];
     numberLabel.text = @"88888";
     numberLabel.font = [UIFont systemFontOfSize:15.0f];
     numberLabel.textColor = [UIColor whiteColor];
-    [self.view addSubview:numberLabel];
+    [imageView addSubview:numberLabel];
     
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(25, 350, 190, 18)];
     label.text = @"当前在线玩家共有";
     label.font = [UIFont systemFontOfSize:15.0f];
     label.textColor = [UIColor whiteColor];
-    [self.view addSubview:label];
+    [imageView addSubview:label];
     
     UILabel *label1 = [[UILabel alloc]init];
     NSString *s = @"12234";
@@ -80,7 +85,7 @@
     NSDictionary * tdic = [NSDictionary dictionaryWithObjectsAndKeys:font,NSFontAttributeName,nil];
         CGSize actualsize =[s boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin  attributes:tdic context:nil].size;
         label1.frame = CGRectMake(145, 350, actualsize.width, 18);
-    [self.view addSubview:label1];
+    [imageView addSubview:label1];
     
         UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(145+actualsize.width, 350, 190, 18)];
         label2.text = @"位";
@@ -92,7 +97,7 @@
     label11.text = @"V1.0";
     label11.font = [UIFont systemFontOfSize:12.0f];
     label11.textColor = [UIColor whiteColor];
-    [self.view addSubview:label11];
+    [imageView addSubview:label11];
 
 }
 

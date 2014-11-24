@@ -33,6 +33,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    RankingModel *model = [[RankingModel alloc]init];
+    NSLog(@"model.star = %@",model.star);
     [self shouUI];
 }
 #pragma mark - 界面

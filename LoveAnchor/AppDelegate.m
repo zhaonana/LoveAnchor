@@ -7,10 +7,10 @@
 //
 
 #import "AppDelegate.h"
-#import "XHDrawerController.h"
-#import "TabBarViewController.h"
-#import "LeftMenuViewController.h"
-#import "RightMenuViewController.h"
+//#import "SliderViewController.h"
+//#import "TabBarViewController.h"
+//#import "LeftMenuViewController.h"
+//#import "RightMenuViewController.h"
 
 @implementation AppDelegate
 
@@ -20,22 +20,18 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
-    XHDrawerController *drawerController = [[XHDrawerController alloc] init];
-    drawerController.springAnimationOn = YES;
     
-    LeftMenuViewController *leftMenu = [[LeftMenuViewController alloc]init];
-    RightMenuViewController *rightMenu = [[RightMenuViewController alloc]init];
-    TabBarViewController *tab = [[TabBarViewController alloc]init];
+    [SliderViewController sharedSliderController].LeftVC = [[LeftMenuViewController alloc] init];
+    [SliderViewController sharedSliderController].RightVC = [[RightMenuViewController alloc] init];
+    [SliderViewController sharedSliderController].RightSContentOffset=260;
+    [SliderViewController sharedSliderController].RightSContentScale=0.85;
+    [SliderViewController sharedSliderController].RightSOpenDuration=0.8;
+    [SliderViewController sharedSliderController].RightSCloseDuration=0.4;
+    [SliderViewController sharedSliderController].RightSJudgeOffset=160;
+    [SliderViewController sharedSliderController].LeftSContentOffset = 260;
     
-    drawerController.leftViewController = leftMenu;
-    drawerController.rightViewController = rightMenu;
-    drawerController.centerViewController = tab;
     
-    UIImageView *backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"zhuyebeijing"]];
-    [backgroundImageView setContentMode:UIViewContentModeCenter];
-    drawerController.backgroundView = backgroundImageView;
-    
-    self.window.rootViewController = drawerController;
+    self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[SliderViewController sharedSliderController]];
     
     [self.window makeKeyAndVisible];
     return YES;

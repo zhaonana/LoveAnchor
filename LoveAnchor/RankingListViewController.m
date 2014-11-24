@@ -11,6 +11,7 @@
 #import "RankingTableViewCell.h"
 #import "RankingModel.h"
 #import "DatumViewController.h"
+#import "SliderViewController.h"
 @interface RankingListViewController ()
 {
     //排行榜下拉菜单底图
@@ -102,7 +103,6 @@
     [segmented setTintColor:textFontColor];
     segmented.selectedSegmentIndex = 0;
     [segmented addTarget:self action:@selector(segmentedClick:) forControlEvents:UIControlEventValueChanged];
-    
     [self.view addSubview:segmented];
     
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 45, kScreenWidth, kScreenHeight-44-64-49)];
@@ -157,7 +157,7 @@
     if ([result isKindOfClass:[NSDictionary class]]) {
         NSArray *allData = [result objectForKey:@"data"];
         NSMutableArray *allData_mutable = [NSMutableArray array];
-        
+        NSLog(@"data == %@",allData);
     for (NSDictionary *dict in allData) {
         RankingModel *model = [[RankingModel alloc]init];
         [model setValuesForKeysWithDictionary:dict];
@@ -206,7 +206,14 @@
 {
     NSLog(@"别点老子");
     if (button.tag == 1000) {
-        
+        if (!leftisVisible) {
+            [[SliderViewController sharedSliderController] leftItemClick];
+            leftisVisible = YES;
+        }else{
+            [[SliderViewController sharedSliderController]  showContentControllerWithModel:@"TabBarViewController"];
+            leftisVisible = NO;
+        }
+
     } else if (button.tag == 104) {
         if (buttonImageView.hidden) {
             [buttonImageView setHidden:NO];

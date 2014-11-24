@@ -69,10 +69,10 @@
         
         UILabel *rankingLabel = (UILabel *)[self.contentView viewWithTag:103];
         rankingLabel.text = [NSString stringWithFormat:@"%@",model.finance];
-        
+        NSLog(@"model.finance = %@",model.finance);
         UILabel *roomLabel = (UILabel *)[self.contentView viewWithTag:104];
         roomLabel.text = [NSString stringWithFormat:@"%@",(model._id)];
-
+        NSLog(@"model.star = %@",model.star);
     }
 }
 

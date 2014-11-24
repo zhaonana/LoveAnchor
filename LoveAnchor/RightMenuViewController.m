@@ -14,6 +14,7 @@
     NSArray *array2;
     NSArray *array3;
     NSArray *array4;
+    NSArray *array5;
     UITableView *rightTableView;
 }
 @end
@@ -28,6 +29,7 @@
         array2 = [NSArray array];
         array3 = [NSArray array];
         array4 = [NSArray array];
+        array5 = [NSArray array];
     }
     return self;
 }
@@ -35,12 +37,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    rightTableView = [[UITableView alloc]initWithFrame:CGRectMake(-65, 20, self.view.frame.size.width, self.view.frame.size.height-200) style:UITableViewStylePlain];
+    UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
+    imageView.image = [UIImage imageNamed:@"zhuyebeijing"];
+    imageView.userInteractionEnabled = YES;
+    [self.view addSubview:imageView];
+    
+    rightTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 20, self.view.frame.size.width, self.view.frame.size.height-200) style:UITableViewStylePlain];
     rightTableView.delegate = self;
     rightTableView.dataSource = self;
     rightTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     rightTableView.backgroundColor = [UIColor clearColor];
-    [self.view addSubview:rightTableView];
+    [imageView addSubview:rightTableView];
 
     [self requestWithSbean:1616000 ebean:0 tag:1];
     
@@ -50,7 +57,7 @@
     
     [self requestWithSbean:0 ebean:106000 tag:4];
     
-
+    [self request];
 }
 
 #pragma mark - tableViewDelegate
@@ -60,36 +67,36 @@
     cell.backgroundColor = [UIColor clearColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     if (indexPath.row == 0) {
-        UIImageView *imgeviewIcont = [[UIImageView alloc]initWithFrame:CGRectMake(30, 6, 30, 30)];
+        UIImageView *imgeviewIcont = [[UIImageView alloc]initWithFrame:CGRectMake(80, 6, 30, 30)];
         imgeviewIcont.image = [UIImage imageNamed:@"quanbu"];
         [cell addSubview:imgeviewIcont];
         
-        UILabel *textLabel = [[UILabel alloc]initWithFrame:CGRectMake(75, 14, 35, 15)];
+        UILabel *textLabel = [[UILabel alloc]initWithFrame:CGRectMake(125, 14, 35, 15)];
         textLabel.text = @"全部";
         textLabel.font = [UIFont systemFontOfSize:15.0f];
         textLabel.textColor = [UIColor whiteColor];
         [cell addSubview:textLabel];
         
-        UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(208, 15, 42, 15)];
+        UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(258, 15, 42, 15)];
         [label1 setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"shuzidise"]]];
-        label1.text = @"666";
+        label1.text = [NSString stringWithFormat:@"%@",array5];
         label1.textColor = [UIColor whiteColor];
         label1.textAlignment = NSTextAlignmentCenter;
         label1.font = [UIFont systemFontOfSize:12.0f];
         [cell addSubview:label1];
         
     } else if (indexPath.row == 1){
-        UIImageView *imgeviewIcont1 = [[UIImageView alloc]initWithFrame:CGRectMake(30, 6, 30, 30)];
+        UIImageView *imgeviewIcont1 = [[UIImageView alloc]initWithFrame:CGRectMake(80, 6, 30, 30)];
         imgeviewIcont1.image = [UIImage imageNamed:@"zhuboxingjihuangguan"];
         [cell addSubview:imgeviewIcont1];
         
-        UILabel *textLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(75, 14, 35, 15)];
+        UILabel *textLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(125, 14, 35, 15)];
         textLabel1.text = @"超星";
         textLabel1.font = [UIFont systemFontOfSize:15.0f];
         textLabel1.textColor = [UIColor whiteColor];
         [cell addSubview:textLabel1];
         
-        UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(208, 15, 42, 15)];
+        UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(258, 15, 42, 15)];
         [label1 setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"shuzidise"]]];
         label1.text = [NSString stringWithFormat:@"%lu",array1.count];
         label1.textColor = [UIColor whiteColor];
@@ -98,17 +105,17 @@
         [cell addSubview:label1];
         
     } else if (indexPath.row == 2) {
-        UIImageView *imgeviewIcont1 = [[UIImageView alloc]initWithFrame:CGRectMake(30, 6, 30, 30)];
+        UIImageView *imgeviewIcont1 = [[UIImageView alloc]initWithFrame:CGRectMake(80, 6, 30, 30)];
         imgeviewIcont1.image = [UIImage imageNamed:@"zhuboxingjihuangguan"];
         [cell addSubview:imgeviewIcont1];
         
-        UILabel *textLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(75, 14, 35, 15)];
+        UILabel *textLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(125, 14, 35, 15)];
         textLabel1.text = @"巨星";
         textLabel1.font = [UIFont systemFontOfSize:15.0f];
         textLabel1.textColor = [UIColor whiteColor];
         [cell addSubview:textLabel1];
         
-        UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(208, 15, 42, 15)];
+        UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(258, 15, 42, 15)];
         [label1 setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"shuzidise"]]];
         label1.text = [NSString stringWithFormat:@"%lu",array2.count];
         label1.textColor = [UIColor whiteColor];
@@ -117,17 +124,17 @@
         [cell addSubview:label1];
         
     } else if (indexPath.row == 3) {
-        UIImageView *imgeviewIcont1 = [[UIImageView alloc]initWithFrame:CGRectMake(30, 6, 30, 30)];
+        UIImageView *imgeviewIcont1 = [[UIImageView alloc]initWithFrame:CGRectMake(80, 6, 30, 30)];
         imgeviewIcont1.image = [UIImage imageNamed:@"zuanshi"];
         [cell addSubview:imgeviewIcont1];
         
-        UILabel *textLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(75, 14, 35, 15)];
+        UILabel *textLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(125, 14, 35, 15)];
         textLabel1.text = @"明星";
         textLabel1.font = [UIFont systemFontOfSize:15.0f];
         textLabel1.textColor = [UIColor whiteColor];
         [cell addSubview:textLabel1];
         
-        UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(208, 15, 42, 15)];
+        UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(258, 15, 42, 15)];
         [label1 setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"shuzidise"]]];
         label1.text = [NSString stringWithFormat:@"%lu",array3.count];
         label1.textColor = [UIColor whiteColor];
@@ -136,17 +143,17 @@
         [cell addSubview:label1];
         
     } else {
-        UIImageView *imgeviewIcont1 = [[UIImageView alloc]initWithFrame:CGRectMake(30, 6, 30, 30)];
+        UIImageView *imgeviewIcont1 = [[UIImageView alloc]initWithFrame:CGRectMake(80, 6, 30, 30)];
         imgeviewIcont1.image = [UIImage imageNamed:@"hongxin"];
         [cell addSubview:imgeviewIcont1];
         
-        UILabel *textLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(75, 14, 35, 15)];
+        UILabel *textLabel1 = [[UILabel alloc]initWithFrame:CGRectMake(125, 14, 35, 15)];
         textLabel1.text = @"新秀";
         textLabel1.font = [UIFont systemFontOfSize:15.0f];
         textLabel1.textColor = [UIColor whiteColor];
         [cell addSubview:textLabel1];
         
-        UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(208, 15, 42, 15)];
+        UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(258, 15, 42, 15)];
         [label1 setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"shuzidise"]]];
         label1.text = [NSString stringWithFormat:@"%lu",array4.count];
         label1.textColor = [UIColor whiteColor];
@@ -185,7 +192,7 @@
 {
     switch (indexPath.row) {
         case 0:
-            
+            [self request];
             break;
         case 1:
             [self requestWithSbean:1616000 ebean:0 tag:indexPath.row];
@@ -208,7 +215,11 @@
 #pragma mark - 数据
 - (void)request
 {
-    
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://ttapi.izhubo.com/public/room_list"]];
+    request.delegate = self;
+    request.tag = 100;
+    [request setTimeOutSeconds:100];
+    [request startAsynchronous];
 }
 - (void)requestWithSbean:(int)sbean ebean:(int)ebean tag:(NSInteger)tag
 {
@@ -236,6 +247,9 @@
                 break;
             case 4:
                 array4 = [result objectForKey:@"data"];
+                break;
+            case 100:
+                array5 = [result objectForKey:@"count"];
                 break;
                 
             default:

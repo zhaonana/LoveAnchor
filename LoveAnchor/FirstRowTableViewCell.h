@@ -16,7 +16,7 @@
 
 @interface FirstRowTableViewCell : UITableViewCell
 
-@property (nonatomic) id <FirstRowTableViewCellDelegate> delegate;
+@property (nonatomic,weak) id <FirstRowTableViewCellDelegate> delegate;
 @property (nonatomic,strong)NSArray *modelArray;
 
 

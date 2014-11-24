@@ -10,6 +10,8 @@
 	<string>LoveAnchor</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
+		<key>3212E6EF58FF0DECCEF63FB3E92403935F42CC63</key>
+		<string>https://github.com/zhaonana/LoveAnchor.git</string>
 		<key>8013D22D1505C1FD6AC569B199B285AD8AFCE33B</key>
 		<string>115.28.40.234:izhubo/ios</string>
 	</dict>
@@ -17,15 +19,17 @@
 	<string>LoveAnchor.xcodeproj</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>8013D22D1505C1FD6AC569B199B285AD8AFCE33B</key>
+		<key>3212E6EF58FF0DECCEF63FB3E92403935F42CC63</key>
 		<string>../..</string>
+		<key>8013D22D1505C1FD6AC569B199B285AD8AFCE33B</key>
+		<string>../../../Git</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
-	<string>115.28.40.234:izhubo/ios</string>
+	<string>https://github.com/zhaonana/LoveAnchor.git</string>
 	<key>IDESourceControlProjectVersion</key>
 	<integer>111</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>8013D22D1505C1FD6AC569B199B285AD8AFCE33B</string>
+	<string>3212E6EF58FF0DECCEF63FB3E92403935F42CC63</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
@@ -35,6 +39,14 @@
 			<string>8013D22D1505C1FD6AC569B199B285AD8AFCE33B</string>
 			<key>IDESourceControlWCCName</key>
 			<string>Git</string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>3212E6EF58FF0DECCEF63FB3E92403935F42CC63</string>
+			<key>IDESourceControlWCCName</key>
+			<string>LoveAnchor</string>
 		</dict>
 	</array>
 </dict>

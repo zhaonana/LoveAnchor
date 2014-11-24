@@ -10,11 +10,13 @@
 
 @interface SearchModel : NSObject
 //头像
-@property (nonatomic, strong)NSString *pic_url;
+@property (nonatomic, strong) NSString     *pic_url;
 //房间号
-@property (nonatomic, strong)NSNumber *_id;
+@property (nonatomic, strong) NSNumber     *_id;
 //等级
-@property (nonatomic, strong)NSNumber *finance;
+@property (nonatomic, strong) NSDictionary *finance;
+@property (nonatomic, strong) NSNumber     *bean_count_total;
 //昵称
-@property (nonatomic, strong)NSString *nick_name;
+@property (nonatomic, strong) NSString     *nick_name;
+
 @end

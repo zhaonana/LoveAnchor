@@ -23,7 +23,6 @@
     NSMutableArray *carArray;
     NSMutableArray *mySeatArray;
     NSString *currId;
-    int newTag;
 }
 
 @end
@@ -119,15 +118,6 @@
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     request.delegate = self;
     request.tag = tag;
-    [request setTimeOutSeconds:100];
-    [request startAsynchronous];
-}
-//拥有座驾
-- (void)request
-{
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/car_info/%@",model.access_token]]];
-    request.delegate = self;
-    request.tag = 101;
     [request setTimeOutSeconds:100];
     [request startAsynchronous];
 }

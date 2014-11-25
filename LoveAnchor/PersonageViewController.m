@@ -7,6 +7,7 @@
 //
 
 #import "PersonageViewController.h"
+#import "DateUtil.h"
 
 @interface PersonageViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,HZAreaPickerDelegate>
 {
@@ -305,7 +306,10 @@
         
     } else if (indexPath.section == 2 && indexPath.row == 1) {
         UIImageView *image3 = [[UIImageView alloc]initWithFrame:CGRectMake(139, 15, 25, 12)];
-        image3.image = [UIImage imageNamed:@"2fu"];
+        NSDictionary *dic = [dict objectForKey:@"finance"];
+        NSNumber *coin = [dic objectForKey:@"coin_count"];
+        NSString *imageName = [DateUtil getLevelImageNameWithCoin:coin.intValue isRich:YES];
+        image3.image = [UIImage imageNamed:imageName];
         [cell addSubview:image3];
         
         UIImageView *image5 = [[UIImageView alloc]initWithFrame:CGRectMake(168, 17, 108, 8)];
@@ -324,7 +328,10 @@
         [cell addSubview:image4];
     } else if (indexPath.section == 2 && indexPath.row == 2) {
         UIImageView *image6 = [[UIImageView alloc]initWithFrame:CGRectMake(148, 13, 16, 16)];
-        image6.image = [UIImage imageNamed:@"2xing"];
+        NSDictionary *dic = [dict objectForKey:@"finance"];
+        NSNumber *coin = [dic objectForKey:@"coin_count"];
+        NSString *imageName = [DateUtil getLevelImageNameWithCoin:coin.intValue isRich:NO];
+        image6.image = [UIImage imageNamed:imageName];
         [cell addSubview:image6];
         
         UIImageView *image7 = [[UIImageView alloc]initWithFrame:CGRectMake(168, 17, 108, 8)];
@@ -675,7 +682,7 @@
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/edit/%@",model.access_token]]];
     request.delegate = self;
     request.tag = 103;
-    [request setPostValue:[NSString stringWithFormat:@"%ld",tag] forKey:@"sex"];
+    [request setPostValue:[NSString stringWithFormat:@"%ld",(long)tag] forKey:@"sex"];
     [request startAsynchronous];
 }
 //星座
@@ -735,7 +742,7 @@
         if ([result isKindOfClass:[NSDictionary class]]) {
             NSDictionary *seatDict = [result objectForKey:@"data"];
             NSDictionary *dic = [seatDict objectForKey:@"car"];
-            NSString *currId = [dic objectForKey:@"curr"];
+            NSNumber *currId = [dic objectForKey:@"curr"];
             mySeat = [[SeatManageModel alloc] init];
             for (SeatManageModel *seat in allSeatArray) {
                 if (seat._id.intValue == currId.intValue) {

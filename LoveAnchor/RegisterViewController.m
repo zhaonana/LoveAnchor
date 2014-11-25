@@ -19,7 +19,6 @@
     UITextField *_passTextField;
     UITextField *_validationTextField;
     UIImageView *_validationImageView;
-    UIImageView *_judgeImage;
     
     NSString *_str;
     NSString *auth_key;
@@ -196,12 +195,16 @@
     _nameTextField.placeholder = @"请输入您的用户名";
     _nameTextField.borderStyle = UITextBorderStyleNone;
     _nameTextField.delegate = self;
+    _nameTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    _nameTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [bagImageView addSubview:_nameTextField];
     //密码输入框
     _passTextField = [[UITextField alloc]init];
     _passTextField.frame = CGRectMake(50, 42, 270, 42);
     _passTextField.placeholder = @"请输入您的密码";
     _passTextField.borderStyle = UITextBorderStyleNone;
+    _passTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    _passTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     _passTextField.delegate = self;
     [bagImageView addSubview:_passTextField];
     //验证码背景
@@ -216,10 +219,9 @@
     _validationTextField.placeholder = @"请输入验证码";
     _validationTextField.borderStyle = UITextBorderStyleNone;
     _validationTextField.delegate = self;
+    _validationTextField.autocorrectionType = UITextAutocorrectionTypeNo;
+    _validationTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [YZImageView addSubview:_validationTextField];
-    //判断验证码对错的图片
-    _judgeImage = [[UIImageView alloc]initWithFrame:CGRectMake(130, 15, 17, 17)];
-    [YZImageView addSubview:_judgeImage];
     //验证码图片
     _validationImageView = [[UIImageView alloc]initWithFrame:CGRectMake(240, 12, 55, 20)];
     _validationImageView.backgroundColor = [UIColor clearColor];
@@ -317,7 +319,7 @@
 #pragma mark - 登陆
 - (void)login
 {
-    ASIHTTPRequest *loginRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/ttus/login?user_name=%@&password=%@&auth_code=%@&auth_key=%@",_registerModel.userName,_registerModel.passWord,_validationTextField.text,auth_key]]];
+    ASIHTTPRequest *loginRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/ttus/login?user_name=%@&password=%@&auth_code=%@&auth_key=%@",_nameTextField.text,_passTextField.text,_validationTextField.text,auth_key]]];
     [loginRequest setTimeOutSeconds:10];
     loginRequest.tag = 3;
     loginRequest.delegate = self;
@@ -325,7 +327,6 @@
 }
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    
     if (request.tag == 0) {
         NSLog(@"获取验证码为:%@",request.responseString);
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
@@ -350,6 +351,8 @@
                 alert.message = @"用户名已存在";
                 [alert addButtonWithTitle:@"确定"];
                 [alert show];
+            } else if (allDtjson1 == 1) {
+                [self login];
             }
         }
     } else if (request.tag == 2) {
@@ -358,14 +361,15 @@
             int allDTjson2 = [[result2 objectForKey:@"code"] intValue];
             NSLog(@"验证验证码 == %d",allDTjson2);
             if (allDTjson2 == 1) {
-                _judgeImage.image = [UIImage imageNamed:@"dui"];
+                NSLog(@"注册成功");
+                [self request];
             } else {
                 UIAlertView *alert = [[UIAlertView alloc]init];
                 alert.title = @"提示";
                 alert.message = @"验证码输入错误";
                 [alert addButtonWithTitle:@"确定"];
                 [alert show];
-                _judgeImage.image = [UIImage imageNamed:@"cuowu"];
+                [self updateTheVerificationCode];
             }
         }
     } else if (request.tag == 3) {
@@ -373,8 +377,21 @@
         id result3 = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result3 isKindOfClass:[NSDictionary class]]) {
             NSDictionary *allDTjson3 = [result3 objectForKey:@"code"];
+            NSDictionary *loginJson = [result3 objectForKey:@"data"];
             NSLog(@"登陆 == %@",allDTjson3);
+            LoginModel *loginModel = [[LoginModel alloc]init];
+            loginModel.access_token = [loginJson objectForKey:@"access_token"];
+            loginModel.passWord = [loginJson objectForKey:@"password"];
+            loginModel.userName = [loginJson objectForKey:@"username"];
+            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:loginModel];
+            [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"books"];
+            [[NSUserDefaults standardUserDefaults] synchronize];
+            NSLog(@"token == %@",loginModel.access_token);
+            TabBarViewController *tab = [[TabBarViewController alloc]init];
+            [tab setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            [self presentViewController:tab animated:YES completion:nil];
         }
+        
     } else if (request.tag == 4) {
         NSData *data = [request responseData];
         NSLog(@"更新验证码 = %@",data);
@@ -401,27 +418,30 @@
     }
     //用户名注册
     else if (button.tag == 102) {
-        [self verification];
-        [self request];
         if (_nameTextField.text.length == 0 || _passTextField.text.length == 0) {
             NSLog(@"用户名或密码不能为空");
             UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"失败" message:@"用户名或密码不能为空" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
             [alertView show];
         } else if ((_nameTextField.text.length <= 18 && _nameTextField.text.length >= 6) && (_passTextField.text.length >= 6 && _passTextField.text.length <= 20)) {
-            NSLog(@"注册成功");
-            [self login];
-//            PersonageViewController *personage = [[PersonageViewController alloc]init];
-//            [self presentViewController:personage animated:YES completion:nil];
-            _registerModel.userName = _nameTextField.text;
-            _registerModel.passWord = _passTextField.text;
-            NSLog(@"_userName == %@",_registerModel.userName);
-            NSLog(@"_passWord == %@",_registerModel.passWord);
+            if (_validationTextField.text.length == 0) {
+                UIAlertView *alart = [[UIAlertView alloc]init];
+                alart.title = @"失败";
+                alart.message = @"请输入验证码";
+                [alart addButtonWithTitle:@"确定"];
+                [alart show];
+            } else {
+                [self verification];
+            }
         } else {
         NSLog(@"用户名或密码为6-18位，请重新输入");
         UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"失败" message:@"用户名或密码为6-18位，请重新输入" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:@"取消", nil];
         [alertView show];
         }
-    }else {
+    }else if (button.tag == 101) {
+        LoginViewController *login = [[LoginViewController alloc]init];
+        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:login];
+        [self presentViewController:nc animated:YES completion:nil];
+    } else {
         NSLog(@"%ld",button.tag);
         if (button.selected) {
             return;

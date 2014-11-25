@@ -632,6 +632,7 @@
                 [alert show];
             } else if (purchase == 30412) {
                 UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"购买失败" message:@"您的金币不足" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"充值", nil];
+                alert.tintColor = textFontColor;
                 alert.tag = 201;
                 [alert show];
             }

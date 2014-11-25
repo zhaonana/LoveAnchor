@@ -40,6 +40,7 @@
     [super viewDidLoad];
     NSData *myEncodedObject = [[NSUserDefaults standardUserDefaults] objectForKey:@"books"];
     model = [NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
+    NSLog(@"我自己 == %@",model.userName);
     [self showUI];
     [self getVerificationCode];
     
@@ -99,7 +100,7 @@
     _passTextField = [[UITextField alloc]init];
     _passTextField.frame = CGRectMake(50, 42, 270, 42);
     _passTextField.placeholder = @"请输入您的密码";
-    _passTextField.text = @"123456";
+    _passTextField.text = @"12345678";
     _passTextField.secureTextEntry = YES;
     _passTextField.borderStyle = UITextBorderStyleNone;
     [_passTextField setAutocorrectionType:UITextAutocorrectionTypeNo];

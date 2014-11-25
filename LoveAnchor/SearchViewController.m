@@ -7,8 +7,7 @@
 //
 
 #import "SearchViewController.h"
-#import "SearchTableViewCell.h"
-#import "SearchModel.h"
+
 
 @interface SearchViewController ()
 {

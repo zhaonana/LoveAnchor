@@ -15,7 +15,6 @@
 		F71890F81A121ADF005ECCA9 /* guoqiVIP.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890F51A121ADF005ECCA9 /* guoqiVIP.png */; };
 		F71890F91A121ADF005ECCA9 /* guoqiVIP@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890F61A121ADF005ECCA9 /* guoqiVIP@2x.png */; };
 		F71890FA1A121ADF005ECCA9 /* jiqiren@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890F71A121ADF005ECCA9 /* jiqiren@2x.png */; };
-		F71890FD1A14D439005ECCA9 /* CommonHelp.m in Sources */ = {isa = PBXBuildFile; fileRef = F71890FC1A14D439005ECCA9 /* CommonHelp.m */; };
 		F7456E1D1998609100CF28E8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7456E1C1998609100CF28E8 /* Foundation.framework */; };
 		F7456E1F1998609100CF28E8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7456E1E1998609100CF28E8 /* CoreGraphics.framework */; };
 		F7456E211998609100CF28E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7456E201998609100CF28E8 /* UIKit.framework */; };
@@ -514,8 +513,6 @@
 		F71890F51A121ADF005ECCA9 /* guoqiVIP.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guoqiVIP.png; sourceTree = "<group>"; };
 		F71890F61A121ADF005ECCA9 /* guoqiVIP@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guoqiVIP@2x.png"; sourceTree = "<group>"; };
 		F71890F71A121ADF005ECCA9 /* jiqiren@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jiqiren@2x.png"; sourceTree = "<group>"; };
-		F71890FB1A14D431005ECCA9 /* CommonHelp.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommonHelp.h; sourceTree = "<group>"; };
-		F71890FC1A14D439005ECCA9 /* CommonHelp.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonHelp.m; sourceTree = "<group>"; };
 		F7456E191998609100CF28E8 /* LoveAnchor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoveAnchor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7456E1C1998609100CF28E8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F7456E1E1998609100CF28E8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -1146,8 +1143,6 @@
 				F7456E2C1998609100CF28E8 /* AppDelegate.m */,
 				F7B70E621A1E0F970064D56E /* SliderViewController.h */,
 				F7B70E631A1E0F970064D56E /* SliderViewController.m */,
-				F71890FB1A14D431005ECCA9 /* CommonHelp.h */,
-				F71890FC1A14D439005ECCA9 /* CommonHelp.m */,
 				F7456E4B1998672700CF28E8 /* TabBarViewController.h */,
 				F7456E4C1998672700CF28E8 /* TabBarViewController.m */,
 				F7456F0119986A2800CF28E8 /* XDSSegmentedViewController.h */,
@@ -2379,7 +2374,6 @@
 				F7C7CCAE19AD8FE7003FCC03 /* ASIFormDataRequest.m in Sources */,
 				F7C7CCE919ADC0F4003FCC03 /* SetViewController.m in Sources */,
 				F75D701419F242E0004C144B /* DatumViewController.m in Sources */,
-				F71890FD1A14D439005ECCA9 /* CommonHelp.m in Sources */,
 				F7C7CCE319ADB2F9003FCC03 /* RightMenuViewController.m in Sources */,
 				F7C7CCCF19AD9007003FCC03 /* UIButton+WebCache.m in Sources */,
 				F7B5B87519ECF0EA0006ACCB /* StorecollectionVIewCell.m in Sources */,

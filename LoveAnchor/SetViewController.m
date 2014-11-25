@@ -7,8 +7,6 @@
 //
 
 #import "SetViewController.h"
-#import "TwoTableViewCell.h"
-#import "OneTableViewCell.h"
 
 @interface SetViewController (){
     UITableView *_tableView;

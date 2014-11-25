@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ASIHttpRequest.h"
-#import "HomePageViewController.h"
+
 @interface AllViewController : UIViewController<UITableViewDataSource,UITableViewDelegate,ASIHTTPRequestDelegate>
 
 @property (nonatomic,strong) HomePageViewController *home;

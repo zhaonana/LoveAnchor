@@ -7,8 +7,6 @@
 //
 
 #import "VerifyViewController.h"
-#import <QuartzCore/QuartzCore.h>
-#import "LeftMenuViewController.h"
 
 @interface VerifyViewController ()
 

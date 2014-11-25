@@ -7,9 +7,7 @@
 //
 
 #import "RankingTableViewCell.h"
-#import <QuartzCore/QuartzCore.h>
-#import "RankingModel.h"
-#import "UIImageView+WebCache.h"
+
 @implementation RankingTableViewCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

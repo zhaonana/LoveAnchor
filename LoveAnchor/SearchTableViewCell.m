@@ -7,8 +7,7 @@
 //
 
 #import "SearchTableViewCell.h"
-#import "SearchModel.h"
-#import "UIImageView+WebCache.h"
+
 @implementation SearchTableViewCell
 
 - (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier

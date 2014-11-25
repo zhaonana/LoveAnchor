@@ -8,11 +8,6 @@
 
 #import "TabBarViewController.h"
 
-#import "HomePageViewController.h"
-#import "DynamicViewController.h"
-#import "RankingListViewController.h"
-#import "SearchViewController.h"
-
 @interface TabBarViewController ()
 
 @end

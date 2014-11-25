@@ -7,8 +7,6 @@
 //
 
 #import "DynamicViewController.h"
-#import "DynamicTableViewCell.h"
-#import "DynamicModel.h"
 
 @interface DynamicViewController ()<ASIHTTPRequestDelegate>
 {

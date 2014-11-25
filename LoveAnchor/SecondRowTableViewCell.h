@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@class AllModel;
+
 @protocol SecondRowTableViewCellDelegate <NSObject>
 
 - (void)secondClick:(AllModel *)allModel;

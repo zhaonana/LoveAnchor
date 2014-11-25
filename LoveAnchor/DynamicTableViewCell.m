@@ -7,9 +7,6 @@
 //
 
 #import "DynamicTableViewCell.h"
-#import <QuartzCore/QuartzCore.h>
-#import "DynamicModel.h"
-#import "UIImageView+WebCache.h"
 
 @implementation DynamicTableViewCell
 

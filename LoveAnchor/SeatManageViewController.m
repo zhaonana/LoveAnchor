@@ -7,10 +7,6 @@
 //
 
 #import "SeatManageViewController.h"
-#import <QuartzCore/QuartzCore.h>
-#import "UIImageView+WebCache.h"
-#import "StoreViewController.h"
-#import "SeatManageTableViewCell.h"
 
 @interface SeatManageViewController ()<ASIHTTPRequestDelegate,UITableViewDataSource,UITableViewDelegate>
 {

@@ -121,7 +121,7 @@
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
-    switch (request.tag) {
+    switch (request.tag) {  //全部座驾
         case 100: {
             if ([result isKindOfClass:[NSDictionary class]]) {
                 NSArray *dataArray = [result objectForKey:@"data"];
@@ -135,7 +135,7 @@
             }
         }
             break;
-        case 101: {
+        case 101: { //拥有座驾
             if ([result isKindOfClass:[NSDictionary class]]) {
                 NSDictionary *seatDict = [result objectForKey:@"data"];
                 NSDictionary *dic = [seatDict objectForKey:@"car"];

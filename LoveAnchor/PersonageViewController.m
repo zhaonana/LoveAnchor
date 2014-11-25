@@ -59,6 +59,10 @@
     NSInteger constellationTag;
     //buttonde 的tag
     NSInteger tag;
+    //所有座驾
+    NSMutableArray *allSeatArray;
+    //拥有座驾
+    SeatManageModel *mySeat;
 }
 @property (nonatomic, strong) NSString *areaValue;
 @property (strong, nonatomic) HZAreaPickerView *locatePicker;
@@ -380,8 +384,10 @@
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [cell addSubview:label13];
         
-//        UIImageView *carImageView = [[UIImageView alloc]initWithFrame:CGRectMake(180, 0, 140, 42)];
-        
+        UIImageView *carImageView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 0, 75, 40)];
+        NSURL *url = [NSURL URLWithString:mySeat.pic_url];
+        [carImageView setImageWithURL:url];
+        [cell addSubview:carImageView];
         
     }else if (indexPath.section == 4 && indexPath.row == 1) {
         for (int i = 0; i<HZIDArray.count; i++) {
@@ -645,6 +651,16 @@
     [request setTimeOutSeconds:30];
     [request startAsynchronous];
 }
+//全部座驾
+- (void)allSeatRequest
+{
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://ttapi.izhubo.com/show/cars_list"]];
+    request.delegate = self;
+    request.tag = 106;
+    [request setTimeOutSeconds:30];
+    [request startAsynchronous];
+}
+
 //性别
 - (void)sexRequest
 {
@@ -686,6 +702,7 @@
             NSLog(@"medals = %@",HZhightIDArray);
             
             [self badgeRequest];
+            [self allSeatRequest];
             [self seatRequest];
         }
     } else if (request.tag == 101) {
@@ -705,12 +722,18 @@
             NSLog(@"1234567= %@",HZIDArray);
         }
     } else if (request.tag == 102) {
-        NSLog(@"zuojia == %@",request.responseString);
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result isKindOfClass:[NSDictionary class]]) {
             NSDictionary *seatDict = [result objectForKey:@"data"];
-            NSLog(@"data= %@",seatDict);
-            
+            NSDictionary *dic = [seatDict objectForKey:@"car"];
+            NSString *currId = [dic objectForKey:@"curr"];
+            mySeat = [[SeatManageModel alloc] init];
+            for (SeatManageModel *seat in allSeatArray) {
+                if (seat._id.intValue == currId.intValue) {
+                    mySeat._id = currId;
+                    mySeat.pic_url = seat.pic_url;
+                }
+            }
         }
     } else if (request.tag ==103) {
         NSLog(@"性别 == %@",request.responseString);
@@ -720,6 +743,18 @@
         [self request];
     } else if (request.tag == 105) {
         NSLog(@"城市 == %@",request.responseString);
+    } else if (request.tag == 106) {
+        id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+        if ([result isKindOfClass:[NSDictionary class]]) {
+            NSArray *dataArray = [result objectForKey:@"data"];
+            allSeatArray = [NSMutableArray array];
+            for (NSDictionary *dic in dataArray) {
+                SeatManageModel *allSeat = [[SeatManageModel alloc] init];
+                allSeat.pic_url = [dic objectForKey:@"pic_url"];
+                allSeat._id = [dic objectForKey:@"_id"];
+                [allSeatArray addObject:allSeat];
+            }
+        }
     }
     [_tableView reloadData];
 }

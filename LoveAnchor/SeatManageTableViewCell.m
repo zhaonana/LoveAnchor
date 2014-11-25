@@ -69,9 +69,9 @@
     UIImageView *imageView = (UIImageView *)[self.contentView viewWithTag:101];
     [imageView setImageWithURL:[NSURL URLWithString:model.pic_url]];
     
-    NSString *time = [CommonHelp getTimeInterval:model.time.longLongValue/1000];
+//    NSString *time = [CommonHelp getTimeInterval:model.time.longLongValue/1000];
     UILabel *timeLabel = (UILabel *)[self.contentView viewWithTag:102];
-    timeLabel.text = [NSString stringWithFormat:@"有限期:%@天",time];
+//    timeLabel.text = [NSString stringWithFormat:@"有限期:%@天",time];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

@@ -11,7 +11,9 @@
 @interface SeatManageModel : NSObject
 
 @property (nonatomic, strong) NSString *pic_url;
-@property (nonatomic, strong) NSString *_id;
+@property (nonatomic, strong) NSNumber *_id;
 @property (nonatomic, strong) NSString *time;
+@property (nonatomic, strong) NSNumber *coin_price;
+@property (nonatomic, strong) NSString *name;
 
 @end

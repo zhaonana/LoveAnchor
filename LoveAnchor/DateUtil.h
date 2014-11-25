@@ -12,4 +12,6 @@
 
 + (NSString *)getTimeInterval:(NSTimeInterval)time;
 
++ (NSString *)getLevelImageNameWithCoin:(NSInteger)coin isRich:(BOOL)isRich;
+
 @end

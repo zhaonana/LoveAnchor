@@ -7,6 +7,7 @@
 //
 
 #import "PersonageViewController.h"
+#import "DateUtil.h"
 
 @interface PersonageViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,HZAreaPickerDelegate>
 {
@@ -181,6 +182,7 @@
         _constellationView.frame = CGRectMake(0, kScreenHeight, kScreenWidth, 200);
         [self constellationRequest];
     } else if (button.tag == 110) {
+        [self cityRequest];
         _cityView.frame = CGRectMake(0, kScreenHeight, kScreenWidth, 200);
     }else if (button.tag == 1234) {
         _sexView.hidden = YES;
@@ -191,7 +193,6 @@
         _sexView.hidden = YES;
         View.hidden = YES;
         QXButton.frame = CGRectMake(20, kScreenHeight, _sexView.frame.size.width, 30);
-        NSLog(@"button == %ld",button.tag);
         tag = button.tag-1000;
         [self sexRequest];
     }
@@ -305,7 +306,10 @@
         
     } else if (indexPath.section == 2 && indexPath.row == 1) {
         UIImageView *image3 = [[UIImageView alloc]initWithFrame:CGRectMake(139, 15, 25, 12)];
-        image3.image = [UIImage imageNamed:@"2fu"];
+        NSDictionary *dic = [dict objectForKey:@"finance"];
+        NSNumber *coin = [dic objectForKey:@"coin_count"];
+        NSString *imageName = [DateUtil getLevelImageNameWithCoin:coin.intValue isRich:YES];
+        image3.image = [UIImage imageNamed:imageName];
         [cell addSubview:image3];
         
         UIImageView *image5 = [[UIImageView alloc]initWithFrame:CGRectMake(168, 17, 108, 8)];
@@ -324,7 +328,10 @@
         [cell addSubview:image4];
     } else if (indexPath.section == 2 && indexPath.row == 2) {
         UIImageView *image6 = [[UIImageView alloc]initWithFrame:CGRectMake(148, 13, 16, 16)];
-        image6.image = [UIImage imageNamed:@"2xing"];
+        NSDictionary *dic = [dict objectForKey:@"finance"];
+        NSNumber *coin = [dic objectForKey:@"coin_count"];
+        NSString *imageName = [DateUtil getLevelImageNameWithCoin:coin.intValue isRich:NO];
+        image6.image = [UIImage imageNamed:imageName];
         [cell addSubview:image6];
         
         UIImageView *image7 = [[UIImageView alloc]initWithFrame:CGRectMake(168, 17, 108, 8)];
@@ -379,12 +386,16 @@
     }else if (indexPath.section == 4 && indexPath.row == 0) {
         UILabel *label13 = [[UILabel alloc]initWithFrame:CGRectMake(228, 0, 60, 42)];
         label13.font = [UIFont systemFontOfSize:14];
-        label13.text = @"前去购买";
+        if (mySeat.pic_url.length) {
+            label13.text = @"管理座驾";
+        } else {
+            label13.text = @"前去购买";
+        }
         label13.textColor = textFontColor;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [cell addSubview:label13];
         
-        UIImageView *carImageView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 0, 75, 40)];
+        UIImageView *carImageView = [[UIImageView alloc] initWithFrame:CGRectMake(60, 10, 40, 25)];
         NSURL *url = [NSURL URLWithString:mySeat.pic_url];
         [carImageView setImageWithURL:url];
         [cell addSubview:carImageView];
@@ -413,18 +424,20 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
--(void)setAreaValue:(NSString *)areaValue
+- (void)setAreaValue:(NSString *)areaValue
 {
     if (![_areaValue isEqualToString:areaValue]) {
         label5.text = areaValue;
     }
 }
+
 -(void)pickerDidChaneStatus:(HZAreaPickerView *)picker
 {
-    if (picker.pickerStyle == HZAreaPickerWithStateAndCityAndDistrict) {
-        self.areaValue = [NSString stringWithFormat:@"%@ %@ %@", picker.locate.state, picker.locate.city, picker.locate.district];
+    if (picker.pickerStyle == HZAreaPickerWithStateAndCity) {
+        self.areaValue = [NSString stringWithFormat:@"%@ %@", picker.locate.state, picker.locate.city];
     }
 }
+
 -(void)cancelLocatePicker
 {
     [self.locatePicker cancelPicker];
@@ -560,7 +573,7 @@
         [WCButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         [_cityView addSubview:WCButton];
         
-        self.locatePicker = [[HZAreaPickerView alloc] initWithStyle:HZAreaPickerWithStateAndCityAndDistrict delegate:self];
+        self.locatePicker = [[HZAreaPickerView alloc] initWithStyle:HZAreaPickerWithStateAndCity delegate:self];
         self.locatePicker.delegate = self;
         self.locatePicker.tag = 100;
         self.locatePicker.frame = CGRectMake(0, 38, kScreenWidth, 162);
@@ -580,12 +593,16 @@
         UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:conversion];
         [self presentViewController:nc animated:YES completion:nil];
     } else if (indexPath.section == 4 && indexPath.row == 0) {
-        SeatManageViewController *manage = [[SeatManageViewController alloc]init];
-        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:manage];
-        [self presentViewController:nc animated:YES completion:nil];
-//        StoreViewController *store = [[StoreViewController alloc]init];
-//        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:store];
-//        [self presentViewController:nc animated:YES completion:nil];
+        if (mySeat.pic_url.length) {
+            SeatManageViewController *manage = [[SeatManageViewController alloc]init];
+            UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:manage];
+            [self presentViewController:nc animated:YES completion:nil];
+        } else {
+            StoreViewController *store = [[StoreViewController alloc]init];
+            UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:store];
+            [self presentViewController:nc animated:YES completion:nil];
+        }
+        
     } else if (indexPath.section == 4 && indexPath.row == 1) {
 //        [self badgeRequest];
     }
@@ -611,8 +628,6 @@
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     constellationTag = row;
-    NSLog(@"constellationtag == %ld",constellationTag);
-    
 }
 -(UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
 {
@@ -667,7 +682,7 @@
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/edit/%@",model.access_token]]];
     request.delegate = self;
     request.tag = 103;
-    [request setPostValue:[NSString stringWithFormat:@"%ld",tag] forKey:@"sex"];
+    [request setPostValue:[NSString stringWithFormat:@"%ld",(long)tag] forKey:@"sex"];
     [request startAsynchronous];
 }
 //星座
@@ -685,7 +700,7 @@
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/edit/%@",model.access_token]]];
     request.delegate = self;
     request.tag = 105;
-    [request setPostValue:[NSString stringWithFormat:@"%ld",(long)constellationTag+1] forKey:@"constellation"];
+    [request setPostValue:label5.text forKey:@"location"];
     [request startAsynchronous];
 }
 
@@ -705,8 +720,8 @@
             [self allSeatRequest];
             [self seatRequest];
         }
+        [_tableView reloadData];
     } else if (request.tag == 101) {
-        
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result isKindOfClass:[NSDictionary class]]) {
             NSArray *array = [result objectForKey:@"data"];  //全部徽章
@@ -721,12 +736,13 @@
             }
             NSLog(@"1234567= %@",HZIDArray);
         }
+        [_tableView reloadData];
     } else if (request.tag == 102) {
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result isKindOfClass:[NSDictionary class]]) {
             NSDictionary *seatDict = [result objectForKey:@"data"];
             NSDictionary *dic = [seatDict objectForKey:@"car"];
-            NSString *currId = [dic objectForKey:@"curr"];
+            NSNumber *currId = [dic objectForKey:@"curr"];
             mySeat = [[SeatManageModel alloc] init];
             for (SeatManageModel *seat in allSeatArray) {
                 if (seat._id.intValue == currId.intValue) {
@@ -735,6 +751,7 @@
                 }
             }
         }
+        [_tableView reloadData];
     } else if (request.tag ==103) {
         NSLog(@"性别 == %@",request.responseString);
         [self request];
@@ -743,6 +760,7 @@
         [self request];
     } else if (request.tag == 105) {
         NSLog(@"城市 == %@",request.responseString);
+        [self request];
     } else if (request.tag == 106) {
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result isKindOfClass:[NSDictionary class]]) {
@@ -756,7 +774,6 @@
             }
         }
     }
-    [_tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning

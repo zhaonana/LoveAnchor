@@ -312,7 +312,6 @@
 }
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%ld",indexPath.row);
     if (collectionView.tag == 1000) {
         if (indexPath.row == 0) {
             UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"购买道具确认" message:@"道具名称：至尊VIP\n购买天数：30天\n价格：30000金币" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];

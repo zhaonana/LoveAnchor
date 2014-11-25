@@ -181,6 +181,7 @@
         _constellationView.frame = CGRectMake(0, kScreenHeight, kScreenWidth, 200);
         [self constellationRequest];
     } else if (button.tag == 110) {
+        [self cityRequest];
         _cityView.frame = CGRectMake(0, kScreenHeight, kScreenWidth, 200);
     }else if (button.tag == 1234) {
         _sexView.hidden = YES;
@@ -191,7 +192,6 @@
         _sexView.hidden = YES;
         View.hidden = YES;
         QXButton.frame = CGRectMake(20, kScreenHeight, _sexView.frame.size.width, 30);
-        NSLog(@"button == %ld",button.tag);
         tag = button.tag-1000;
         [self sexRequest];
     }
@@ -379,12 +379,16 @@
     }else if (indexPath.section == 4 && indexPath.row == 0) {
         UILabel *label13 = [[UILabel alloc]initWithFrame:CGRectMake(228, 0, 60, 42)];
         label13.font = [UIFont systemFontOfSize:14];
-        label13.text = @"前去购买";
+        if (mySeat.pic_url.length) {
+            label13.text = @"管理座驾";
+        } else {
+            label13.text = @"前去购买";
+        }
         label13.textColor = textFontColor;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         [cell addSubview:label13];
         
-        UIImageView *carImageView = [[UIImageView alloc] initWithFrame:CGRectMake(50, 0, 75, 40)];
+        UIImageView *carImageView = [[UIImageView alloc] initWithFrame:CGRectMake(60, 10, 40, 25)];
         NSURL *url = [NSURL URLWithString:mySeat.pic_url];
         [carImageView setImageWithURL:url];
         [cell addSubview:carImageView];
@@ -413,7 +417,7 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
--(void)setAreaValue:(NSString *)areaValue
+- (void)setAreaValue:(NSString *)areaValue
 {
     if (![_areaValue isEqualToString:areaValue]) {
         label5.text = areaValue;
@@ -422,8 +426,8 @@
 
 -(void)pickerDidChaneStatus:(HZAreaPickerView *)picker
 {
-    if (picker.pickerStyle == HZAreaPickerWithStateAndCityAndDistrict) {
-        self.areaValue = [NSString stringWithFormat:@"%@ %@ %@", picker.locate.state, picker.locate.city, picker.locate.district];
+    if (picker.pickerStyle == HZAreaPickerWithStateAndCity) {
+        self.areaValue = [NSString stringWithFormat:@"%@ %@", picker.locate.state, picker.locate.city];
     }
 }
 
@@ -562,7 +566,7 @@
         [WCButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         [_cityView addSubview:WCButton];
         
-        self.locatePicker = [[HZAreaPickerView alloc] initWithStyle:HZAreaPickerWithStateAndCityAndDistrict delegate:self];
+        self.locatePicker = [[HZAreaPickerView alloc] initWithStyle:HZAreaPickerWithStateAndCity delegate:self];
         self.locatePicker.delegate = self;
         self.locatePicker.tag = 100;
         self.locatePicker.frame = CGRectMake(0, 38, kScreenWidth, 162);
@@ -582,12 +586,16 @@
         UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:conversion];
         [self presentViewController:nc animated:YES completion:nil];
     } else if (indexPath.section == 4 && indexPath.row == 0) {
-        SeatManageViewController *manage = [[SeatManageViewController alloc]init];
-        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:manage];
-        [self presentViewController:nc animated:YES completion:nil];
-//        StoreViewController *store = [[StoreViewController alloc]init];
-//        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:store];
-//        [self presentViewController:nc animated:YES completion:nil];
+        if (mySeat.pic_url.length) {
+            SeatManageViewController *manage = [[SeatManageViewController alloc]init];
+            UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:manage];
+            [self presentViewController:nc animated:YES completion:nil];
+        } else {
+            StoreViewController *store = [[StoreViewController alloc]init];
+            UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:store];
+            [self presentViewController:nc animated:YES completion:nil];
+        }
+        
     } else if (indexPath.section == 4 && indexPath.row == 1) {
 //        [self badgeRequest];
     }
@@ -613,8 +621,6 @@
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
 {
     constellationTag = row;
-    NSLog(@"constellationtag == %ld",constellationTag);
-    
 }
 -(UIView *)pickerView:(UIPickerView *)pickerView viewForRow:(NSInteger)row forComponent:(NSInteger)component reusingView:(UIView *)view
 {
@@ -687,7 +693,7 @@
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/edit/%@",model.access_token]]];
     request.delegate = self;
     request.tag = 105;
-    [request setPostValue:[NSString stringWithFormat:@"%ld",(long)constellationTag+1] forKey:@"constellation"];
+    [request setPostValue:label5.text forKey:@"location"];
     [request startAsynchronous];
 }
 
@@ -707,8 +713,8 @@
             [self allSeatRequest];
             [self seatRequest];
         }
+        [_tableView reloadData];
     } else if (request.tag == 101) {
-        
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result isKindOfClass:[NSDictionary class]]) {
             NSArray *array = [result objectForKey:@"data"];  //全部徽章
@@ -723,6 +729,7 @@
             }
             NSLog(@"1234567= %@",HZIDArray);
         }
+        [_tableView reloadData];
     } else if (request.tag == 102) {
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result isKindOfClass:[NSDictionary class]]) {
@@ -737,6 +744,7 @@
                 }
             }
         }
+        [_tableView reloadData];
     } else if (request.tag ==103) {
         NSLog(@"性别 == %@",request.responseString);
         [self request];
@@ -745,6 +753,7 @@
         [self request];
     } else if (request.tag == 105) {
         NSLog(@"城市 == %@",request.responseString);
+        [self request];
     } else if (request.tag == 106) {
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result isKindOfClass:[NSDictionary class]]) {
@@ -758,7 +767,6 @@
             }
         }
     }
-    [_tableView reloadData];
 }
 
 - (void)didReceiveMemoryWarning

@@ -8,17 +8,17 @@
 
 #import "SeatManageViewController.h"
 
-@interface SeatManageViewController ()<ASIHTTPRequestDelegate,UITableViewDataSource,UITableViewDelegate>
+@interface SeatManageViewController ()<ASIHTTPRequestDelegate,UITableViewDataSource,UITableViewDelegate,UIAlertViewDelegate>
 {
     UIScrollView *scrollerView;
     UIButton *forbiddenButton;
-//    UIButton *continueButton;
     UITableView *_tableView;
     LoginModel *model;
     NSMutableArray *allSeatArray;
     NSMutableArray *carArray;
     NSMutableArray *mySeatArray;
     NSString *currId;
+    NSNumber *seatId;
 }
 
 @end
@@ -73,23 +73,40 @@
     if (cell == nil) {
         cell = [[SeatManageTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;
     SeatManageModel *seat = [mySeatArray objectAtIndex:indexPath.row];
     [cell setCellData:seat];
     
     __block SeatManageViewController *seatSelf = self;
-    if (seat._id.intValue == currId.intValue) {
-        [cell.useButton setBackgroundImage:[UIImage imageNamed:@"jinyong"] forState:UIControlStateNormal];
-        [cell.useButton setBackgroundImage:[UIImage imageNamed:@"jinyongdianji"] forState:UIControlStateHighlighted];
+    if ([cell.timeLabel.text isEqualToString:@"已过期"]) {
+        [cell.useButton setBackgroundImage:[UIImage imageNamed:@"shanchu"] forState:UIControlStateNormal];
+        [cell.useButton setBackgroundImage:[UIImage imageNamed:@"shanchudianji"] forState:UIControlStateHighlighted];
         cell.UseButtonClickBlock = ^() {
-            [seatSelf requestWithParams:[NSString stringWithFormat:@"shop/unset_curr_car/%@",model.access_token] tag:103];
+            [seatSelf requestWithParams:[NSString stringWithFormat:@"shop/del_car/%@/%@",model.access_token,seat._id] tag:105];
         };
     } else {
-        [cell.useButton setBackgroundImage:[UIImage imageNamed:@"qiyong"] forState:UIControlStateNormal];
-        [cell.useButton setBackgroundImage:[UIImage imageNamed:@"qiyongdianji"] forState:UIControlStateHighlighted];
-        cell.UseButtonClickBlock = ^() {
-            [seatSelf requestWithParams:[NSString stringWithFormat:@"shop/set_curr_car/%@/%@",model.access_token,seat._id] tag:102];
-        };
+        if (seat._id.intValue == currId.intValue) {
+            [cell.useButton setBackgroundImage:[UIImage imageNamed:@"jinyong"] forState:UIControlStateNormal];
+            [cell.useButton setBackgroundImage:[UIImage imageNamed:@"jinyongdianji"] forState:UIControlStateHighlighted];
+            cell.UseButtonClickBlock = ^() {
+                [seatSelf requestWithParams:[NSString stringWithFormat:@"shop/unset_curr_car/%@",model.access_token] tag:103];
+            };
+        } else {
+            [cell.useButton setBackgroundImage:[UIImage imageNamed:@"qiyong"] forState:UIControlStateNormal];
+            [cell.useButton setBackgroundImage:[UIImage imageNamed:@"qiyongdianji"] forState:UIControlStateHighlighted];
+            cell.UseButtonClickBlock = ^() {
+                [seatSelf requestWithParams:[NSString stringWithFormat:@"shop/set_curr_car/%@/%@",model.access_token,seat._id] tag:102];
+            };
+        }
     }
+    
+    cell.ContinueButtonClickBlock = ^() {
+        NSString *message = [NSString stringWithFormat:@"道具名称：%@\n购买天数：30天\n价格：%@金币",seat.name,seat.coin_price];
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"购买道具确认" message:message delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+        alertView.tag = 1000;
+        [alertView show];
+        seatId = seat._id;
+    };
 
     return cell;
 }
@@ -105,6 +122,26 @@
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return mySeatArray.count;
+}
+
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    if (buttonIndex == 1) {
+        switch (alertView.tag) {
+            case 1000: {
+                [self requestWithParams:[NSString stringWithFormat:@"shop/buy_car/%@/%@",model.access_token,seatId] tag:104];
+            }
+                break;
+            case 1001: {
+                TopUpViewController *top = [[TopUpViewController alloc]init];
+                UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:top];
+                [self presentViewController:nc animated:YES completion:nil];
+            }
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 #pragma mark - 数据解析
@@ -130,6 +167,8 @@
                     SeatManageModel *allSeat = [[SeatManageModel alloc] init];
                     allSeat.pic_url = [dict objectForKey:@"pic_url"];
                     allSeat._id = [dict objectForKey:@"_id"];
+                    allSeat.coin_price = [dict objectForKey:@"coin_price"];
+                    allSeat.name = [dict objectForKey:@"name"];
                     [allSeatArray addObject:allSeat];
                 }
             }
@@ -155,7 +194,9 @@
             [_tableView reloadData];
         }
             break;
-        case 102: { //启用座驾
+        case 102:   //启用座驾
+        case 103:   //禁用座驾
+        case 105: { //删除座驾
             if ([result isKindOfClass:[NSDictionary class]]) {
                 NSString *code = [result objectForKey:@"code"];
                 if (code.intValue == 1) {
@@ -164,11 +205,17 @@
             }
         }
             break;
-        case 103: { //禁用座驾
+        case 104: { //购买座驾
             if ([result isKindOfClass:[NSDictionary class]]) {
                 NSString *code = [result objectForKey:@"code"];
                 if (code.intValue == 1) {
                     [self requestWithParams:[NSString stringWithFormat:@"user/car_info/%@",model.access_token] tag:101];
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"道具购买成功" message:nil delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil];
+                    [alertView show];
+                } else if (code.intValue == 30412) {
+                    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"购买失败" message:@"您的金币不足" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"充值", nil];
+                    alertView.tag = 1001;
+                    [alertView show];
                 }
             }
         }

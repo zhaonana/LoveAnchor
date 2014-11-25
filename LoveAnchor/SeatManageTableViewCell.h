@@ -16,6 +16,7 @@
 @property (nonatomic, strong) UIButton    *useButton;
 @property (nonatomic, strong) UIButton    *continueButton;
 @property (nonatomic, copy) void (^UseButtonClickBlock)();
+@property (nonatomic, copy) void (^ContinueButtonClickBlock)();
 
 - (void)setCellData:(SeatManageModel *)model;
 

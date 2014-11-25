@@ -78,14 +78,14 @@
     
     __block SeatManageViewController *seatSelf = self;
     if (seat._id.intValue == currId.intValue) {
-        [cell.useButton setTitle:@"禁用" forState:UIControlStateNormal];
-        [cell.useButton setTitle:@"禁用" forState:UIControlStateHighlighted];
+        [cell.useButton setBackgroundImage:[UIImage imageNamed:@"jinyong"] forState:UIControlStateNormal];
+        [cell.useButton setBackgroundImage:[UIImage imageNamed:@"jinyongdianji"] forState:UIControlStateHighlighted];
         cell.UseButtonClickBlock = ^() {
             [seatSelf requestWithParams:[NSString stringWithFormat:@"shop/unset_curr_car/%@",model.access_token] tag:103];
         };
     } else {
-        [cell.useButton setTitle:@"启用" forState:UIControlStateNormal];
-        [cell.useButton setTitle:@"启用" forState:UIControlStateHighlighted];
+        [cell.useButton setBackgroundImage:[UIImage imageNamed:@"qiyong"] forState:UIControlStateNormal];
+        [cell.useButton setBackgroundImage:[UIImage imageNamed:@"qiyongdianji"] forState:UIControlStateHighlighted];
         cell.UseButtonClickBlock = ^() {
             [seatSelf requestWithParams:[NSString stringWithFormat:@"shop/set_curr_car/%@/%@",model.access_token,seat._id] tag:102];
         };

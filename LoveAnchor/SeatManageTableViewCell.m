@@ -37,10 +37,10 @@
         self.useButton = [UIButton buttonWithType:UIButtonTypeCustom];
         self.useButton.frame = CGRectMake(180, 25, 50, 25);
         self.useButton.titleLabel.font = [UIFont systemFontOfSize:12];
-        self.useButton.backgroundColor = [UIColor redColor];
-        self.useButton.layer.borderColor = textFontColor.CGColor;
-        self.useButton.layer.borderWidth = 2.0;
-        self.useButton.layer.cornerRadius = 5.0;
+//        self.useButton.backgroundColor = [UIColor redColor];
+//        self.useButton.layer.borderColor = textFontColor.CGColor;
+//        self.useButton.layer.borderWidth = 2.0;
+//        self.useButton.layer.cornerRadius = 5.0;
         [self.useButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         [self.contentView addSubview:self.useButton];
         //续费
@@ -70,9 +70,13 @@
     UIImageView *imageView = (UIImageView *)[self.contentView viewWithTag:101];
     [imageView setImageWithURL:[NSURL URLWithString:model.pic_url]];
     
-    NSString *time = [DateUtil getTimeInterval:model.time.longLongValue/1000];
     UILabel *timeLabel = (UILabel *)[self.contentView viewWithTag:102];
-    timeLabel.text = [NSString stringWithFormat:@"有限期:%@天",time];
+    NSString *time = [DateUtil getTimeInterval:model.time.longLongValue/1000];
+    if (time.intValue > 0) {
+        timeLabel.text = [NSString stringWithFormat:@"有限期:%@天",time];
+    } else {
+        timeLabel.text = @"已过期";
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

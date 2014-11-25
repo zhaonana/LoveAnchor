@@ -419,12 +419,14 @@
         label5.text = areaValue;
     }
 }
+
 -(void)pickerDidChaneStatus:(HZAreaPickerView *)picker
 {
     if (picker.pickerStyle == HZAreaPickerWithStateAndCityAndDistrict) {
         self.areaValue = [NSString stringWithFormat:@"%@ %@ %@", picker.locate.state, picker.locate.city, picker.locate.district];
     }
 }
+
 -(void)cancelLocatePicker
 {
     [self.locatePicker cancelPicker];

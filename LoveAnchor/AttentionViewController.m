@@ -144,6 +144,7 @@
     NSLog(@"关注 == %@",request.responseString);
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
     if ([result isKindOfClass:[NSDictionary class]]) {
+        
         NSDictionary *dict = [result objectForKey:@"data"];
         NSArray *array = [dict objectForKey:@"rooms"];
         NSLog(@"data == %@",array);

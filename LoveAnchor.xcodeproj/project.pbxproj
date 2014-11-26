@@ -301,6 +301,10 @@
 		F7456F0F19986AC700CF28E8 /* SearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7456F0E19986AC700CF28E8 /* SearchViewController.m */; };
 		F7456F131998718C00CF28E8 /* AllViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7456F121998718C00CF28E8 /* AllViewController.m */; };
 		F7456F16199871A500CF28E8 /* AttentionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7456F15199871A500CF28E8 /* AttentionViewController.m */; };
+		F74633CF1A24BB0D0087EE6B /* xufei.png in Resources */ = {isa = PBXBuildFile; fileRef = F74633CB1A24BB0D0087EE6B /* xufei.png */; };
+		F74633D01A24BB0D0087EE6B /* xufei@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F74633CC1A24BB0D0087EE6B /* xufei@2x.png */; };
+		F74633D11A24BB0D0087EE6B /* xufeidianji.png in Resources */ = {isa = PBXBuildFile; fileRef = F74633CD1A24BB0D0087EE6B /* xufeidianji.png */; };
+		F74633D21A24BB0D0087EE6B /* xufeidianji@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F74633CE1A24BB0D0087EE6B /* xufeidianji@2x.png */; };
 		F7493F0819AC494E005739CD /* DynamicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F7493F0719AC494E005739CD /* DynamicTableViewCell.m */; };
 		F752F94F19B475A90082E703 /* RankingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F752F94E19B475A90082E703 /* RankingModel.m */; };
 		F759245219C196B0004DC4D6 /* SearchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F759245119C196B0004DC4D6 /* SearchModel.m */; };
@@ -826,6 +830,10 @@
 		F7456F14199871A500CF28E8 /* AttentionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AttentionViewController.h; sourceTree = "<group>"; };
 		F7456F15199871A500CF28E8 /* AttentionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AttentionViewController.m; sourceTree = "<group>"; };
 		F7456F1A1998B93D00CF28E8 /* ViewControllerMacro.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewControllerMacro.h; sourceTree = "<group>"; };
+		F74633CB1A24BB0D0087EE6B /* xufei.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xufei.png; sourceTree = "<group>"; };
+		F74633CC1A24BB0D0087EE6B /* xufei@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xufei@2x.png"; sourceTree = "<group>"; };
+		F74633CD1A24BB0D0087EE6B /* xufeidianji.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xufeidianji.png; sourceTree = "<group>"; };
+		F74633CE1A24BB0D0087EE6B /* xufeidianji@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xufeidianji@2x.png"; sourceTree = "<group>"; };
 		F7493F0619AC494E005739CD /* DynamicTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicTableViewCell.h; sourceTree = "<group>"; };
 		F7493F0719AC494E005739CD /* DynamicTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicTableViewCell.m; sourceTree = "<group>"; };
 		F752F94D19B475A90082E703 /* RankingModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingModel.h; sourceTree = "<group>"; };
@@ -1127,6 +1135,10 @@
 		39B662661A2499DE0033D28C /* usericon */ = {
 			isa = PBXGroup;
 			children = (
+				F74633CB1A24BB0D0087EE6B /* xufei.png */,
+				F74633CC1A24BB0D0087EE6B /* xufei@2x.png */,
+				F74633CD1A24BB0D0087EE6B /* xufeidianji.png */,
+				F74633CE1A24BB0D0087EE6B /* xufeidianji@2x.png */,
 				39B663C81A24A3EB0033D28C /* 0fu.png */,
 				39B663C91A24A3EB0033D28C /* 0fu@2x.png */,
 				39B662671A2499DE0033D28C /* 10fu.png */,
@@ -2013,6 +2025,7 @@
 				F78FA84819CBFAD900445235 /* guanzhong@2x.png in Resources */,
 				F7BE190E19E6B720009C6C8C /* zhuce.png in Resources */,
 				F7456EAD1998692300CF28E8 /* chaoji@2x.png in Resources */,
+				F74633D21A24BB0D0087EE6B /* xufeidianji@2x.png in Resources */,
 				F78FA85619CBFAD900445235 /* shipinguanbi@2x.png in Resources */,
 				39B663551A24A3BD0033D28C /* 12zhubo@2x.png in Resources */,
 				39B663B91A24A3BD0033D28C /* 58zhubo@2x.png in Resources */,
@@ -2121,6 +2134,7 @@
 				39B662B61A2499DE0033D28C /* 21fu@2x.png in Resources */,
 				39B663B11A24A3BD0033D28C /* 54zhubo@2x.png in Resources */,
 				F7456EAE1998692300CF28E8 /* chongzhi.png in Resources */,
+				F74633D11A24BB0D0087EE6B /* xufeidianji.png in Resources */,
 				F7456EE01998692300CF28E8 /* sousuoxuanzhong.png in Resources */,
 				F7456EAB1998692300CF28E8 /* bianji@2x.png in Resources */,
 				F78FA84919CBFAD900445235 /* jubao.png in Resources */,
@@ -2264,6 +2278,7 @@
 				F7BE191119E6B720009C6C8C /* zhucedianji@2x.png in Resources */,
 				F77133591A243F6F00568D39 /* jinyong@2x.png in Resources */,
 				39B663871A24A3BD0033D28C /* 35zhubo@2x.png in Resources */,
+				F74633D01A24BB0D0087EE6B /* xufei@2x.png in Resources */,
 				F78FA86019CBFAD900445235 /* tianjiaodaozhuomian.png in Resources */,
 				F7B5B86F19EBC1AD0006ACCB /* xing@2x.png in Resources */,
 				F75D702319F246B9004C144B /* 2fu.png in Resources */,
@@ -2329,6 +2344,7 @@
 				39B663661A24A3BD0033D28C /* 20zhubo.png in Resources */,
 				39B663541A24A3BD0033D28C /* 12zhubo.png in Resources */,
 				F7C7CCC819AD9007003FCC03 /* LICENSE in Resources */,
+				F74633CF1A24BB0D0087EE6B /* xufei.png in Resources */,
 				39B662BF1A2499DE0033D28C /* 26fu.png in Resources */,
 				F7BEBDCE19E8EC0400D7CCE3 /* qingniu.png in Resources */,
 				F78FA85E19CBFAD900445235 /* siliaotishi@2x.png in Resources */,

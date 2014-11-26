@@ -40,8 +40,7 @@
 
 - (void)refreshView:(NSNotification *)notification
 {
-    [_dataArray removeAllObjects];
-    _dataArray = notification.object;
+    _dataArray = [NSMutableArray arrayWithArray:notification.object];
     [_tableView reloadData];
     [self.home rightClick];
 }
@@ -99,7 +98,9 @@
             }
             [thirdRowData addObject:allDtJson_mutable[i+3]];
         }
-        [_dataArray addObject:thirdRowData];
+        if (thirdRowData.count) {
+            [_dataArray addObject:thirdRowData];
+        }
     }
     [_tableView reloadData];
 }

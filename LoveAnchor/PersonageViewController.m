@@ -339,7 +339,7 @@
         [cell addSubview:HZlabel];
         
         UIImageView *image4 = [[UIImageView alloc]initWithFrame:CGRectMake(280, 15, 25, 12)];
-        image4.image = [UIImage imageNamed:[NSString stringWithFormat:@"%lddfu",level + 1]];
+        image4.image = [UIImage imageNamed:[NSString stringWithFormat:@"%ldfu",(long)level + 1]];
         [cell addSubview:image4];
     } else if (indexPath.section == 2 && indexPath.row == 2) {
         UIImageView *image6 = [[UIImageView alloc]initWithFrame:CGRectMake(148, 13, 16, 16)];
@@ -361,7 +361,7 @@
         [cell addSubview:HZlabel1];
         
         UIImageView *image8 = [[UIImageView alloc]initWithFrame:CGRectMake(280, 13, 16, 16)];
-        image8.image = [UIImage imageNamed:[NSString stringWithFormat:@"%ldzhubo",level + 1]];
+        image8.image = [UIImage imageNamed:[NSString stringWithFormat:@"%ldzhubo",(long)level + 1]];
         [cell addSubview:image8];
         
     } else if (indexPath.section == 3 && indexPath.row == 0) {

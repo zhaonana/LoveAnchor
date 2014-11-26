@@ -379,6 +379,7 @@
             NSDictionary *allDTjson3 = [result3 objectForKey:@"code"];
             NSDictionary *loginJson = [result3 objectForKey:@"data"];
             NSLog(@"登陆 == %@",allDTjson3);
+            //存储用户信息
             LoginModel *loginModel = [[LoginModel alloc] init];
             loginModel.access_token = [loginJson objectForKey:@"access_token"];
             loginModel.passWord = [loginJson objectForKey:@"password"];

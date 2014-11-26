@@ -99,7 +99,7 @@
     _passTextField = [[UITextField alloc]init];
     _passTextField.frame = CGRectMake(50, 42, 270, 42);
     _passTextField.placeholder = @"请输入您的密码";
-    _passTextField.text = @"12345678";
+//    _passTextField.text = @"12345678";
     _passTextField.secureTextEntry = YES;
     _passTextField.borderStyle = UITextBorderStyleNone;
     [_passTextField setAutocorrectionType:UITextAutocorrectionTypeNo];
@@ -322,7 +322,8 @@
             NSDictionary *loginJson = [loginResult objectForKey:@"data"];
             int code = [[loginResult objectForKey:@"code"] intValue];
             if (code == 1) {
-                LoginModel *loginModel = [[LoginModel alloc]init];
+                //存储用户信息
+                LoginModel *loginModel = [[LoginModel alloc] init];
                 loginModel.access_token = [loginJson objectForKey:@"access_token"];
                 loginModel.passWord = [loginJson objectForKey:@"password"];
                 loginModel.userName = [loginJson objectForKey:@"username"];

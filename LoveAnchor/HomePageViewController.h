@@ -12,4 +12,7 @@
 
 @property (nonatomic)BOOL leftisVisible;
 @property (nonatomic)BOOL rightisVisible;
+
+- (void)rightClick;
+
 @end

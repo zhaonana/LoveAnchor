@@ -737,11 +737,9 @@
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result isKindOfClass:[NSDictionary class]]) {
             dict = [result objectForKey:@"data"];
-            NSLog(@"dict = %@",dict);
             NSDictionary *array1 = [dict objectForKey:@"medals"];  //个人徽章字典
             
             HZhightIDArray = [array1 allKeys];
-            NSLog(@"medals = %@",HZhightIDArray);
             
             [self badgeRequest];
             [self allSeatRequest];
@@ -752,7 +750,6 @@
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result isKindOfClass:[NSDictionary class]]) {
             NSArray *array = [result objectForKey:@"data"];  //全部徽章
-            NSLog(@"%lu",(unsigned long)array.count);
             [HZImageArray removeAllObjects];
             [HZhightImageArray removeAllObjects];
             [HZIDArray removeAllObjects];
@@ -761,7 +758,6 @@
                 [HZIDArray addObject:[dict1 objectForKey:@"_id"]];
                 [HZhightImageArray addObject:[dict1 objectForKey:@"pic_url"]];
             }
-            NSLog(@"1234567= %@",HZIDArray);
         }
         [_tableView reloadData];
     } else if (request.tag == 102) {

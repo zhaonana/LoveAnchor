@@ -10,6 +10,8 @@
 
 @interface LeftMenuViewController () {
     UILabel *nameLabel;
+    UILabel *numberLabel;
+    LoginModel *model;
 }
 
 @end
@@ -48,14 +50,14 @@
     [imageView addSubview:headButton];
     
     nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 122, 220, 16)];
-    [nameLabel setBackgroundColor:[UIColor redColor]];
+    [nameLabel setBackgroundColor:[UIColor clearColor]];
     [nameLabel setTextAlignment:NSTextAlignmentCenter];
     nameLabel.font = [UIFont systemFontOfSize:15.0f];
     nameLabel.textColor = [UIColor whiteColor];
     [imageView addSubview:nameLabel];
     
-    UILabel *numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 144, 220, 16)];
-    [numberLabel setBackgroundColor:[UIColor redColor]];
+    numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 144, 220, 16)];
+    [numberLabel setBackgroundColor:[UIColor clearColor]];
     [numberLabel setTextAlignment:NSTextAlignmentCenter];
     numberLabel.text = [NSString stringWithFormat:@"余额:"];
     numberLabel.font = [UIFont systemFontOfSize:15.0f];
@@ -76,8 +78,13 @@
 {
     [super viewWillAppear:animated];
     
-    LoginModel *model = [CommonUtil getUserModel];
-    nameLabel.text = model.userName;
+    model = [CommonUtil getUserModel];
+    if ([CommonUtil isLogin]) {
+        nameLabel.text = model.userName;
+        [self request];
+    } else {
+        nameLabel.text = @"未登录";
+    }
 }
 
 - (void)buttonClick
@@ -171,6 +178,28 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     return 1;
+}
+
+- (void)request
+{
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/info/%@",model.access_token]]];
+    request.delegate = self;
+    request.tag = 100;
+    [request setTimeOutSeconds:30];
+    [request startAsynchronous];
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    if (request.tag == 100) {
+        id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+        if ([result isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dict = [result objectForKey:@"data"];
+            NSDictionary *financeDic = [dict objectForKey:@"finance"];
+            NSNumber *coinNum = [financeDic objectForKey:@"coin_count"];
+            numberLabel.text = [NSString stringWithFormat:@"余额:%@",coinNum];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning

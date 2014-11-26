@@ -7,6 +7,7 @@
 //
 
 #import "RightMenuViewController.h"
+#define REFRESH_NOTFICATION @"refreshNotification"
 
 @interface RightMenuViewController ()<ASIHTTPRequestDelegate>
 {
@@ -16,6 +17,11 @@
     NSArray *array4;
     NSArray *array5;
     UITableView *rightTableView;
+    NSMutableArray *dataArr1;
+    NSMutableArray *dataArr2;
+    NSMutableArray *dataArr3;
+    NSMutableArray *dataArr4;
+    NSMutableArray *dataArr5;
 }
 @end
 
@@ -79,7 +85,7 @@
         
         UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(258, 15, 42, 15)];
         [label1 setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"shuzidise"]]];
-        label1.text = [NSString stringWithFormat:@"%@",array5];
+        label1.text = [NSString stringWithFormat:@"%d",array5.count];
         label1.textColor = [UIColor whiteColor];
         label1.textAlignment = NSTextAlignmentCenter;
         label1.font = [UIFont systemFontOfSize:12.0f];
@@ -98,7 +104,7 @@
         
         UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(258, 15, 42, 15)];
         [label1 setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"shuzidise"]]];
-        label1.text = [NSString stringWithFormat:@"%lu",array1.count];
+        label1.text = [NSString stringWithFormat:@"%d",array1.count];
         label1.textColor = [UIColor whiteColor];
         label1.textAlignment = NSTextAlignmentCenter;
         label1.font = [UIFont systemFontOfSize:12.0f];
@@ -117,7 +123,7 @@
         
         UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(258, 15, 42, 15)];
         [label1 setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"shuzidise"]]];
-        label1.text = [NSString stringWithFormat:@"%lu",array2.count];
+        label1.text = [NSString stringWithFormat:@"%d",array2.count];
         label1.textColor = [UIColor whiteColor];
         label1.textAlignment = NSTextAlignmentCenter;
         label1.font = [UIFont systemFontOfSize:12.0f];
@@ -136,7 +142,7 @@
         
         UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(258, 15, 42, 15)];
         [label1 setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"shuzidise"]]];
-        label1.text = [NSString stringWithFormat:@"%lu",array3.count];
+        label1.text = [NSString stringWithFormat:@"%d",array3.count];
         label1.textColor = [UIColor whiteColor];
         label1.textAlignment = NSTextAlignmentCenter;
         label1.font = [UIFont systemFontOfSize:12.0f];
@@ -155,7 +161,7 @@
         
         UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(258, 15, 42, 15)];
         [label1 setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"shuzidise"]]];
-        label1.text = [NSString stringWithFormat:@"%lu",array4.count];
+        label1.text = [NSString stringWithFormat:@"%d",array4.count];
         label1.textColor = [UIColor whiteColor];
         label1.textAlignment = NSTextAlignmentCenter;
         label1.font = [UIFont systemFontOfSize:12.0f];
@@ -188,28 +194,29 @@
     return imageView;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    NSMutableArray *dataArray = [NSMutableArray array];
     switch (indexPath.row) {
         case 0:
-            [self request];
+            dataArray = dataArr5;
             break;
         case 1:
-            [self requestWithSbean:1616000 ebean:0 tag:indexPath.row];
+            dataArray = dataArr1;
             break;
         case 2:
-            [self requestWithSbean:561000 ebean:1616000 tag:indexPath.row];
+            dataArray = dataArr2;
             break;
         case 3:
-            [self requestWithSbean:106000 ebean:561000 tag:indexPath.row];
+            dataArray = dataArr3;
             break;
         case 4:
-            [self requestWithSbean:0 ebean:106000 tag:indexPath.row];
+            dataArray = dataArr4;
             break;
-            
         default:
             break;
     }
+    [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_NOTFICATION object:dataArray];
 }
 
 #pragma mark - 数据
@@ -238,26 +245,59 @@
         switch (request.tag) {
             case 1:
                 array1 = [result objectForKey:@"data"];
+                dataArr1 = [self createDataArrayWithData:array1];
                 break;
             case 2:
                 array2 = [result objectForKey:@"data"];
+                dataArr2 = [self createDataArrayWithData:array2];
                 break;
             case 3:
                 array3 = [result objectForKey:@"data"];
+                dataArr3 = [self createDataArrayWithData:array3];
                 break;
             case 4:
                 array4 = [result objectForKey:@"data"];
+                dataArr4 = [self createDataArrayWithData:array4];
                 break;
             case 100:
-                array5 = [result objectForKey:@"count"];
+                array5 = [result objectForKey:@"data"];
+                dataArr5 = [self createDataArrayWithData:array5];
                 break;
-                
             default:
                 break;
         }
         
     }
     [rightTableView reloadData];
+}
+
+- (NSMutableArray *)createDataArrayWithData:(NSArray *)allDtJson
+{
+    NSMutableArray *dataArr = [NSMutableArray array];
+    NSMutableArray *allDtJson_mutable = [NSMutableArray array];
+    
+    for (NSDictionary *dict in allDtJson) {
+        AllModel *model = [[AllModel alloc]init];
+        [model setValuesForKeysWithDictionary:dict];
+        [allDtJson_mutable addObject:model];
+    }
+    if (allDtJson_mutable.count) {
+        NSArray *firstRowData = @[[allDtJson_mutable objectAtIndex:0]];
+        [dataArr addObject:firstRowData];
+        NSArray *secondRowData = @[[allDtJson_mutable objectAtIndex:1],[allDtJson_mutable objectAtIndex:2]];
+        [dataArr addObject:secondRowData];
+        
+        NSUInteger count = [allDtJson_mutable count];
+        NSMutableArray *thirdRowData = [NSMutableArray array];
+        for (int i = 0; i < count-3; i++) {
+            if (i%3 == 0 && i != 0) {
+                [dataArr addObject:thirdRowData];
+                thirdRowData = [NSMutableArray array];
+            }
+            [thirdRowData addObject:allDtJson_mutable[i+3]];
+        }
+    }
+    return dataArr;
 }
 
 - (void)didReceiveMemoryWarning

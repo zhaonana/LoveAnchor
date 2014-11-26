@@ -308,8 +308,8 @@
         UIImageView *image3 = [[UIImageView alloc]initWithFrame:CGRectMake(139, 15, 25, 12)];
         NSDictionary *dic = [dict objectForKey:@"finance"];
         NSNumber *coin = [dic objectForKey:@"coin_count"];
-        NSString *imageName = [DateUtil getLevelImageNameWithCoin:coin.intValue isRich:YES];
-        image3.image = [UIImage imageNamed:imageName];
+        NSInteger level = [DateUtil getLevelInfoWithCoin:coin.intValue isRich:YES].level;
+        image3.image = [UIImage imageNamed:[NSString stringWithFormat:@"%ldfu",(long)level]];
         [cell addSubview:image3];
         
         UIImageView *image5 = [[UIImageView alloc]initWithFrame:CGRectMake(168, 17, 108, 8)];
@@ -317,35 +317,37 @@
         [cell addSubview:image5];
         
         UILabel *HZlabel = [[UILabel alloc]initWithFrame:CGRectMake(168, 29, 108, 10)];
-        HZlabel.text = [NSString stringWithFormat:@"还差%d金币",1000];
+        NSInteger nextCoin = [DateUtil getLevelInfoWithCoin:coin.intValue isRich:YES].nextCoin;
+        HZlabel.text = [NSString stringWithFormat:@"还差%ld金币",(long)nextCoin];
         HZlabel.textAlignment = NSTextAlignmentCenter;
         HZlabel.font = [UIFont systemFontOfSize:10];
         HZlabel.textColor = [UIColor lightGrayColor];
         [cell addSubview:HZlabel];
         
         UIImageView *image4 = [[UIImageView alloc]initWithFrame:CGRectMake(280, 15, 25, 12)];
-        image4.image = [UIImage imageNamed:@"2fu"];
+        image4.image = [UIImage imageNamed:[NSString stringWithFormat:@"%ldfu",level + 1]];
         [cell addSubview:image4];
     } else if (indexPath.section == 2 && indexPath.row == 2) {
         UIImageView *image6 = [[UIImageView alloc]initWithFrame:CGRectMake(148, 13, 16, 16)];
         NSDictionary *dic = [dict objectForKey:@"finance"];
         NSNumber *coin = [dic objectForKey:@"coin_count"];
-        NSString *imageName = [DateUtil getLevelImageNameWithCoin:coin.intValue isRich:NO];
-        image6.image = [UIImage imageNamed:imageName];
+        NSInteger level = [DateUtil getLevelInfoWithCoin:coin.intValue isRich:NO].level;
+        image6.image = [UIImage imageNamed:[NSString stringWithFormat:@"%ldzhubo",(long)level]];
         [cell addSubview:image6];
         
         UIImageView *image7 = [[UIImageView alloc]initWithFrame:CGRectMake(168, 17, 108, 8)];
         image7.image = [UIImage imageNamed:@"jindutiaokong"];
         [cell addSubview:image7];
         UILabel *HZlabel1 = [[UILabel alloc]initWithFrame:CGRectMake(168, 29, 108, 10)];
-        HZlabel1.text = [NSString stringWithFormat:@"还差%d金豆",1000];
+        NSInteger nextCoin = [DateUtil getLevelInfoWithCoin:coin.intValue isRich:NO].nextCoin;
+        HZlabel1.text = [NSString stringWithFormat:@"还差%ld金豆",(long)nextCoin];
         HZlabel1.textAlignment = NSTextAlignmentCenter;
         HZlabel1.font = [UIFont systemFontOfSize:10];
         HZlabel1.textColor = [UIColor lightGrayColor];
         [cell addSubview:HZlabel1];
         
         UIImageView *image8 = [[UIImageView alloc]initWithFrame:CGRectMake(280, 13, 16, 16)];
-        image8.image = [UIImage imageNamed:@"2xing"];
+        image8.image = [UIImage imageNamed:[NSString stringWithFormat:@"%ldzhubo",level + 1]];
         [cell addSubview:image8];
         
     } else if (indexPath.section == 3 && indexPath.row == 0) {

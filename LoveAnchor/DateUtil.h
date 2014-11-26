@@ -7,11 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "LevelInfoModel.h"
 
 @interface DateUtil : NSObject
 
 + (NSString *)getTimeInterval:(NSTimeInterval)time;
 
-+ (NSString *)getLevelImageNameWithCoin:(NSInteger)coin isRich:(BOOL)isRich;
++ (LevelInfoModel *)getLevelInfoWithCoin:(NSInteger)coin isRich:(BOOL)isRich;
 
 @end

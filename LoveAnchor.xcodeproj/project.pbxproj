@@ -184,6 +184,7 @@
 		39B663C71A24A3BD0033D28C /* 9zhubo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 39B6634D1A24A3BD0033D28C /* 9zhubo@2x.png */; };
 		39B663CA1A24A3EB0033D28C /* 0fu.png in Resources */ = {isa = PBXBuildFile; fileRef = 39B663C81A24A3EB0033D28C /* 0fu.png */; };
 		39B663CB1A24A3EB0033D28C /* 0fu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 39B663C91A24A3EB0033D28C /* 0fu@2x.png */; };
+		39B663CE1A257EF30033D28C /* LevelInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B663CD1A257EF30033D28C /* LevelInfoModel.m */; };
 		F703DB371A174D5200C53D4C /* SeatManageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F703DB361A174D5200C53D4C /* SeatManageViewController.m */; };
 		F71890F11A12195B005ECCA9 /* huangV1.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890ED1A12195B005ECCA9 /* huangV1.png */; };
 		F71890F21A12195B005ECCA9 /* huangV1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890EE1A12195B005ECCA9 /* huangV1@2x.png */; };
@@ -695,6 +696,8 @@
 		39B6634D1A24A3BD0033D28C /* 9zhubo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "9zhubo@2x.png"; sourceTree = "<group>"; };
 		39B663C81A24A3EB0033D28C /* 0fu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 0fu.png; sourceTree = "<group>"; };
 		39B663C91A24A3EB0033D28C /* 0fu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0fu@2x.png"; sourceTree = "<group>"; };
+		39B663CC1A257EF30033D28C /* LevelInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelInfoModel.h; sourceTree = "<group>"; };
+		39B663CD1A257EF30033D28C /* LevelInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LevelInfoModel.m; sourceTree = "<group>"; };
 		F703DB351A174D5200C53D4C /* SeatManageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeatManageViewController.h; sourceTree = "<group>"; };
 		F703DB361A174D5200C53D4C /* SeatManageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeatManageViewController.m; sourceTree = "<group>"; };
 		F71890ED1A12195B005ECCA9 /* huangV1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = huangV1.png; sourceTree = "<group>"; };
@@ -1736,6 +1739,8 @@
 				F7B70E5D1A1C5F680064D56E /* SeatManageModel.m */,
 				F7B70E5F1A1C9F910064D56E /* DynamicModel.h */,
 				F7B70E601A1C9F910064D56E /* DynamicModel.m */,
+				39B663CC1A257EF30033D28C /* LevelInfoModel.h */,
+				39B663CD1A257EF30033D28C /* LevelInfoModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -2412,6 +2417,7 @@
 				F7456F0319986A2800CF28E8 /* XDSSegmentedViewController.m in Sources */,
 				F7EE30701A16005500676571 /* BadgeModel.m in Sources */,
 				F77CE8B41A00C16400131896 /* LoginModel.m in Sources */,
+				39B663CE1A257EF30033D28C /* LevelInfoModel.m in Sources */,
 				F7456F16199871A500CF28E8 /* AttentionViewController.m in Sources */,
 				F7B5B89819EFC0AE0006ACCB /* TwoTableViewCell.m in Sources */,
 				F7C7CCD019AD9007003FCC03 /* UIImageView+WebCache.m in Sources */,

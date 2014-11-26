@@ -98,8 +98,6 @@
             };
         }
     }
-    [cell.continueButton setBackgroundImage:[UIImage imageNamed:@"xufei"] forState:UIControlStateNormal];
-    [cell.continueButton setBackgroundImage:[UIImage imageNamed:@"xufeidianji"] forState:UIControlStateHighlighted];
     
     cell.ContinueButtonClickBlock = ^() {
         NSString *message = [NSString stringWithFormat:@"道具名称：%@\n购买天数：30天\n价格：%@金币",seat.name,seat.coin_price];

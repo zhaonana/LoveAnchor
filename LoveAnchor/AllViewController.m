@@ -118,7 +118,6 @@
         secondCell.selectionStyle = UITableViewCellSelectionStyleNone;
         secondCell.delegate = self;
         [secondCell setCellData:modelArray];
-//        secondCell.userInteractionEnabled = NO;
         return secondCell;
     } else {
         ThirdRowTableViewCell *thirdCell = [tableView dequeueReusableCellWithIdentifier:@"thirdCell"];
@@ -128,7 +127,6 @@
         }
         
         thirdCell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        thirdCell.userInteractionEnabled = NO;
         thirdCell.delegate = self;
         [thirdCell setCellData:modelArray];
         

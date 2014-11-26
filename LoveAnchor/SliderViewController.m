@@ -89,10 +89,10 @@ typedef NS_ENUM(NSInteger, RMoveDirection) {
     
     [self showContentControllerWithModel:@"TabBarViewController"];
     
-    _tapGestureRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSideBar)];
-    _tapGestureRec.delegate=self;
-    [self.view addGestureRecognizer:_tapGestureRec];
-    _tapGestureRec.enabled = NO;
+//    _tapGestureRec = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(closeSideBar)];
+//    _tapGestureRec.delegate=self;
+//    [self.view addGestureRecognizer:_tapGestureRec];
+//    _tapGestureRec.enabled = NO;
     
     _panGestureRec = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(moveViewWithGesture:)];
     [_mainContentView addGestureRecognizer:_panGestureRec];

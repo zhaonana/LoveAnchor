@@ -8,7 +8,7 @@
 
 #import "PersonageViewController.h"
 
-@interface PersonageViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,HZAreaPickerDelegate>
+@interface PersonageViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,HZAreaPickerDelegate,UIActionSheetDelegate>
 {
     UITableView *_tableView;
     NSArray *_titleArray;
@@ -147,6 +147,10 @@
     headButton.tag = 101;
     [headImageView addSubview:headButton];
     
+    UIImageView *photoImage = [[UIImageView alloc] initWithFrame:CGRectMake(178, 88, 22, 22)];
+    [photoImage setImage:[UIImage imageNamed:@"xiangji"]];
+    [headImageView addSubview:photoImage];
+    
     UIButton *cancelButton= [UIButton buttonWithType:UIButtonTypeCustom];
     [cancelButton setTitle:@"注销" forState:UIControlStateNormal];
     [cancelButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -179,7 +183,8 @@
             [self dismissViewControllerAnimated:YES completion:nil];
         }
     } else if (button.tag == 101) {
-        NSLog(@"不要点我的头");
+        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照", @"从相册选择", nil];
+        [actionSheet showInView:self.view];
     } else if (button.tag == 103) {
         if ([CommonUtil isLogin]) {
             [CommonUtil logout];
@@ -210,6 +215,12 @@
         tag = button.tag-1000;
         [self sexRequest];
     }
+    
+}
+
+#pragma mark - UIActionSheetDelegate methods
+- (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
+{
     
 }
 

@@ -384,10 +384,9 @@
             loginModel.passWord = [loginJson objectForKey:@"password"];
             loginModel.userName = [loginJson objectForKey:@"username"];
             [CommonUtil saveUserModel:loginModel];
-            PersonageViewController *per = [[PersonageViewController alloc]init];
-            per.firstLogin = YES;
-            UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:per];
-            [self presentViewController:nc animated:YES completion:nil];
+            UIViewController *viewController = self;
+            viewController = viewController.presentingViewController.presentingViewController;
+            [viewController dismissViewControllerAnimated:YES completion:nil];
         }
         
     } else if (request.tag == 4) {

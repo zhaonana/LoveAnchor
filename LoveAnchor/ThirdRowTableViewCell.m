@@ -44,7 +44,7 @@
         [imageView2 addSubview:nameLabel];
         
         UIImageView *numberImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 60, 16, 16)];
-        numberImageView.image = [UIImage imageNamed:@"renshu"];
+        numberImageView.tag = 500 + i;
         numberImageView.backgroundColor = [UIColor clearColor];
         [imageView2 addSubview:numberImageView];
         
@@ -64,6 +64,9 @@
     _modelArray = modelArray;
     for (int i = 0; i < [modelArray count]; i++) {
         AllModel *model = [modelArray objectAtIndex:i];
+        UIImageView *numberImageView = (UIImageView *)[self.contentView viewWithTag:500+i];
+        numberImageView.image = [UIImage imageNamed:@"renshu"];
+        
         UIImageView *imageView = (UIImageView *)[self.contentView viewWithTag:10+i];
         [imageView setImageWithURL:[NSURL URLWithString:model.pic_url]];
         
@@ -71,15 +74,16 @@
         nameLabel.text = [NSString stringWithFormat:@"%@",model.nick_name];
         
         UILabel *numberLabel = (UILabel *)[self.contentView viewWithTag:1000+i];
-        numberLabel.text = [NSString stringWithFormat:@"%@",model._id];
+        numberLabel.text = [NSString stringWithFormat:@"%@",model.visiter_count];
     }
 }
 
 - (void)thirdTapClick:(UIGestureRecognizer *)sender {
-    NSLog(@"sender.view.tag:%ld",sender.view.tag-10);
     NSInteger tag = sender.view.tag;
-    AllModel *model = _modelArray[tag-10];
-    [self.delegate thirdClick:model];
+    if (tag - 10 < _modelArray.count) {
+        AllModel *model = _modelArray[tag-10];
+        [self.delegate thirdClick:model];
+    }
 }
 
 - (void)awakeFromNib

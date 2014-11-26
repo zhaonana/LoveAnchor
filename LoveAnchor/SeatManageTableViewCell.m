@@ -45,6 +45,8 @@
     self.continueButton.backgroundColor = [UIColor redColor];
     self.continueButton.titleLabel.font = [UIFont systemFontOfSize:12];
     self.continueButton.tag = 104;
+    [self.continueButton setBackgroundImage:[UIImage imageNamed:@"xufei"] forState:UIControlStateNormal];
+    [self.continueButton setBackgroundImage:[UIImage imageNamed:@"xufeidianji"] forState:UIControlStateHighlighted];
     [self.continueButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:self.continueButton];
 }

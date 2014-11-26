@@ -41,7 +41,7 @@
     [logoImageView addSubview:nameLabel];
     
     UIImageView *headImageView = [[UIImageView alloc]initWithFrame:CGRectMake(235, 150, 15, 15)];
-    headImageView.image = [UIImage imageNamed:@"renshu"];
+    headImageView.tag = 500;
     headImageView.backgroundColor = [UIColor clearColor];
     [logoImageView addSubview:headImageView];
     
@@ -58,8 +58,11 @@
 
 -(void)setCellData:(NSArray *)modelArray
 {
-    
+    _modelArray = modelArray;
     AllModel *model = [modelArray objectAtIndex:0];
+    UIImageView *numberImageView = (UIImageView *)[self.contentView viewWithTag:500];
+    numberImageView.image = [UIImage imageNamed:@"renshu"];
+    
     UIImageView *imageView = (UIImageView *)[self.contentView viewWithTag:100];
     [imageView setImageWithURL:[NSURL URLWithString:model.pic_url]];
     
@@ -67,14 +70,15 @@
     nameLabel.text = [NSString stringWithFormat:@"%@",model.nick_name];
     
     UILabel *numberLabel = (UILabel *)[self.contentView viewWithTag:102];
-    numberLabel.text = [NSString stringWithFormat:@"%@",model._id];
+    numberLabel.text = [NSString stringWithFormat:@"%@",model.visiter_count];
 }
 
 - (void)firstTapClick:(UIGestureRecognizer *)sender {
-    NSLog(@"firstTapClick");
     NSInteger tag = sender.view.tag;
-    AllModel *model = _modelArray[tag];
-    [self.delegate firstClick:model];
+    if (tag - 100 < _modelArray.count) {
+        AllModel *model = _modelArray[tag-100];
+        [self.delegate firstClick:model];
+    }
 }
 
 - (void)awakeFromNib

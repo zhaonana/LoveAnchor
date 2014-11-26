@@ -10,6 +10,8 @@
 
 @interface LeftMenuViewController () {
     UILabel *nameLabel;
+    UILabel *numberLabel;
+    LoginModel *model;
 }
 
 @end
@@ -42,54 +44,30 @@
     [imageView addSubview:leftTableView];
     
     UIButton *headButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    headButton.frame = CGRectMake(92, 45, 70, 70);
+    headButton.frame = CGRectMake(95, 45, 70, 70);
     headButton.backgroundColor = [UIColor colorWithPatternImage:[UIImage imageNamed:@"touxiang"]];
     [headButton addTarget:self action:@selector(buttonClick) forControlEvents:UIControlEventTouchUpInside];
     [imageView addSubview:headButton];
     
-    nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(90, 122, 80, 16)];
+    nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 122, 220, 16)];
+    [nameLabel setBackgroundColor:[UIColor clearColor]];
+    [nameLabel setTextAlignment:NSTextAlignmentCenter];
     nameLabel.font = [UIFont systemFontOfSize:15.0f];
     nameLabel.textColor = [UIColor whiteColor];
     [imageView addSubview:nameLabel];
     
-    UILabel *balanceLabel = [[UILabel alloc]initWithFrame:CGRectMake(90, 144, 38, 16)];
-    balanceLabel.text = @"余额:";
-    balanceLabel.font = [UIFont systemFontOfSize:15.0f];
-    balanceLabel.textColor = [UIColor whiteColor];
-    [imageView addSubview:balanceLabel];
-    
-    UILabel *numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(135, 144, 44, 16)];
-    numberLabel.text = @"88888";
+    numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 144, 220, 16)];
+    [numberLabel setBackgroundColor:[UIColor clearColor]];
+    [numberLabel setTextAlignment:NSTextAlignmentCenter];
+    numberLabel.text = [NSString stringWithFormat:@"余额:"];
     numberLabel.font = [UIFont systemFontOfSize:15.0f];
     numberLabel.textColor = [UIColor whiteColor];
     [imageView addSubview:numberLabel];
     
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(25, 350, 190, 18)];
-    label.text = @"当前在线玩家共有";
-    label.font = [UIFont systemFontOfSize:15.0f];
-    label.textColor = [UIColor whiteColor];
-    [imageView addSubview:label];
-    
-    UILabel *label1 = [[UILabel alloc]init];
-    NSString *s = @"12234";
-    label1.text = s;
-    label1.textColor = textFontColor;
-    UIFont *font = [UIFont systemFontOfSize:15.0f];
-    label1.font = font;
-    CGSize size =CGSizeMake(300,60);
-    NSDictionary * tdic = [NSDictionary dictionaryWithObjectsAndKeys:font,NSFontAttributeName,nil];
-        CGSize actualsize =[s boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin  attributes:tdic context:nil].size;
-        label1.frame = CGRectMake(145, 350, actualsize.width, 18);
-    [imageView addSubview:label1];
-    
-        UILabel *label2 = [[UILabel alloc]initWithFrame:CGRectMake(145+actualsize.width, 350, 190, 18)];
-        label2.text = @"位";
-        label2.font = [UIFont systemFontOfSize:15.0f];
-        label2.textColor = [UIColor whiteColor];
-        [self.view addSubview:label2];
-    
     UILabel *label11 = [[UILabel alloc]initWithFrame:CGRectMake(10, kScreenHeight - 20, 28, 13)];
-    label11.text = @"V1.0";
+    NSDictionary *dicInfo = [[NSBundle mainBundle] infoDictionary];    
+    NSString *strAppBuild = [dicInfo objectForKey:@"CFBundleVersion"];
+    label11.text = [NSString stringWithFormat:@"V%@",strAppBuild];
     label11.font = [UIFont systemFontOfSize:12.0f];
     label11.textColor = [UIColor whiteColor];
     [imageView addSubview:label11];
@@ -100,8 +78,13 @@
 {
     [super viewWillAppear:animated];
     
-    LoginModel *model = [CommonUtil getUserModel];
-    nameLabel.text = model.userName;
+    model = [CommonUtil getUserModel];
+    if ([CommonUtil isLogin]) {
+        nameLabel.text = model.userName;
+        [self request];
+    } else {
+        nameLabel.text = @"未登录";
+    }
 }
 
 - (void)buttonClick
@@ -195,6 +178,28 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
     return 1;
+}
+
+- (void)request
+{
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/info/%@",model.access_token]]];
+    request.delegate = self;
+    request.tag = 100;
+    [request setTimeOutSeconds:30];
+    [request startAsynchronous];
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    if (request.tag == 100) {
+        id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+        if ([result isKindOfClass:[NSDictionary class]]) {
+            NSDictionary *dict = [result objectForKey:@"data"];
+            NSDictionary *financeDic = [dict objectForKey:@"finance"];
+            NSNumber *coinNum = [financeDic objectForKey:@"coin_count"];
+            numberLabel.text = [NSString stringWithFormat:@"余额:%@",coinNum];
+        }
+    }
 }
 
 - (void)didReceiveMemoryWarning

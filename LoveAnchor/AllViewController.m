@@ -7,6 +7,7 @@
 //
 
 #import "AllViewController.h"
+#define REFRESH_NOTFICATION @"refreshNotification"
 
 @interface AllViewController () <ThirdRowTableViewCellDelegate,FirstRowTableViewCellDelegate,SecondRowTableViewCellDelegate>
 {
@@ -33,7 +34,18 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self shouUI];
     [self request];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:REFRESH_NOTFICATION object:nil];
 }
+
+- (void)refreshView:(NSNotification *)notification
+{
+    [_dataArray removeAllObjects];
+    _dataArray = notification.object;
+    [_tableView reloadData];
+    [self.home rightClick];
+}
+
 #pragma mark - 界面
 - (void)shouUI {
     _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight-49)style:UITableViewStylePlain];
@@ -118,7 +130,6 @@
         secondCell.selectionStyle = UITableViewCellSelectionStyleNone;
         secondCell.delegate = self;
         [secondCell setCellData:modelArray];
-//        secondCell.userInteractionEnabled = NO;
         return secondCell;
     } else {
         ThirdRowTableViewCell *thirdCell = [tableView dequeueReusableCellWithIdentifier:@"thirdCell"];
@@ -128,7 +139,6 @@
         }
         
         thirdCell.selectionStyle = UITableViewCellSelectionStyleNone;
-//        thirdCell.userInteractionEnabled = NO;
         thirdCell.delegate = self;
         [thirdCell setCellData:modelArray];
         

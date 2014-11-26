@@ -20,4 +20,6 @@
 
 @property (nonatomic, strong)NSString *auth_url;
 
+@property (nonatomic, strong) NSString *visiter_count;
+
 @end

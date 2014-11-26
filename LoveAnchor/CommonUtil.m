@@ -1,14 +1,14 @@
 //
-//  DateUtil.m
+//  CommonUtil.m
 //  LoveAnchor
 //
 //  Created by NaNa on 14/11/25.
 //  Copyright (c) 2014年 zhongqinglongtu. All rights reserved.
 //
 
-#import "DateUtil.h"
+#import "CommonUtil.h"
 
-@implementation DateUtil
+@implementation CommonUtil
 
 + (NSString *)getTimeInterval:(NSTimeInterval)time
 {
@@ -301,6 +301,36 @@
     levelModel.nextCoin = nextCoin;
     
     return levelModel;
+}
+
++ (BOOL)isLogin
+{
+    NSData *myEncodedObject = [[NSUserDefaults standardUserDefaults] objectForKey:@"books"];
+    LoginModel *loginModel = [NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
+    if (loginModel.access_token.length) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
++ (void)logout
+{
+    [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"books"];
+}
+
++ (LoginModel *)getUserModel
+{
+    NSData *myEncodedObject = [[NSUserDefaults standardUserDefaults] objectForKey:@"books"];
+    LoginModel *model = [NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
+    return model;
+}
+
++ (void)saveUserModel:(LoginModel *)loginModel
+{
+    NSData *data = [NSKeyedArchiver archivedDataWithRootObject:loginModel];
+    [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"books"];
+    [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 @end

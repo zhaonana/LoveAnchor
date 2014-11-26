@@ -10,4 +10,6 @@
 
 @interface PersonageViewController : UIViewController
 
+@property (nonatomic, assign) BOOL firstLogin;
+
 @end

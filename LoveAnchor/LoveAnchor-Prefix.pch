@@ -62,6 +62,7 @@
     #import <QuartzCore/QuartzCore.h>
     #import "UIImageView+WebCache.h"
     #import "HZAreaPickerView.h"
+    #import "CommonUtil.h"
 
 #endif
 

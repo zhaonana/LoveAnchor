@@ -1,5 +1,5 @@
 //
-//  DateUtil.h
+//  CommonUtil.h
 //  LoveAnchor
 //
 //  Created by NaNa on 14/11/25.
@@ -9,10 +9,18 @@
 #import <Foundation/Foundation.h>
 #import "LevelInfoModel.h"
 
-@interface DateUtil : NSObject
+@interface CommonUtil : NSObject
 
 + (NSString *)getTimeInterval:(NSTimeInterval)time;
 
 + (LevelInfoModel *)getLevelInfoWithCoin:(NSInteger)coin isRich:(BOOL)isRich;
+
++ (BOOL)isLogin;
+
++ (void)logout;
+
++ (LoginModel *)getUserModel;
+
++ (void)saveUserModel:(LoginModel *)loginModel;
 
 @end

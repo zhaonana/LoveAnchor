@@ -379,17 +379,15 @@
             NSDictionary *allDTjson3 = [result3 objectForKey:@"code"];
             NSDictionary *loginJson = [result3 objectForKey:@"data"];
             NSLog(@"登陆 == %@",allDTjson3);
-            LoginModel *loginModel = [[LoginModel alloc]init];
+            LoginModel *loginModel = [[LoginModel alloc] init];
             loginModel.access_token = [loginJson objectForKey:@"access_token"];
             loginModel.passWord = [loginJson objectForKey:@"password"];
             loginModel.userName = [loginJson objectForKey:@"username"];
-            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:loginModel];
-            [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"books"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            NSLog(@"token == %@",loginModel.access_token);
-            TabBarViewController *tab = [[TabBarViewController alloc]init];
-            [tab setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-            [self presentViewController:tab animated:YES completion:nil];
+            [CommonUtil saveUserModel:loginModel];
+            PersonageViewController *per = [[PersonageViewController alloc]init];
+            per.firstLogin = YES;
+            UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:per];
+            [self presentViewController:nc animated:YES completion:nil];
         }
         
     } else if (request.tag == 4) {

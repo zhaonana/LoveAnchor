@@ -38,9 +38,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSData *myEncodedObject = [[NSUserDefaults standardUserDefaults] objectForKey:@"books"];
-    model = [NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
-    NSLog(@"我自己 == %@",model.userName);
+    model = [CommonUtil getUserModel];
+
     [self showUI];
     [self getVerificationCode];
     
@@ -323,7 +322,14 @@
             NSDictionary *loginJson = [loginResult objectForKey:@"data"];
             int code = [[loginResult objectForKey:@"code"] intValue];
             if (code == 1) {
+                LoginModel *loginModel = [[LoginModel alloc]init];
+                loginModel.access_token = [loginJson objectForKey:@"access_token"];
+                loginModel.passWord = [loginJson objectForKey:@"password"];
+                loginModel.userName = [loginJson objectForKey:@"username"];
+                [CommonUtil saveUserModel:loginModel];
+                
                 PersonageViewController *personage = [[PersonageViewController alloc]init];
+                personage.firstLogin = YES;
                 [personage setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
                 UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:personage];
                 [self presentViewController:nc animated:YES completion:nil];
@@ -340,14 +346,6 @@
                 [alert addButtonWithTitle:@"确定"];
                 [alert show];
             }
-            LoginModel *loginModel = [[LoginModel alloc]init];
-            loginModel.access_token = [loginJson objectForKey:@"access_token"];
-            loginModel.passWord = [loginJson objectForKey:@"password"];
-            loginModel.userName = [loginJson objectForKey:@"username"];
-            NSData *data = [NSKeyedArchiver archivedDataWithRootObject:loginModel];
-            [[NSUserDefaults standardUserDefaults] setObject:data forKey:@"books"];
-            [[NSUserDefaults standardUserDefaults] synchronize];
-            NSLog(@"token == %@",loginModel.access_token);
         }
     }
 }

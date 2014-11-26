@@ -7,7 +7,6 @@
 //
 
 #import "SeatManageTableViewCell.h"
-#import "DateUtil.h"
 
 @implementation SeatManageTableViewCell
 
@@ -45,10 +44,6 @@
     self.continueButton.frame = CGRectMake(246, 25, 50, 25);
     self.continueButton.backgroundColor = [UIColor redColor];
     self.continueButton.titleLabel.font = [UIFont systemFontOfSize:12];
-    [self.continueButton setTitle:@"续费" forState:UIControlStateNormal];
-//    self.continueButton.layer.borderColor = textFontColor.CGColor;
-//    self.continueButton.layer.borderWidth = 2.0;
-//    self.continueButton.layer.cornerRadius = 5.0;
     self.continueButton.tag = 104;
     [self.continueButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:self.continueButton];
@@ -80,7 +75,7 @@
     [imageView setImageWithURL:[NSURL URLWithString:model.pic_url]];
     
     UILabel *timeLabel = (UILabel *)[self.contentView viewWithTag:102];
-    NSString *time = [DateUtil getTimeInterval:model.time.longLongValue/1000];
+    NSString *time = [CommonUtil getTimeInterval:model.time.longLongValue/1000];
     if (time.intValue > 0) {
         timeLabel.text = [NSString stringWithFormat:@"有限期:%@天",time];
     } else {

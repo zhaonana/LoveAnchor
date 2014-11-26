@@ -22,8 +22,9 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    NSData *myEncodedObject = [[NSUserDefaults standardUserDefaults] objectForKey:@"books"];
-    model = [NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
+    
+    model = [CommonUtil getUserModel];
+    
     [self showUI];
 }
 #pragma mark - 界面

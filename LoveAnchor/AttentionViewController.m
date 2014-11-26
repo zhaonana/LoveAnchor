@@ -31,8 +31,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSData *myEncodedObject = [[NSUserDefaults standardUserDefaults] objectForKey:@"books"];
-    model = [NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
+    model = [CommonUtil getUserModel];
     self.view.backgroundColor = [UIColor whiteColor];
     [self showUI];
     [self request];

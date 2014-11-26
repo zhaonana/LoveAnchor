@@ -8,7 +8,9 @@
 
 #import "LeftMenuViewController.h"
 
-@interface LeftMenuViewController ()
+@interface LeftMenuViewController () {
+    UILabel *nameLabel;
+}
 
 @end
 
@@ -45,8 +47,7 @@
     [headButton addTarget:self action:@selector(buttonClick) forControlEvents:UIControlEventTouchUpInside];
     [imageView addSubview:headButton];
     
-    UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(90, 122, 80, 16)];
-    nameLabel.text = @"钢铁侠13号";
+    nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(90, 122, 80, 16)];
     nameLabel.font = [UIFont systemFontOfSize:15.0f];
     nameLabel.textColor = [UIColor whiteColor];
     [imageView addSubview:nameLabel];
@@ -95,16 +96,27 @@
 
 }
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    LoginModel *model = [CommonUtil getUserModel];
+    nameLabel.text = model.userName;
+}
+
 - (void)buttonClick
 {
-    NSLog(@"111");
-    LoginViewController *login = [[LoginViewController alloc]init];
-    [login setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-    UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:login];
-    [self presentViewController:nc animated:YES completion:nil];
-//    PersonageViewController *per = [[PersonageViewController alloc]init];
-//    UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:per];
-//    [self presentViewController:nc animated:YES completion:nil];
+    if ([CommonUtil isLogin]) {
+        PersonageViewController *per = [[PersonageViewController alloc]init];
+        per.firstLogin = NO;
+        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:per];
+        [self presentViewController:nc animated:YES completion:nil];
+    } else {
+        LoginViewController *login = [[LoginViewController alloc]init];
+        [login setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:login];
+        [self presentViewController:nc animated:YES completion:nil];
+    }
 }
 
 #pragma mark - tableViewDelegate

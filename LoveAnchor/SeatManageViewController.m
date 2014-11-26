@@ -28,8 +28,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    NSData *myEncodedObject = [[NSUserDefaults standardUserDefaults] objectForKey:@"books"];
-    model = [NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
+    model = [CommonUtil getUserModel];
     
     [self requestWithParams:[NSString stringWithFormat:@"show/cars_list"] tag:100];
     [self requestWithParams:[NSString stringWithFormat:@"user/car_info/%@",model.access_token] tag:101];

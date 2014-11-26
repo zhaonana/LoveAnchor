@@ -7,7 +7,6 @@
 //
 
 #import "PersonageViewController.h"
-#import "DateUtil.h"
 
 @interface PersonageViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,HZAreaPickerDelegate>
 {
@@ -99,8 +98,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSData *myEncodedObject = [[NSUserDefaults standardUserDefaults] objectForKey:@"books"];
-    model = [NSKeyedUnarchiver unarchiveObjectWithData: myEncodedObject];
+    model = [CommonUtil getUserModel];
     
     [self showUI];
     
@@ -173,11 +171,27 @@
 - (void)buttonClick:(UIButton *)button
 {
     if (button.tag == 100) {
-        [self dismissViewControllerAnimated:YES completion:nil];
+        if (self.firstLogin) {
+            UIViewController *viewController = self;
+            viewController = viewController.presentingViewController.presentingViewController;
+            [viewController dismissViewControllerAnimated:YES completion:nil];
+        } else {
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
     } else if (button.tag == 101) {
         NSLog(@"不要点我的头");
     } else if (button.tag == 103) {
-        NSLog(@"我走了");
+        if ([CommonUtil isLogin]) {
+            [CommonUtil logout];
+            if (self.firstLogin) {
+                UIViewController *viewController = self;
+                viewController = viewController.presentingViewController.presentingViewController;
+                [viewController dismissViewControllerAnimated:YES completion:nil];
+            } else {
+                [self dismissViewControllerAnimated:YES completion:nil];
+            }
+            [[SliderViewController sharedSliderController] leftItemClick];
+        }
     } else if (button.tag == 109) {
         _constellationView.frame = CGRectMake(0, kScreenHeight, kScreenWidth, 200);
         [self constellationRequest];
@@ -308,7 +322,7 @@
         UIImageView *image3 = [[UIImageView alloc]initWithFrame:CGRectMake(139, 15, 25, 12)];
         NSDictionary *dic = [dict objectForKey:@"finance"];
         NSNumber *coin = [dic objectForKey:@"coin_count"];
-        NSInteger level = [DateUtil getLevelInfoWithCoin:coin.intValue isRich:YES].level;
+        NSInteger level = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:YES].level;
         image3.image = [UIImage imageNamed:[NSString stringWithFormat:@"%ldfu",(long)level]];
         [cell addSubview:image3];
         
@@ -317,7 +331,7 @@
         [cell addSubview:image5];
         
         UILabel *HZlabel = [[UILabel alloc]initWithFrame:CGRectMake(168, 29, 108, 10)];
-        NSInteger nextCoin = [DateUtil getLevelInfoWithCoin:coin.intValue isRich:YES].nextCoin;
+        NSInteger nextCoin = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:YES].nextCoin;
         HZlabel.text = [NSString stringWithFormat:@"还差%ld金币",(long)nextCoin];
         HZlabel.textAlignment = NSTextAlignmentCenter;
         HZlabel.font = [UIFont systemFontOfSize:10];
@@ -325,13 +339,13 @@
         [cell addSubview:HZlabel];
         
         UIImageView *image4 = [[UIImageView alloc]initWithFrame:CGRectMake(280, 15, 25, 12)];
-        image4.image = [UIImage imageNamed:[NSString stringWithFormat:@"%ldfu",level + 1]];
+        image4.image = [UIImage imageNamed:[NSString stringWithFormat:@"%lddfu",level + 1]];
         [cell addSubview:image4];
     } else if (indexPath.section == 2 && indexPath.row == 2) {
         UIImageView *image6 = [[UIImageView alloc]initWithFrame:CGRectMake(148, 13, 16, 16)];
         NSDictionary *dic = [dict objectForKey:@"finance"];
         NSNumber *coin = [dic objectForKey:@"coin_count"];
-        NSInteger level = [DateUtil getLevelInfoWithCoin:coin.intValue isRich:NO].level;
+        NSInteger level = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:NO].level;
         image6.image = [UIImage imageNamed:[NSString stringWithFormat:@"%ldzhubo",(long)level]];
         [cell addSubview:image6];
         
@@ -339,7 +353,7 @@
         image7.image = [UIImage imageNamed:@"jindutiaokong"];
         [cell addSubview:image7];
         UILabel *HZlabel1 = [[UILabel alloc]initWithFrame:CGRectMake(168, 29, 108, 10)];
-        NSInteger nextCoin = [DateUtil getLevelInfoWithCoin:coin.intValue isRich:NO].nextCoin;
+        NSInteger nextCoin = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:NO].nextCoin;
         HZlabel1.text = [NSString stringWithFormat:@"还差%ld金豆",(long)nextCoin];
         HZlabel1.textAlignment = NSTextAlignmentCenter;
         HZlabel1.font = [UIFont systemFontOfSize:10];

@@ -46,9 +46,9 @@
     self.continueButton.backgroundColor = [UIColor redColor];
     self.continueButton.titleLabel.font = [UIFont systemFontOfSize:12];
     [self.continueButton setTitle:@"续费" forState:UIControlStateNormal];
-    self.continueButton.layer.borderColor = textFontColor.CGColor;
-    self.continueButton.layer.borderWidth = 2.0;
-    self.continueButton.layer.cornerRadius = 5.0;
+//    self.continueButton.layer.borderColor = textFontColor.CGColor;
+//    self.continueButton.layer.borderWidth = 2.0;
+//    self.continueButton.layer.cornerRadius = 5.0;
     self.continueButton.tag = 104;
     [self.continueButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.contentView addSubview:self.continueButton];

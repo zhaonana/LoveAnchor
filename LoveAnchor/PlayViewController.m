@@ -8,7 +8,7 @@
 
 #import "PlayViewController.h"
 
-@interface PlayViewController ()
+@interface PlayViewController () <VMediaPlayerDelegate>
 {
     UIScrollView *_scrollView;
     //导航
@@ -36,7 +36,11 @@
     UIView *_sofaView;
     //聊天输入框
     UITextField *_chatTextField;
+    VMediaPlayer *mMPayer;
 }
+
+@property (nonatomic, strong) UIActivityIndicatorView *activityView;
+@property (nonatomic, strong) NSURL                   *videoURL;
 
 @end
 
@@ -57,6 +61,26 @@
     tap = YES;
     _liveView.backgroundColor = [UIColor yellowColor];
     [self.view addSubview:_liveView];
+    
+    _activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:
+                     UIActivityIndicatorViewStyleWhiteLarge];
+    [_activityView setFrame:CGRectMake(kScreenWidth/2, 120, 10, 10)];
+    [_liveView addSubview:_activityView];
+    
+    if (!mMPayer) {
+        mMPayer = [VMediaPlayer sharedInstance];
+        [mMPayer setupPlayerWithCarrierView:_liveView withDelegate:self];
+        [self setupObservers];
+    }
+    NSString *url = @"http://hot.vrs.sohu.com/ipad1407291_4596271359934_4618512.m3u8";
+//    NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
+    self.videoURL = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
+    [mMPayer setDataSource:self.videoURL];
+    [mMPayer prepareAsync];
+    [self.activityView setHidden:NO];
+    [self.activityView startAnimating];
+    
     
     UITapGestureRecognizer *tapdesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(liveClick:)];
     [_liveView addGestureRecognizer:tapdesture];
@@ -263,9 +287,57 @@
         QImageView.image = [UIImage imageNamed:@"qiangzuo"];
         [button addSubview:QImageView];
     }
-    
+}
+
+- (void)setupObservers
+{
+    NSNotificationCenter *def = [NSNotificationCenter defaultCenter];
+    [def addObserver:self
+            selector:@selector(applicationDidEnterForeground:)
+                name:UIApplicationDidBecomeActiveNotification
+              object:[UIApplication sharedApplication]];
+    [def addObserver:self
+            selector:@selector(applicationDidEnterBackground:)
+                name:UIApplicationWillResignActiveNotification
+              object:[UIApplication sharedApplication]];
+}
+
+- (void)applicationDidEnterForeground:(NSNotification *)notification
+{
+    [mMPayer setVideoShown:YES];
+    if (![mMPayer isPlaying]) {
+        [mMPayer setDataSource:self.videoURL];
+        [mMPayer prepareAsync];
+        [self.activityView setHidden:NO];
+    }
+}
+
+- (void)applicationDidEnterBackground:(NSNotification *)notification
+{
+    if ([mMPayer isPlaying]) {
+        [mMPayer reset];
+        [mMPayer setVideoShown:NO];
+    }
+}
+
+#pragma mark VMediaPlayerDelegate Implement / Required
+
+- (void)mediaPlayer:(VMediaPlayer *)player didPrepared:(id)arg
+{
+    [self.activityView setHidden:YES];
+    [player start];
+}
+
+- (void)mediaPlayer:(VMediaPlayer *)player playbackComplete:(id)arg
+{
     
 }
+
+- (void)mediaPlayer:(VMediaPlayer *)player error:(id)arg
+{
+    [self.activityView setHidden:YES];
+}
+
 #pragma mark - 点击事件
 - (void)buttonClick:(UIButton *)button
 {

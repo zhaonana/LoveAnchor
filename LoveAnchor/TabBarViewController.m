@@ -43,7 +43,7 @@
     
     SearchViewController *searchVC = [[SearchViewController alloc]init];
     UINavigationController *searchNC = [[UINavigationController alloc]initWithRootViewController:searchVC];
-    
+
     NSArray *ncArray = [[NSArray alloc]initWithObjects:homeNC,dynamicNC,rankingNC,searchNC, nil];
     
     self.viewControllers = ncArray;
@@ -56,6 +56,7 @@
         [items setTitle:[titleArray objectAtIndex:i]];
     }
     [[UITabBarItem appearance] setTitleTextAttributes:@{UITextAttributeTextColor:textFontColor} forState:UIControlStateNormal];
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"shangdise"] forBarMetrics:UIBarMetricsDefault];
 }
 
 

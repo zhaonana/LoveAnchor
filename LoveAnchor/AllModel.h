@@ -15,6 +15,8 @@
 @property (nonatomic, strong)NSString *pic_url;
 //昵称
 @property (nonatomic, strong)NSString *nick_name;
+//等级
+@property (nonatomic, strong)NSString *finance;
 
 @property (nonatomic, strong)NSString *auth_key;
 

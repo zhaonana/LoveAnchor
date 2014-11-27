@@ -10,10 +10,9 @@
 
 @implementation ThirdRowTableViewCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)init
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
+    if (self == [super init]) {
         [self showUI];
     }
     return self;
@@ -25,7 +24,6 @@
     for (int i = 0; i < 3; i++) {
         UIImageView *imageView2 = [[UIImageView alloc]initWithFrame:CGRectMake(0+i*107, 0, 105, 81)];
         imageView2.backgroundColor = [UIColor clearColor];
-        //imageView2.image = [UIImage imageNamed:@"36387_1393222176K1R0"];
         imageView2.userInteractionEnabled = YES;
         imageView2.tag = 10 + i;
         [self.contentView addSubview:imageView2];
@@ -34,7 +32,6 @@
         [imageView2 addGestureRecognizer:tap];
         
         UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 48, 85, 15)];
-//        nameLabel.text = @"斯嘉丽约翰逊";
         [nameLabel setShadowColor:[UIColor blackColor]];
         [nameLabel setShadowOffset:CGSizeMake(1, 1)];
         nameLabel.backgroundColor = [UIColor clearColor];
@@ -49,7 +46,6 @@
         [imageView2 addSubview:numberImageView];
         
         UILabel *numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 60, 60, 16)];
-//        numberLabel.text = @"8888";
         numberLabel.backgroundColor = [UIColor clearColor];
         numberLabel.textColor = [UIColor whiteColor];
         numberLabel.font = [UIFont systemFontOfSize:12.0f];

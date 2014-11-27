@@ -138,7 +138,6 @@
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
     if ([result isKindOfClass:[NSDictionary class]]) {
         NSArray *array = [result objectForKey:@"data"];
-        NSLog(@"qwerty == %@",array);
         NSMutableArray *allData_mutable = [NSMutableArray array];
         
         for (NSDictionary *dict in array) {

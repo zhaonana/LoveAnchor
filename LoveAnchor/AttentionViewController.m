@@ -145,32 +145,33 @@
     if ([result isKindOfClass:[NSDictionary class]]) {
         
         NSDictionary *dict = [result objectForKey:@"data"];
-        NSArray *array = [dict objectForKey:@"rooms"];
-        NSLog(@"data == %@",array);
-        NSMutableArray *allDtJson_mutable = [NSMutableArray array];
-        
-        for (NSDictionary *dict in array) {
-            AllModel *modelData = [[AllModel alloc]init];
-            [modelData setValuesForKeysWithDictionary:dict];
-            [allDtJson_mutable addObject:modelData];
-        }
-        NSArray *firstRowData = @[[allDtJson_mutable objectAtIndex:0]];
-        [_dataArray addObject:firstRowData];
-        
-        NSArray *secondRowData = @[[allDtJson_mutable objectAtIndex:1],[allDtJson_mutable objectAtIndex:2]];
-        [_dataArray addObject:secondRowData];
-        
-        NSUInteger count = [allDtJson_mutable count];
-        NSMutableArray *thirdRowData = [NSMutableArray array];
-        for (int i = 0; i < count-3; i++) {
-            if (i%3 == 0 && i != 0) {
-                [_dataArray addObject:thirdRowData];
-                thirdRowData = [NSMutableArray array];
+        if (dict.allKeys.count) {
+            NSArray *array = [dict objectForKey:@"rooms"];
+            NSMutableArray *allDtJson_mutable = [NSMutableArray array];
+            
+            for (NSDictionary *dict in array) {
+                AllModel *modelData = [[AllModel alloc]init];
+                [modelData setValuesForKeysWithDictionary:dict];
+                [allDtJson_mutable addObject:modelData];
             }
-            [thirdRowData addObject:allDtJson_mutable[i+3]];
+            NSArray *firstRowData = @[[allDtJson_mutable objectAtIndex:0]];
+            [_dataArray addObject:firstRowData];
+            
+            NSArray *secondRowData = @[[allDtJson_mutable objectAtIndex:1],[allDtJson_mutable objectAtIndex:2]];
+            [_dataArray addObject:secondRowData];
+            
+            NSUInteger count = [allDtJson_mutable count];
+            NSMutableArray *thirdRowData = [NSMutableArray array];
+            for (int i = 0; i < count-3; i++) {
+                if (i%3 == 0 && i != 0) {
+                    [_dataArray addObject:thirdRowData];
+                    thirdRowData = [NSMutableArray array];
+                }
+                [thirdRowData addObject:allDtJson_mutable[i+3]];
+            }
+            [_dataArray addObject:thirdRowData];
+            NSLog(@"_dataArray = %lu",(unsigned long)_dataArray.count);
         }
-        [_dataArray addObject:thirdRowData];
-        NSLog(@"_dataArray = %lu",(unsigned long)_dataArray.count);
     }
     [_tableView reloadData];
 }

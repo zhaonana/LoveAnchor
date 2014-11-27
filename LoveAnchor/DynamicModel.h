@@ -9,11 +9,13 @@
 #import <Foundation/Foundation.h>
 
 @interface DynamicModel : NSObject
+
 @property (nonatomic, strong) NSString *nickname;
 @property (nonatomic, strong) NSString *userid;
 @property (nonatomic, strong) NSString *bean_count_total;
 @property (nonatomic, strong) NSString *pic;
 @property (nonatomic, strong) NSString *timestamp;
 @property (nonatomic, strong) NSString *roomId;
+@property (nonatomic, strong) NSString *live;
 
 @end

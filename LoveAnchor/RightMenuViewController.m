@@ -245,23 +245,33 @@
         switch (request.tag) {
             case 1:
                 array1 = [result objectForKey:@"data"];
-                dataArr1 = [self createDataArrayWithData:array1];
+                if (array1.count) {
+                    dataArr1 = [self createDataArrayWithData:array1];
+                }
                 break;
             case 2:
                 array2 = [result objectForKey:@"data"];
-                dataArr2 = [self createDataArrayWithData:array2];
+                if (array2.count) {
+                    dataArr2 = [self createDataArrayWithData:array2];
+                }
                 break;
             case 3:
                 array3 = [result objectForKey:@"data"];
-                dataArr3 = [self createDataArrayWithData:array3];
+                if (array3.count) {
+                    dataArr3 = [self createDataArrayWithData:array3];
+                }
                 break;
             case 4:
                 array4 = [result objectForKey:@"data"];
-                dataArr4 = [self createDataArrayWithData:array4];
+                if (array4.count) {
+                    dataArr4 = [self createDataArrayWithData:array4];
+                }
                 break;
             case 100:
                 array5 = [result objectForKey:@"data"];
-                dataArr5 = [self createDataArrayWithData:array5];
+                if (array5.count) {
+                    dataArr5 = [self createDataArrayWithData:array5];
+                }
                 break;
             default:
                 break;
@@ -281,22 +291,26 @@
         [model setValuesForKeysWithDictionary:dict];
         [allDtJson_mutable addObject:model];
     }
-    if (allDtJson_mutable.count) {
-        NSArray *firstRowData = @[[allDtJson_mutable objectAtIndex:0]];
-        [dataArr addObject:firstRowData];
-        NSArray *secondRowData = @[[allDtJson_mutable objectAtIndex:1],[allDtJson_mutable objectAtIndex:2]];
-        [dataArr addObject:secondRowData];
-        
-        NSUInteger count = [allDtJson_mutable count];
-        NSMutableArray *thirdRowData = [NSMutableArray array];
-        for (int i = 0; i < count-3; i++) {
-            if (i%3 == 0 && i != 0) {
-                [dataArr addObject:thirdRowData];
-                thirdRowData = [NSMutableArray array];
-            }
-            [thirdRowData addObject:allDtJson_mutable[i+3]];
+    
+    NSArray *firstRowData = @[[allDtJson_mutable objectAtIndex:0]];
+    [dataArr addObject:firstRowData];
+    
+    NSArray *secondRowData = @[[allDtJson_mutable objectAtIndex:1],[allDtJson_mutable objectAtIndex:2]];
+    [dataArr addObject:secondRowData];
+    
+    NSUInteger count = [allDtJson_mutable count];
+    NSMutableArray *thirdRowData = [NSMutableArray array];
+    for (int i = 0; i < count-3; i++) {
+        if (i%3 == 0 && i != 0) {
+            [dataArr addObject:thirdRowData];
+            thirdRowData = [NSMutableArray array];
         }
+        [thirdRowData addObject:allDtJson_mutable[i+3]];
     }
+    if (thirdRowData.count) {
+        [dataArr addObject:thirdRowData];
+    }
+
     return dataArr;
 }
 

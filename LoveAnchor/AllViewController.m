@@ -34,7 +34,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self shouUI];
     [self request];
-    
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:REFRESH_NOTFICATION object:nil];
 }
 

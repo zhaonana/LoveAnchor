@@ -287,28 +287,30 @@
     NSMutableArray *allDtJson_mutable = [NSMutableArray array];
     
     for (NSDictionary *dict in allDtJson) {
-        AllModel *model = [[AllModel alloc]init];
+        AllModel *model = [[AllModel alloc] init];
         [model setValuesForKeysWithDictionary:dict];
         [allDtJson_mutable addObject:model];
     }
-    
-    NSArray *firstRowData = @[[allDtJson_mutable objectAtIndex:0]];
-    [dataArr addObject:firstRowData];
-    
-    NSArray *secondRowData = @[[allDtJson_mutable objectAtIndex:1],[allDtJson_mutable objectAtIndex:2]];
-    [dataArr addObject:secondRowData];
-    
-    NSUInteger count = [allDtJson_mutable count];
-    NSMutableArray *thirdRowData = [NSMutableArray array];
-    for (int i = 0; i < count-3; i++) {
-        if (i%3 == 0 && i != 0) {
-            [dataArr addObject:thirdRowData];
-            thirdRowData = [NSMutableArray array];
+    if (allDtJson.count > 0) {
+        NSArray *firstRowData = @[[allDtJson_mutable objectAtIndex:0]];
+        [dataArr addObject:firstRowData];
+        if (allDtJson.count > 3) {
+            NSArray *secondRowData = @[[allDtJson_mutable objectAtIndex:1],[allDtJson_mutable objectAtIndex:2]];
+            [dataArr addObject:secondRowData];
+            
+            NSUInteger count = [allDtJson_mutable count];
+            NSMutableArray *thirdRowData = [NSMutableArray array];
+            for (int i = 0; i < count-3; i++) {
+                if (i%3 == 0 && i != 0) {
+                    [dataArr addObject:thirdRowData];
+                    thirdRowData = [NSMutableArray array];
+                }
+                [thirdRowData addObject:allDtJson_mutable[i+3]];
+            }
+            if (thirdRowData.count) {
+                [dataArr addObject:thirdRowData];
+            }
         }
-        [thirdRowData addObject:allDtJson_mutable[i+3]];
-    }
-    if (thirdRowData.count) {
-        [dataArr addObject:thirdRowData];
     }
 
     return dataArr;

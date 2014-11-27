@@ -319,6 +319,8 @@
 		F74633D01A24BB0D0087EE6B /* xufei@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F74633CC1A24BB0D0087EE6B /* xufei@2x.png */; };
 		F74633D11A24BB0D0087EE6B /* xufeidianji.png in Resources */ = {isa = PBXBuildFile; fileRef = F74633CD1A24BB0D0087EE6B /* xufeidianji.png */; };
 		F74633D21A24BB0D0087EE6B /* xufeidianji@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F74633CE1A24BB0D0087EE6B /* xufeidianji@2x.png */; };
+		F74633D51A26F5800087EE6B /* shangdise.png in Resources */ = {isa = PBXBuildFile; fileRef = F74633D31A26F5800087EE6B /* shangdise.png */; };
+		F74633D61A26F5800087EE6B /* shangdise@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F74633D41A26F5800087EE6B /* shangdise@2x.png */; };
 		F7493F0819AC494E005739CD /* DynamicTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F7493F0719AC494E005739CD /* DynamicTableViewCell.m */; };
 		F752F94F19B475A90082E703 /* RankingModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F752F94E19B475A90082E703 /* RankingModel.m */; };
 		F759245219C196B0004DC4D6 /* SearchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F759245119C196B0004DC4D6 /* SearchModel.m */; };
@@ -871,6 +873,8 @@
 		F74633CC1A24BB0D0087EE6B /* xufei@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xufei@2x.png"; sourceTree = "<group>"; };
 		F74633CD1A24BB0D0087EE6B /* xufeidianji.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xufeidianji.png; sourceTree = "<group>"; };
 		F74633CE1A24BB0D0087EE6B /* xufeidianji@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xufeidianji@2x.png"; sourceTree = "<group>"; };
+		F74633D31A26F5800087EE6B /* shangdise.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shangdise.png; sourceTree = "<group>"; };
+		F74633D41A26F5800087EE6B /* shangdise@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shangdise@2x.png"; sourceTree = "<group>"; };
 		F7493F0619AC494E005739CD /* DynamicTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DynamicTableViewCell.h; sourceTree = "<group>"; };
 		F7493F0719AC494E005739CD /* DynamicTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DynamicTableViewCell.m; sourceTree = "<group>"; };
 		F752F94D19B475A90082E703 /* RankingModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RankingModel.h; sourceTree = "<group>"; };
@@ -1220,6 +1224,8 @@
 			isa = PBXGroup;
 			children = (
 				F74633CB1A24BB0D0087EE6B /* xufei.png */,
+				F74633D31A26F5800087EE6B /* shangdise.png */,
+				F74633D41A26F5800087EE6B /* shangdise@2x.png */,
 				F74633CC1A24BB0D0087EE6B /* xufei@2x.png */,
 				F74633CD1A24BB0D0087EE6B /* xufeidianji.png */,
 				F74633CE1A24BB0D0087EE6B /* xufeidianji@2x.png */,
@@ -2354,6 +2360,7 @@
 				F7BE190119E6B720009C6C8C /* denglu@2x.png in Resources */,
 				39B662CE1A2499DE0033D28C /* 8fu@2x.png in Resources */,
 				F75D702F19F246B9004C144B /* zuojia.png in Resources */,
+				F74633D61A26F5800087EE6B /* shangdise@2x.png in Resources */,
 				39B663C61A24A3BD0033D28C /* 9zhubo.png in Resources */,
 				39B662A21A2499DE0033D28C /* 12fu@2x.png in Resources */,
 				39B6639C1A24A3BD0033D28C /* 45zhubo.png in Resources */,
@@ -2483,6 +2490,7 @@
 				F7B5B88A19EE5A990006ACCB /* 2000.png in Resources */,
 				39B662CD1A2499DE0033D28C /* 8fu.png in Resources */,
 				F7456EE41998692300CF28E8 /* touxiang1@2x.png in Resources */,
+				F74633D51A26F5800087EE6B /* shangdise.png in Resources */,
 				39B6635C1A24A3BD0033D28C /* 16zhubo.png in Resources */,
 				39B663911A24A3BD0033D28C /* 3zhubo@2x.png in Resources */,
 				F79E7D771A0B6DE900DDBFC5 /* area.plist in Resources */,

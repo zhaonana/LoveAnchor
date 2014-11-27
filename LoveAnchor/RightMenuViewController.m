@@ -161,7 +161,7 @@
         
         UILabel *label1 = [[UILabel alloc]initWithFrame:CGRectMake(258, 15, 42, 15)];
         [label1 setBackgroundColor:[UIColor colorWithPatternImage:[UIImage imageNamed:@"shuzidise"]]];
-        label1.text = [NSString stringWithFormat:@"%d",array4.count];
+        label1.text = [NSString stringWithFormat:@"%lu",(unsigned long)array4.count];
         label1.textColor = [UIColor whiteColor];
         label1.textAlignment = NSTextAlignmentCenter;
         label1.font = [UIFont systemFontOfSize:12.0f];

@@ -8,7 +8,8 @@
 
 #import "PlayViewController.h"
 
-@interface PlayViewController () <VMediaPlayerDelegate>
+@interface PlayViewController () <VMediaPlayerDelegate, UITextFieldDelegate>
+
 {
     UIScrollView *_scrollView;
     //导航
@@ -59,7 +60,7 @@
     _liveView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, kScreenWidth, 240)];
     _liveView.userInteractionEnabled = YES;
     tap = YES;
-    _liveView.backgroundColor = [UIColor yellowColor];
+    _liveView.backgroundColor = [UIColor colorWithRed:211.0/255.0 green:195.0/255.0 blue:29.0/255.0 alpha:1.0];
     [self.view addSubview:_liveView];
     
     _activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:
@@ -110,7 +111,6 @@
     [self.view addSubview:_navView];
     
     UILabel *navLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 0, 200, 35)];
-    navLabel.text = @"花开那时又逢君求包养";
     navLabel.text = [NSString stringWithFormat:@"%@",self.allModel.nick_name];
     navLabel.textColor = textFontColor;
     navLabel.font = [UIFont systemFontOfSize:15];
@@ -142,21 +142,28 @@
     [classifyButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_navView addSubview:classifyButton];
     //主播详情
-    _classifyView = [[UIView alloc]initWithFrame:CGRectMake(225, 36, 94, 110)];
+    _classifyView = [[UIView alloc]initWithFrame:CGRectMake(225, 34, 94, 110)];
     _classifyView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.8];
     _classifyView.userInteractionEnabled = YES;
     _classifyView.hidden = YES;
     [_liveView addSubview:_classifyView];
     
+    UIButton *bearButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    bearButton.frame = CGRectMake(280, 200, 35, 35);
+    [bearButton setImage:[UIImage imageNamed:@"shipinguanbi"] forState:UIControlStateNormal];
+    bearButton.tag = 1000;
+    [bearButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_liveView addSubview:bearButton];
+    
     //---------------------------------------------------------------------------
-    //button的背景VIew
+    //的背景VIew
     UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 260, kScreenWidth, 28)];
     imageView.backgroundColor = [UIColor clearColor];
     imageView.userInteractionEnabled = YES;
     [self.view addSubview:imageView];
-    
+    //button背景
     _backImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 27, 62, 1)];
-    _backImageView.backgroundColor = [UIColor clearColor];
+    _backImageView.backgroundColor = [UIColor redColor];
     [imageView addSubview:_backImageView];
     
     synthesizeButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -205,7 +212,7 @@
     audienceButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [imageView addSubview:audienceButton];
 
-    //聊天界面
+    //4个聊天界面
     _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 288, kScreenWidth, kScreenHeight-333)];
     _scrollView.contentSize = CGSizeMake(kScreenWidth *4, 0);
     _scrollView.backgroundColor = [UIColor clearColor];
@@ -246,6 +253,7 @@
     _chatTextField = [[UITextField alloc]initWithFrame:CGRectMake(5, 5, 260, 35)];
     _chatTextField.backgroundColor = [UIColor whiteColor];
     _chatTextField.borderStyle = UITextBorderStyleNone;
+    _chatTextField.delegate = self;
     [chatView addSubview:_chatTextField];
     
     UIButton *giftButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -352,7 +360,13 @@
         }else {
             _classifyView.hidden = YES;
         }
-    }else {
+    } else if (button.tag == 1000) {
+        if (button.selected) {
+            
+        } else {
+           [button setImage:[UIImage imageNamed:@"shipin"] forState:UIControlStateNormal];
+        }
+    } else {
         NSLog(@"%ld",button.tag);
         if (button.selected) {
             return;
@@ -368,23 +382,24 @@
             
         }];
     }
+
 }
 - (void)liveClick:(UITapGestureRecognizer *)sender
 {
     if (tap) {
         NSLog(@"123");
         _navView.hidden = YES;
-        _yumaoView.hidden = YES;
         _upgradeView.hidden = YES;
         _classifyView.hidden = YES;
         _sofaView.hidden = YES;
+        _yumaoView.frame = CGRectMake(5, 10, 33, 32);
         tap = NO;
     } else {
         NSLog(@"345");
         _navView.hidden = NO;
-        _yumaoView.hidden = NO;
         _upgradeView.hidden = NO;
         _sofaView.hidden = NO;
+        _yumaoView.frame = CGRectMake(5, 73, 33, 32);
         tap = YES;
     }
 }

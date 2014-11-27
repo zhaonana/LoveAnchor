@@ -10,10 +10,9 @@
 
 @implementation SecondRowTableViewCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)init
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
+    if (self == [super init]) {
         [self showUI];
     }
     return self;
@@ -25,7 +24,6 @@
     for (int i = 0; i < 2; i++) {
         UIImageView *imageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(0+i*161, 0, 159, 120)];
         imageView1.backgroundColor = [UIColor purpleColor];
-        //imageView1.image = [UIImage imageNamed:@"36387_1393222176K1R0"];
         imageView1.tag = 10+i;
         imageView1.userInteractionEnabled = YES;
         [self.contentView addSubview:imageView1];
@@ -34,7 +32,6 @@
         [imageView1 addGestureRecognizer:tap];
         
         UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 90, 110, 15)];
-        nameLabel.text = @"斯嘉丽约翰逊";
         nameLabel.backgroundColor = [UIColor clearColor];
         nameLabel.font = [UIFont systemFontOfSize:11.0f];
         nameLabel.textColor = [UIColor whiteColor];
@@ -49,7 +46,6 @@
         [imageView1 addSubview:numberImageView];
         
         UILabel *numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(25, 105, 130, 16)];
-        numberLabel.text = @"8888";
         numberLabel.textColor = [UIColor whiteColor];
         numberLabel.font = [UIFont systemFontOfSize:12.0f];
         numberLabel.backgroundColor = [UIColor clearColor];

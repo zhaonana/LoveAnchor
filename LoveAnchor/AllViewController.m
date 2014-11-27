@@ -115,30 +115,19 @@
 {   
     NSArray *modelArray = [_dataArray objectAtIndex:indexPath.row];
     if (indexPath.row == 0) {
-        FirstRowTableViewCell *firstCell = [tableView dequeueReusableCellWithIdentifier:@"firstCell"];
-        if (firstCell == nil) {
-            firstCell = [[FirstRowTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"firstCell"];
-        }
+        FirstRowTableViewCell *firstCell = [[FirstRowTableViewCell alloc] init];
         firstCell.selectionStyle = UITableViewCellSelectionStyleNone;
         firstCell.delegate = self;
         [firstCell setCellData:modelArray];
         return firstCell;
     } else if (indexPath.row == 1) {
-        SecondRowTableViewCell *secondCell = [tableView dequeueReusableCellWithIdentifier:@"secondCell"];
-        if (secondCell == nil) {
-            secondCell = [[SecondRowTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"secondCell"];
-        }
+        SecondRowTableViewCell *secondCell = [[SecondRowTableViewCell alloc]init];
         secondCell.selectionStyle = UITableViewCellSelectionStyleNone;
         secondCell.delegate = self;
         [secondCell setCellData:modelArray];
         return secondCell;
     } else {
-        ThirdRowTableViewCell *thirdCell = [tableView dequeueReusableCellWithIdentifier:@"thirdCell"];
-        
-        if (thirdCell == nil) {
-            thirdCell = [[ThirdRowTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"thirdCell"];
-        }
-        
+        ThirdRowTableViewCell *thirdCell = [[ThirdRowTableViewCell alloc] init];
         thirdCell.selectionStyle = UITableViewCellSelectionStyleNone;
         thirdCell.delegate = self;
         [thirdCell setCellData:modelArray];

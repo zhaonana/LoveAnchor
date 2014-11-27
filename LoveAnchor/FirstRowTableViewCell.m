@@ -10,14 +10,14 @@
 
 @implementation FirstRowTableViewCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)init
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
-    if (self) {
+    if (self == [super init]) {
         [self showUI];
     }
     return self;
 }
+
 #pragma mark - 界面
 - (void)showUI
 {
@@ -31,7 +31,6 @@
     [logoImageView addGestureRecognizer:tap];
     
     UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(18, 150, 140, 15)];
-    nameLabel.text = @"佳丽斯约翰逊";
     nameLabel.tag = 101;
     nameLabel.font = [UIFont systemFontOfSize:11.0f];
     nameLabel.backgroundColor = [UIColor clearColor];
@@ -46,7 +45,6 @@
     [logoImageView addSubview:headImageView];
     
     UILabel *numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(255, 150, 60, 16)];
-    numberLabel.text = @"111111";
     numberLabel.tag = 102;
     numberLabel.textColor = [UIColor whiteColor];
     numberLabel.font = [UIFont systemFontOfSize:12.0f];

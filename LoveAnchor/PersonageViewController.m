@@ -7,8 +7,9 @@
 //
 
 #import "PersonageViewController.h"
+#import <AssetsLibrary/AssetsLibrary.h>
 
-@interface PersonageViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,HZAreaPickerDelegate,UIActionSheetDelegate>
+@interface PersonageViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,HZAreaPickerDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
     UITableView *_tableView;
     NSArray *_titleArray;
@@ -63,6 +64,10 @@
     NSMutableArray *allSeatArray;
     //拥有座驾
     SeatManageModel *mySeat;
+    //头像
+    UIImageView *headImgView;
+    NSData *imageData;
+    UIImagePickerController *picker;
 }
 @property (nonatomic, strong) NSString *areaValue;
 @property (strong, nonatomic) HZAreaPickerView *locatePicker;
@@ -140,12 +145,14 @@
     headImageView.userInteractionEnabled = YES;
     [scrollView addSubview:headImageView];
     
-    UIButton *headButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    headButton.frame = CGRectMake(120, 32.5, 80, 80);
-    [headButton setBackgroundImage:[UIImage imageNamed:@"morentouxiang"] forState:UIControlStateNormal];
-    [headButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-    headButton.tag = 101;
-    [headImageView addSubview:headButton];
+    headImgView = [[UIImageView alloc] initWithFrame:CGRectMake(120, 32.5, 80, 80)];
+    [headImgView setImage:[UIImage imageNamed:@"morentouxiang"]];
+    headImgView.userInteractionEnabled = YES;
+    headImgView.layer.masksToBounds = YES;
+    [headImgView.layer setCornerRadius:headImgView.frame.size.width/2.0];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(headClick:)];
+    [headImgView addGestureRecognizer:tap];
+    [headImageView addSubview:headImgView];
     
     UIImageView *photoImage = [[UIImageView alloc] initWithFrame:CGRectMake(178, 88, 22, 22)];
     [photoImage setImage:[UIImage imageNamed:@"xiangji"]];
@@ -182,9 +189,6 @@
         } else {
             [self dismissViewControllerAnimated:YES completion:nil];
         }
-    } else if (button.tag == 101) {
-        UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照", @"从相册选择", nil];
-        [actionSheet showInView:self.view];
     } else if (button.tag == 103) {
         if ([CommonUtil isLogin]) {
             [CommonUtil logout];
@@ -218,10 +222,65 @@
     
 }
 
+- (void)headClick:(UITapGestureRecognizer *)tap
+{
+    UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:nil delegate:self cancelButtonTitle:@"取消" destructiveButtonTitle:nil otherButtonTitles:@"拍照", @"从相册选择", nil];
+    [actionSheet showInView:self.view];
+}
+
 #pragma mark - UIActionSheetDelegate methods
 - (void)actionSheet:(UIActionSheet *)actionSheet clickedButtonAtIndex:(NSInteger)buttonIndex
 {
+    switch (buttonIndex) {
+        case 0: {   //拍照
+            [self choosePhotoWithSourceType:UIImagePickerControllerSourceTypeCamera];
+        }
+            break;
+        case 1: {   //从相册选择
+            [self choosePhotoWithSourceType:UIImagePickerControllerSourceTypeSavedPhotosAlbum];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)choosePhotoWithSourceType:(UIImagePickerControllerSourceType)type
+{
+    picker = [[UIImagePickerController alloc] init];
     
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        picker.sourceType = type;
+        NSString *temp_MediaType = [[UIImagePickerController availableMediaTypesForSourceType:picker.sourceType] objectAtIndex:0];
+        NSArray *temp_MediaTypes = [NSArray arrayWithObject:temp_MediaType];
+        picker.mediaTypes = temp_MediaTypes;
+        picker.delegate = self;
+        picker.allowsEditing = YES;
+    }
+    
+    [self presentViewController:picker animated:YES completion:^{
+        
+    }];
+}
+
+#pragma mark - UIImagePickerControllerDelegate methods
+- (void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        NSString *mediaType = [info objectForKey:UIImagePickerControllerMediaType];
+        if ([mediaType isEqualToString:@"public.image"]) {
+            UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+            headImgView.image = image;
+            imageData = UIImageJPEGRepresentation(image, 1.0);
+        }
+    }];
+}
+
+- (void)imagePickerControllerDidCancel:(UIImagePickerController *)picker
+{
+    [self dismissViewControllerAnimated:YES completion:^{
+        
+    }];
 }
 
 #pragma mark - tableViewDelegate

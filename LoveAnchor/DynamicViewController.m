@@ -30,11 +30,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    model = [CommonUtil getUserModel];
 
     [self.navigationController.navigationBar setTranslucent:NO];
     self.view.backgroundColor = [UIColor whiteColor];
     [self showUI];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    model = [CommonUtil getUserModel];
     [self request];
 }
 
@@ -80,12 +86,25 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _dataArray.count;
+    switch (section) {
+        case 0:
+            return [[_dataArray objectAtIndex:0] count];
+            break;
+        case 1:
+            return [[_dataArray objectAtIndex:1] count];
+            break;
+        case 2:
+            return [[_dataArray objectAtIndex:2] count];
+            break;
+        default:
+            break;
+    }
+    return 0;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 3;
+    return _dataArray.count;
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {

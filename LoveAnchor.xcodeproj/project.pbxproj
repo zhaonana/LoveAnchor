@@ -185,7 +185,6 @@
 		39B663CB1A24A3EB0033D28C /* 0fu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 39B663C91A24A3EB0033D28C /* 0fu@2x.png */; };
 		39B663CE1A257EF30033D28C /* LevelInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B663CD1A257EF30033D28C /* LevelInfoModel.m */; };
 		39B663D11A2588CB0033D28C /* CommonUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B663D01A2588CB0033D28C /* CommonUtil.m */; };
-		39B663D41A25C8BF0033D28C /* ImagePickerManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B663D31A25C8BF0033D28C /* ImagePickerManager.m */; };
 		F703DB371A174D5200C53D4C /* SeatManageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F703DB361A174D5200C53D4C /* SeatManageViewController.m */; };
 		F71890F11A12195B005ECCA9 /* huangV1.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890ED1A12195B005ECCA9 /* huangV1.png */; };
 		F71890F21A12195B005ECCA9 /* huangV1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890EE1A12195B005ECCA9 /* huangV1@2x.png */; };
@@ -703,8 +702,6 @@
 		39B663CD1A257EF30033D28C /* LevelInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LevelInfoModel.m; sourceTree = "<group>"; };
 		39B663CF1A2588CB0033D28C /* CommonUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonUtil.h; sourceTree = "<group>"; };
 		39B663D01A2588CB0033D28C /* CommonUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonUtil.m; sourceTree = "<group>"; };
-		39B663D21A25C8BF0033D28C /* ImagePickerManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ImagePickerManager.h; sourceTree = "<group>"; };
-		39B663D31A25C8BF0033D28C /* ImagePickerManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ImagePickerManager.m; sourceTree = "<group>"; };
 		F703DB351A174D5200C53D4C /* SeatManageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeatManageViewController.h; sourceTree = "<group>"; };
 		F703DB361A174D5200C53D4C /* SeatManageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeatManageViewController.m; sourceTree = "<group>"; };
 		F71890ED1A12195B005ECCA9 /* huangV1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = huangV1.png; sourceTree = "<group>"; };
@@ -1384,8 +1381,6 @@
 				F7456F0219986A2800CF28E8 /* XDSSegmentedViewController.m */,
 				39B663CF1A2588CB0033D28C /* CommonUtil.h */,
 				39B663D01A2588CB0033D28C /* CommonUtil.m */,
-				39B663D21A25C8BF0033D28C /* ImagePickerManager.h */,
-				39B663D31A25C8BF0033D28C /* ImagePickerManager.m */,
 				F7C7CCDC19ADB27A003FCC03 /* 左菜单 */,
 				F7C7CCDD19ADB28A003FCC03 /* 右菜单 */,
 				F7456F1019986E2D00CF28E8 /* 直播大厅 */,
@@ -2466,7 +2461,6 @@
 				F7C7CCB019AD8FE7003FCC03 /* ASIInputStream.m in Sources */,
 				F7C7CC8F19AD8569003FCC03 /* SearchTableViewCell.m in Sources */,
 				F7456E4D1998672700CF28E8 /* TabBarViewController.m in Sources */,
-				39B663D41A25C8BF0033D28C /* ImagePickerManager.m in Sources */,
 				F759245219C196B0004DC4D6 /* SearchModel.m in Sources */,
 				F7493F0819AC494E005739CD /* DynamicTableViewCell.m in Sources */,
 				F7B70E641A1E0F970064D56E /* SliderViewController.m in Sources */,

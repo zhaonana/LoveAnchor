@@ -131,14 +131,19 @@
     [_liveView addSubview:bearButton];
     
     //---------------------------------------------------------------------------
-    //的背景VIew
-    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 260, kScreenWidth, 28)];
+    //下半部的背景VIew
+    UIView *View = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight-308, kScreenWidth, kScreenHeight-260)];
+    View.backgroundColor = [UIColor clearColor];
+    View.userInteractionEnabled = YES;
+    [self.view addSubview:View];
+    
+    UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 28)];
     imageView.backgroundColor = [UIColor clearColor];
     imageView.userInteractionEnabled = YES;
-    [self.view addSubview:imageView];
+    [View addSubview:imageView];
     //button背景
     _backImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 27, 62, 1)];
-    _backImageView.backgroundColor = [UIColor redColor];
+    _backImageView.backgroundColor = [UIColor clearColor];
     [imageView addSubview:_backImageView];
     
     synthesizeButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -188,14 +193,14 @@
     [imageView addSubview:audienceButton];
 
     //4个聊天界面
-    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 288, kScreenWidth, kScreenHeight-333)];
+    _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 28, kScreenWidth, kScreenHeight-333)];
     _scrollView.contentSize = CGSizeMake(kScreenWidth *4, 0);
     _scrollView.backgroundColor = [UIColor clearColor];
     _scrollView.showsHorizontalScrollIndicator = YES;
     _scrollView.showsVerticalScrollIndicator = NO;
     _scrollView.pagingEnabled = YES;
     _scrollView.delegate = self;
-    [self.view addSubview:_scrollView];
+    [View addSubview:_scrollView];
     
     UITableView *synthesizeTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
     synthesizeTableView.delegate = self;
@@ -270,8 +275,6 @@
         QImageView.image = [UIImage imageNamed:@"qiangzuo"];
         [button addSubview:QImageView];
     }
-    
-    
 }
 #pragma mark - 点击事件
 - (void)buttonClick:(UIButton *)button

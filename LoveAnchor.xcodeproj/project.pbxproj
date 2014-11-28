@@ -7,6 +7,19 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3944F0581A27361900429734 /* libffmpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0531A27361900429734 /* libffmpeg.a */; };
+		3944F0591A27361900429734 /* libopenssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0541A27361900429734 /* libopenssl.a */; };
+		3944F05A1A27361900429734 /* libVitamio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0551A27361900429734 /* libVitamio.a */; };
+		3944F05D1A27363E00429734 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F05C1A27363E00429734 /* QuartzCore.framework */; };
+		3944F05F1A27364A00429734 /* libstdc++.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F05E1A27364A00429734 /* libstdc++.dylib */; };
+		3944F0611A27365900429734 /* libiconv.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0601A27365900429734 /* libiconv.dylib */; };
+		3944F0631A27366700429734 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0621A27366700429734 /* AVFoundation.framework */; };
+		3944F0651A27367200429734 /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0641A27367200429734 /* MediaPlayer.framework */; };
+		3944F0671A27367C00429734 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0661A27367C00429734 /* AudioToolbox.framework */; };
+		3944F0691A27368800429734 /* libbz2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0681A27368800429734 /* libbz2.dylib */; };
+		3944F06B1A27369500429734 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F06A1A27369500429734 /* CoreMedia.framework */; };
+		3944F06D1A2736A100429734 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F06C1A2736A100429734 /* CoreVideo.framework */; };
+		3944F06F1A2736AA00429734 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F06E1A2736AA00429734 /* OpenGLES.framework */; };
 		39B6629D1A2499DE0033D28C /* 10fu.png in Resources */ = {isa = PBXBuildFile; fileRef = 39B662671A2499DE0033D28C /* 10fu.png */; };
 		39B6629E1A2499DE0033D28C /* 10fu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 39B662681A2499DE0033D28C /* 10fu@2x.png */; };
 		39B6629F1A2499DE0033D28C /* 11fu.png in Resources */ = {isa = PBXBuildFile; fileRef = 39B662691A2499DE0033D28C /* 11fu.png */; };
@@ -524,6 +537,27 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3944F04B1A27361900429734 /* VDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDefines.h; sourceTree = "<group>"; };
+		3944F04C1A27361900429734 /* Vitamio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vitamio.h; sourceTree = "<group>"; };
+		3944F04D1A27361900429734 /* VMediaExtracter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMediaExtracter.h; sourceTree = "<group>"; };
+		3944F04E1A27361900429734 /* VMediaExtracterDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMediaExtracterDef.h; sourceTree = "<group>"; };
+		3944F04F1A27361900429734 /* VMediaPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMediaPlayer.h; sourceTree = "<group>"; };
+		3944F0501A27361900429734 /* VMediaPlayerDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMediaPlayerDelegate.h; sourceTree = "<group>"; };
+		3944F0511A27361900429734 /* VPlayerManageDef.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VPlayerManageDef.h; sourceTree = "<group>"; };
+		3944F0521A27361900429734 /* VSingleton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VSingleton.h; sourceTree = "<group>"; };
+		3944F0531A27361900429734 /* libffmpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libffmpeg.a; sourceTree = "<group>"; };
+		3944F0541A27361900429734 /* libopenssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libopenssl.a; sourceTree = "<group>"; };
+		3944F0551A27361900429734 /* libVitamio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libVitamio.a; sourceTree = "<group>"; };
+		3944F05C1A27363E00429734 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
+		3944F05E1A27364A00429734 /* libstdc++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libstdc++.dylib"; path = "Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/usr/lib/libstdc++.dylib"; sourceTree = DEVELOPER_DIR; };
+		3944F0601A27365900429734 /* libiconv.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libiconv.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/usr/lib/libiconv.dylib; sourceTree = DEVELOPER_DIR; };
+		3944F0621A27366700429734 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/AVFoundation.framework; sourceTree = DEVELOPER_DIR; };
+		3944F0641A27367200429734 /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MediaPlayer.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/MediaPlayer.framework; sourceTree = DEVELOPER_DIR; };
+		3944F0661A27367C00429734 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/AudioToolbox.framework; sourceTree = DEVELOPER_DIR; };
+		3944F0681A27368800429734 /* libbz2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libbz2.dylib; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/usr/lib/libbz2.dylib; sourceTree = DEVELOPER_DIR; };
+		3944F06A1A27369500429734 /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/CoreMedia.framework; sourceTree = DEVELOPER_DIR; };
+		3944F06C1A2736A100429734 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/CoreVideo.framework; sourceTree = DEVELOPER_DIR; };
+		3944F06E1A2736AA00429734 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/OpenGLES.framework; sourceTree = DEVELOPER_DIR; };
 		39B662671A2499DE0033D28C /* 10fu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 10fu.png; sourceTree = "<group>"; };
 		39B662681A2499DE0033D28C /* 10fu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "10fu@2x.png"; sourceTree = "<group>"; };
 		39B662691A2499DE0033D28C /* 11fu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 11fu.png; sourceTree = "<group>"; };
@@ -1116,12 +1150,25 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3944F06F1A2736AA00429734 /* OpenGLES.framework in Frameworks */,
+				3944F06D1A2736A100429734 /* CoreVideo.framework in Frameworks */,
+				3944F06B1A27369500429734 /* CoreMedia.framework in Frameworks */,
+				3944F0691A27368800429734 /* libbz2.dylib in Frameworks */,
+				3944F0671A27367C00429734 /* AudioToolbox.framework in Frameworks */,
+				3944F0651A27367200429734 /* MediaPlayer.framework in Frameworks */,
+				3944F0631A27366700429734 /* AVFoundation.framework in Frameworks */,
+				3944F0611A27365900429734 /* libiconv.dylib in Frameworks */,
+				3944F05F1A27364A00429734 /* libstdc++.dylib in Frameworks */,
+				3944F05D1A27363E00429734 /* QuartzCore.framework in Frameworks */,
 				F7C7CCD819AD95A3003FCC03 /* SystemConfiguration.framework in Frameworks */,
+				3944F05A1A27361900429734 /* libVitamio.a in Frameworks */,
 				F7C7CCD619AD956E003FCC03 /* libz.dylib in Frameworks */,
 				F7C7CCD419AD9555003FCC03 /* CFNetwork.framework in Frameworks */,
 				F7C7CCD219AD9539003FCC03 /* MobileCoreServices.framework in Frameworks */,
 				F7456E1F1998609100CF28E8 /* CoreGraphics.framework in Frameworks */,
 				F7456E211998609100CF28E8 /* UIKit.framework in Frameworks */,
+				3944F0591A27361900429734 /* libopenssl.a in Frameworks */,
+				3944F0581A27361900429734 /* libffmpeg.a in Frameworks */,
 				F7456E1D1998609100CF28E8 /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1139,6 +1186,40 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3944F0471A27361900429734 /* Vitamio */ = {
+			isa = PBXGroup;
+			children = (
+				3944F0491A27361900429734 /* include */,
+				3944F0531A27361900429734 /* libffmpeg.a */,
+				3944F0541A27361900429734 /* libopenssl.a */,
+				3944F0551A27361900429734 /* libVitamio.a */,
+			);
+			path = Vitamio;
+			sourceTree = "<group>";
+		};
+		3944F0491A27361900429734 /* include */ = {
+			isa = PBXGroup;
+			children = (
+				3944F04A1A27361900429734 /* Vitamio */,
+			);
+			path = include;
+			sourceTree = "<group>";
+		};
+		3944F04A1A27361900429734 /* Vitamio */ = {
+			isa = PBXGroup;
+			children = (
+				3944F04B1A27361900429734 /* VDefines.h */,
+				3944F04C1A27361900429734 /* Vitamio.h */,
+				3944F04D1A27361900429734 /* VMediaExtracter.h */,
+				3944F04E1A27361900429734 /* VMediaExtracterDef.h */,
+				3944F04F1A27361900429734 /* VMediaPlayer.h */,
+				3944F0501A27361900429734 /* VMediaPlayerDelegate.h */,
+				3944F0511A27361900429734 /* VPlayerManageDef.h */,
+				3944F0521A27361900429734 /* VSingleton.h */,
+			);
+			path = Vitamio;
+			sourceTree = "<group>";
+		};
 		39B662661A2499DE0033D28C /* usericon */ = {
 			isa = PBXGroup;
 			children = (
@@ -1358,6 +1439,16 @@
 		F7456E1B1998609100CF28E8 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				3944F06E1A2736AA00429734 /* OpenGLES.framework */,
+				3944F06C1A2736A100429734 /* CoreVideo.framework */,
+				3944F06A1A27369500429734 /* CoreMedia.framework */,
+				3944F0681A27368800429734 /* libbz2.dylib */,
+				3944F0661A27367C00429734 /* AudioToolbox.framework */,
+				3944F0641A27367200429734 /* MediaPlayer.framework */,
+				3944F0621A27366700429734 /* AVFoundation.framework */,
+				3944F0601A27365900429734 /* libiconv.dylib */,
+				3944F05E1A27364A00429734 /* libstdc++.dylib */,
+				3944F05C1A27363E00429734 /* QuartzCore.framework */,
 				F76D698919AE02B7004F89C1 /* libstdc++.dylib */,
 				F76D698719AE029A004F89C1 /* libiconv.dylib */,
 				F76D698519AE0275004F89C1 /* libbz2.dylib */,
@@ -1387,6 +1478,7 @@
 				F7456F0219986A2800CF28E8 /* XDSSegmentedViewController.m */,
 				39B663CF1A2588CB0033D28C /* CommonUtil.h */,
 				39B663D01A2588CB0033D28C /* CommonUtil.m */,
+				3944F0471A27361900429734 /* Vitamio */,
 				F7C7CCDC19ADB27A003FCC03 /* 左菜单 */,
 				F7C7CCDD19ADB28A003FCC03 /* 右菜单 */,
 				F7456F1019986E2D00CF28E8 /* 直播大厅 */,
@@ -2623,8 +2715,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/LoveAnchor",
+					"$(PROJECT_DIR)/LoveAnchor/Vitamio",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "25681c2b-b5bc-4cb7-bac3-8599e59557ba";
 				SDKROOT = iphoneos7.1;
@@ -2647,8 +2740,9 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)",
 					"$(PROJECT_DIR)/LoveAnchor",
+					"$(PROJECT_DIR)/LoveAnchor/Vitamio",
 				);
-				OTHER_LDFLAGS = "";
+				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "25681c2b-b5bc-4cb7-bac3-8599e59557ba";
 				SDKROOT = iphoneos7.1;

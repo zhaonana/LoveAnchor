@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 #import "AllModel.h"
+#import "Vitamio.h"
 
 @interface PlayViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
-@property (nonatomic,strong)NSString *roomID;
-
+@property (nonatomic,strong) NSString *roomID;
 @property (nonatomic,strong) AllModel *allModel;
 
 @end

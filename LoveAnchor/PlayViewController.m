@@ -66,11 +66,9 @@
 {
     //视频播放
     _liveView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, kScreenWidth, 240)];
-    //frame = (0 20; 320 240);
     _liveView.userInteractionEnabled = YES;
     tap = NO;
     _liveView.backgroundColor = [UIColor colorWithRed:211.0/255.0 green:195.0/255.0 blue:29.0/255.0 alpha:1.0];
-    //frame = (0 0; 320 568);   frame = (0 0; 320 480);
     [self.view addSubview:_liveView];
     
     _activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:
@@ -126,20 +124,6 @@
     quantityLabel.font = [UIFont systemFontOfSize:6];
     [_yumaoView addSubview:quantityLabel];
     
-    //主播详情
-    _classifyView = [[UIView alloc]initWithFrame:CGRectMake(225, 34, 94, 110)];
-    _classifyView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.8];
-    _classifyView.userInteractionEnabled = YES;
-    _classifyView.hidden = YES;
-    [_liveView addSubview:_classifyView];
-    
-    UIButton *bearButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    bearButton.frame = CGRectMake(280, 200, 35, 35);
-    [bearButton setImage:[UIImage imageNamed:@"shipinguanbi"] forState:UIControlStateNormal];
-    bearButton.tag = 1000;
-    [bearButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [_liveView addSubview:bearButton];
-    
     //导航
     _navView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, kScreenWidth, 35)];
     _navView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.8];
@@ -184,6 +168,7 @@
     _classifyView.userInteractionEnabled = YES;
     _classifyView.hidden = YES;
     [_liveView addSubview:_classifyView];
+
     //关闭视频
     bearButton = [UIButton buttonWithType:UIButtonTypeCustom];
     bearButton.frame = CGRectMake(280, 200, 35, 35);
@@ -194,13 +179,7 @@
     
     //---------------------------------------------------------------------------
     //下半部的背景VIew
-    View = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight-308, kScreenWidth, kScreenHeight-260)];
-
-    
-    //---------------------------------------------------------------------------
-    //下半部的背景VIew
-    UIView *View = [[UIView alloc]initWithFrame:CGRectMake(0, 260, kScreenWidth, kScreenHeight-260)];
-
+    View = [[UIView alloc]initWithFrame:CGRectMake(0, 260, kScreenWidth, kScreenHeight-260)];
     View.backgroundColor = [UIColor clearColor];
     View.userInteractionEnabled = YES;
     [self.view addSubview:View];

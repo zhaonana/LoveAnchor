@@ -57,6 +57,7 @@
     }
     [[UITabBarItem appearance] setTitleTextAttributes:@{UITextAttributeTextColor:textFontColor} forState:UIControlStateNormal];
     [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"shangdise"] forBarMetrics:UIBarMetricsDefault];
+    [[UINavigationBar appearance] setBackgroundImage:[UIImage imageNamed:@"nav_bg.png"] forBarMetrics:UIBarMetricsDefault];
 }
 
 

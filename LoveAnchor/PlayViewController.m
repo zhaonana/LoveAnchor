@@ -61,6 +61,22 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self shouwUI];
 }
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+ 
+    
+//    NSString *url = @"http://v.17173.com/api/5981245-4.m3u8";
+    NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
+    self.videoURL = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
+    
+    [mMPayer setDataSource:self.videoURL];
+    [mMPayer prepareAsync];
+    [self.activityView setHidden:NO];
+    [self.activityView startAnimating];
+}
+
 #pragma mark - shouUI
 - (void)shouwUI
 {
@@ -81,14 +97,6 @@
         [mMPayer setupPlayerWithCarrierView:_liveView withDelegate:self];
         [self setupObservers];
     }
-//    NSString *url = @"http://hot.vrs.sohu.com/ipad1407291_4596271359934_4618512.m3u8";
-    NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
-    self.videoURL = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
-    
-    [mMPayer setDataSource:self.videoURL];
-    [mMPayer prepareAsync];
-    [self.activityView setHidden:NO];
-    [self.activityView startAnimating];
     
     //点击视频播放区域手势
     UITapGestureRecognizer *tapdesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(liveClick:)];
@@ -356,6 +364,7 @@
     NSLog(@"1");
     if (button.tag == 100) {
         [mMPayer reset];
+        [mMPayer unSetupPlayer];
         [self dismissViewControllerAnimated:YES completion:nil];
     } else if (button.tag == 101) {
         

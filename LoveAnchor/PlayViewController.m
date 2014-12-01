@@ -351,6 +351,7 @@
 {
     NSLog(@"1");
     if (button.tag == 100) {
+        [mMPayer reset];
         [self dismissViewControllerAnimated:YES completion:nil];
     } else if (button.tag == 101) {
         

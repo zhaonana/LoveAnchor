@@ -279,6 +279,29 @@
     privateTableView.dataSource = self;
     privateTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     [_scrollView addSubview:privateTableView];
+    //聊天框背景
+    chatView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight-45, kScreenWidth, 45)];
+    chatView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
+    [self.view addSubview:chatView];
+    //聊天框
+    _chatTextField = [[UITextField alloc]initWithFrame:CGRectMake(5, 5, 260, 35)];
+    _chatTextField.backgroundColor = [UIColor whiteColor];
+    _chatTextField.borderStyle = UITextBorderStyleNone;
+    _chatTextField.delegate = self;
+    [chatView addSubview:_chatTextField];
+    //礼物按钮
+    UIButton *giftButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    giftButton.frame = CGRectMake(270, 12.5, 20, 20);
+    [giftButton setImage:[UIImage imageNamed:@"liwu"] forState:UIControlStateNormal];
+    [giftButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [chatView addSubview:giftButton];
+    //信息档案
+    UIButton *manageButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    manageButton.frame = CGRectMake(295, 12.5, 15, 20);
+    [manageButton setImage:[UIImage imageNamed:@"zhuboxiangqing"] forState:UIControlStateNormal];
+    [manageButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [chatView addSubview:manageButton];
+
     //观众榜
     UIScrollView *audienceScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(kScreenWidth*3, 0, kScreenWidth, _scrollView.frame.size.height)];
     audienceScrollView.contentSize = CGSizeMake(kScreenWidth *3, 0);
@@ -305,28 +328,8 @@
     alwaysTableView.dataSource = self;
     alwaysTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     [audienceScrollView addSubview:alwaysTableView];
-    //聊天框背景
-    chatView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight-45, kScreenWidth, 45)];
-    chatView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
-    [self.view addSubview:chatView];
-    //聊天框
-    _chatTextField = [[UITextField alloc]initWithFrame:CGRectMake(5, 5, 260, 35)];
-    _chatTextField.backgroundColor = [UIColor whiteColor];
-    _chatTextField.borderStyle = UITextBorderStyleNone;
-    _chatTextField.delegate = self;
-    [chatView addSubview:_chatTextField];
-    //礼物按钮
-    UIButton *giftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    giftButton.frame = CGRectMake(270, 12.5, 20, 20);
-    [giftButton setImage:[UIImage imageNamed:@"liwu"] forState:UIControlStateNormal];
-    [giftButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [chatView addSubview:giftButton];
-    //信息档案
-    UIButton *manageButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    manageButton.frame = CGRectMake(295, 12.5, 15, 20);
-    [manageButton setImage:[UIImage imageNamed:@"zhuboxiangqing"] forState:UIControlStateNormal];
-    [manageButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [chatView addSubview:manageButton];
+    
+    
     
     //抢沙发
     _sofaView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight- 130, kScreenWidth, 130)];

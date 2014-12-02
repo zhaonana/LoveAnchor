@@ -134,7 +134,7 @@
     [self.navigationController.navigationBar addSubview:label];
     
     UIScrollView *scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-    scrollView.contentSize =  CGSizeMake(kScreenWidth, 811);
+    scrollView.contentSize =  CGSizeMake(kScreenWidth, 750);
     scrollView.backgroundColor = [UIColor colorWithRed:232/255.0 green:241/255.0 blue:243/255.0 alpha:1];
     scrollView.bounces = NO;
     scrollView.showsVerticalScrollIndicator = NO;

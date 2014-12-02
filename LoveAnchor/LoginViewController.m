@@ -234,7 +234,7 @@
         case 103: {
             [ShareSDK getUserInfoWithType:ShareTypeQQSpace authOptions:nil result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
                 if (result) {
-                    NSLog(@"userInfo --- nickname:%@ uid:%@",[userInfo nickname],[userInfo uid]);
+                    NSLog(@"userInfo --- nickname:%@ uid:%@ icon:%@",[userInfo nickname],[userInfo uid],[userInfo profileImage]);
                     [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
                 }
             }];
@@ -252,7 +252,7 @@
                         NSLog(@"授权成功~");
                         [ShareSDK getUserInfoWithType:ShareTypeSinaWeibo authOptions:nil result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
                             if (result) {
-                                NSLog(@"userInfo --- nickname:%@ uid:%@",[userInfo nickname],[userInfo uid]);
+                                NSLog(@"userInfo --- nickname:%@ uid:%@ icon:%@",[userInfo nickname],[userInfo uid],[userInfo profileImage]);
                                 [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
                             }
                         }];

@@ -67,8 +67,8 @@
     [super viewWillAppear:animated];
  
     
-//    NSString *url = @"http://v.17173.com/api/5981245-4.m3u8";
-    NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
+    NSString *url = @"http://v.17173.com/api/5981245-4.m3u8";
+//    NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
     self.videoURL = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
     [mMPayer setDataSource:self.videoURL];

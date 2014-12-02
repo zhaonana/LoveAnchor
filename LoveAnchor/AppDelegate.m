@@ -7,6 +7,9 @@
 //
 
 #import "AppDelegate.h"
+#import <ShareSDK/ShareSDK.h>
+#import <TencentOpenAPI/QQApiInterface.h>
+#import <TencentOpenAPI/TencentOAuth.h>
 
 @implementation AppDelegate
 
@@ -29,8 +32,28 @@
     
     self.window.rootViewController = [[UINavigationController alloc] initWithRootViewController:[SliderViewController sharedSliderController]];
     
+    
+    //第三方登录
+    [ShareSDK registerApp:@"47e11a1b1da2"];
+    //sina
+    [ShareSDK connectSinaWeiboWithAppKey:@"2352021188"
+                                appSecret:@"37964df50726ec3ddb017fef36397851"
+                                redirectUri:@"http://weibo.com/u/2389484970/home?wvr=5"];
+    //QQ
+    [ShareSDK connectQZoneWithAppKey:@"1103558424" appSecret:@"ldR56iwXfFAZMAVo" qqApiInterfaceCls:[QQApiInterface class] tencentOAuthCls:[TencentOAuth class]];
+    
     [self.window makeKeyAndVisible];
     return YES;
+}
+
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return [ShareSDK handleOpenURL:url wxDelegate:self];
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return [ShareSDK handleOpenURL:url sourceApplication:sourceApplication annotation:annotation wxDelegate:self];
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application

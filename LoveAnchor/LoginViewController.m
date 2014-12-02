@@ -7,6 +7,8 @@
 //
 
 #import "LoginViewController.h"
+#import <ShareSDK/ShareSDK.h>
+#import "WeiboSDK.h"
 
 @interface LoginViewController ()<ASIHTTPRequestDelegate>
 {
@@ -42,8 +44,8 @@
 
     [self showUI];
     [self getVerificationCode];
-    
 }
+
 #pragma mark - UI
 - (void)showUI
 {
@@ -206,24 +208,63 @@
 #pragma mark - 点击事件
 - (void)buttonClick:(UIButton *)button
 {
-    if (button.tag == 100) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    }else if (button.tag == 101) {
-        RegisterViewController *registerController = [[RegisterViewController alloc]init];
-        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:registerController];
-        [self presentViewController:nc animated:NO completion:nil];
-    } else if (button.tag == 102) {
-        if ((_nameTextField.text.length >=6 && _nameTextField.text.length <= 18) &&(_passTextField.text.length >= 6 && _passTextField.text.length <= 20)) {
-            [self verifyTheVerificationCode];
-        } else {
-            UIAlertView *alert = [[UIAlertView alloc]init];
-            alert.title = @"提示";
-            alert.message = @"用户名或密码不正确，请重新输入";
-            [alert addButtonWithTitle:@"确定"];
-            [alert show];
+    switch (button.tag) {
+        case 100: {
+            [self dismissViewControllerAnimated:YES completion:nil];
         }
-        
-        
+            break;
+        case 101: {
+            RegisterViewController *registerController = [[RegisterViewController alloc]init];
+            UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:registerController];
+            [self presentViewController:nc animated:NO completion:nil];
+        }
+            break;
+        case 102: {
+            if ((_nameTextField.text.length >=6 && _nameTextField.text.length <= 18) &&(_passTextField.text.length >= 6 && _passTextField.text.length <= 20)) {
+                [self verifyTheVerificationCode];
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc]init];
+                alert.title = @"提示";
+                alert.message = @"用户名或密码不正确，请重新输入";
+                [alert addButtonWithTitle:@"确定"];
+                [alert show];
+            }
+        }
+            break;
+        case 103: {
+            [ShareSDK getUserInfoWithType:ShareTypeQQSpace authOptions:nil result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
+                if (result) {
+                    NSLog(@"userInfo --- nickname:%@ uid:%@",[userInfo nickname],[userInfo uid]);
+                    [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
+                }
+            }];
+        }
+            break;
+        case 104: {
+            if (![WeiboSDK isWeiboAppInstalled]) {
+                
+            }
+            if ([ShareSDK hasAuthorizedWithType:ShareTypeSinaWeibo]) {
+                NSLog(@"已经授权~");
+            } else {
+                [ShareSDK authWithType:ShareTypeSinaWeibo options:[ShareSDK authOptionsWithAutoAuth:YES allowCallback:YES scopes:nil powerByHidden:YES followAccounts:nil authViewStyle:SSAuthViewStyleFullScreenPopup viewDelegate:nil authManagerViewDelegate:nil] result:^(SSAuthState state, id<ICMErrorInfo> error) {
+                    if (state == SSAuthStateSuccess) {
+                        NSLog(@"授权成功~");
+                        [ShareSDK getUserInfoWithType:ShareTypeSinaWeibo authOptions:nil result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
+                            if (result) {
+                                NSLog(@"userInfo --- nickname:%@ uid:%@",[userInfo nickname],[userInfo uid]);
+                                [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
+                            }
+                        }];
+                    } else if (state == SSAuthStateFail) {
+                        NSLog(@"授权失败~");
+                    }
+                }];
+            }
+        }
+            break;
+        default:
+            break;
     }
     
 }

@@ -8,7 +8,6 @@
 
 #import "LoginViewController.h"
 #import <ShareSDK/ShareSDK.h>
-#import "WeiboSDK.h"
 
 @interface LoginViewController ()<ASIHTTPRequestDelegate>
 {
@@ -20,6 +19,7 @@
     NSString *_imageURL;
     NSString *_getAuth_key;
     LoginModel *model;
+    NSString *_access_token;
 }
 
 @end
@@ -44,6 +44,8 @@
 
     [self showUI];
     [self getVerificationCode];
+    [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
+    [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
 }
 
 #pragma mark - UI
@@ -234,16 +236,13 @@
         case 103: {
             [ShareSDK getUserInfoWithType:ShareTypeQQSpace authOptions:nil result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
                 if (result) {
-                    NSLog(@"userInfo --- nickname:%@ uid:%@ icon:%@",[userInfo nickname],[userInfo uid],[userInfo profileImage]);
+                    [self otherLoginRequestWithUsertoken:[[userInfo credential] token] userid:[userInfo uid] t3pf:@"mqq" nickname:[userInfo nickname] picurl:[userInfo profileImage]];
                     [ShareSDK cancelAuthWithType:ShareTypeQQSpace];
                 }
             }];
         }
             break;
         case 104: {
-            if (![WeiboSDK isWeiboAppInstalled]) {
-                
-            }
             if ([ShareSDK hasAuthorizedWithType:ShareTypeSinaWeibo]) {
                 NSLog(@"已经授权~");
             } else {
@@ -252,7 +251,7 @@
                         NSLog(@"授权成功~");
                         [ShareSDK getUserInfoWithType:ShareTypeSinaWeibo authOptions:nil result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
                             if (result) {
-                                NSLog(@"userInfo --- nickname:%@ uid:%@ icon:%@",[userInfo nickname],[userInfo uid],[userInfo profileImage]);
+                                [self otherLoginRequestWithUsertoken:[[userInfo credential] token] userid:[userInfo uid] t3pf:@"mqq" nickname:[userInfo nickname] picurl:[userInfo profileImage]];
                                 [ShareSDK cancelAuthWithType:ShareTypeSinaWeibo];
                             }
                         }];
@@ -269,12 +268,35 @@
     
 }
 
+//第三方登录
+- (void)otherLoginRequestWithUsertoken:(NSString *)usertoken userid:(NSString *)userid t3pf:(NSString *)t3pf nickname:(NSString *)nickname picurl:(NSString *)picurl
+{
+    NSString *md5token = [self md5:usertoken];
+    NSString *encodingNickname = [nickname stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *encodingPicurl = [picurl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *urlStr = [NSString stringWithFormat:@"http://ttapi.izhubo.com/ttus/t3login?userid=%@&usertoken=%@&via=iphone&t3pf=%@&nickname=%@&picurl=%@",userid,md5token,t3pf,encodingNickname,encodingPicurl];
+    ASIHTTPRequest *logRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    logRequest.delegate = self;
+    logRequest.tag = 4;
+    [logRequest setTimeOutSeconds:10];
+    [logRequest startAsynchronous];
+}
+
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
     return YES;
 }
 
+//所有数据
+- (void)allRequestWithToken:(NSString *)access_token
+{
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/info/%@",access_token]]];
+    request.delegate = self;
+    request.tag = 5;
+    [request setTimeOutSeconds:30];
+    [request startAsynchronous];
+}
 
 #pragma mark - 登陆
 - (void)LoginRequest
@@ -320,7 +342,6 @@
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     if (request.tag == 0) {
-        NSLog(@"获取验证码 = %@",request.responseString);
         id getRsult = [NSJSONSerialization JSONObjectWithData:request.responseData
                                                       options:NSJSONReadingMutableContainers
                                                         error:nil];
@@ -332,7 +353,6 @@
             NSLog(@"%@",_getAuth_key);
         }
     } else if (request.tag == 1) {
-        NSLog(@"验证验证码 = %@",request.responseString);
         id verifyResult = [NSJSONSerialization JSONObjectWithData:request.responseData
                                                           options:NSJSONReadingMutableContainers
                                                             error:nil];
@@ -351,11 +371,9 @@
             }
     } else if (request.tag ==2) {
         NSData *data = [request responseData];
-        NSLog(@"更新验证码 = %@",data);
         UIImage *image = [[UIImage alloc]initWithData:data];
         _imageView.image = image;
     } else if (request.tag == 3) {
-        NSLog(@"登陆 == %@",request.responseString);
         id loginResult = [NSJSONSerialization JSONObjectWithData:request.responseData
                                                          options:NSJSONReadingMutableContainers
                                                            error:nil];
@@ -389,7 +407,61 @@
                 [alert show];
             }
         }
+    } else if (request.tag == 4) {
+        id otherRequest = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+        if ([otherRequest isKindOfClass:[NSDictionary class]]) {
+            NSNumber *code = [otherRequest objectForKey:@"code"];
+            if (code.intValue == 1) {
+                NSDictionary *otherDic = [otherRequest objectForKey:@"data"];
+                _access_token = [otherDic objectForKey:@"access_token"];
+                [self allRequestWithToken:_access_token];
+            }
+        }
+    } else if (request.tag == 5) {
+        id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+        if ([result isKindOfClass:[NSDictionary class]]) {
+            NSNumber *code = [result objectForKey:@"code"];
+            if (code.intValue == 1) {
+                NSDictionary *dict = [result objectForKey:@"data"];
+                //存储用户信息
+                LoginModel *loginModel = [[LoginModel alloc] init];
+                loginModel.userName = [dict objectForKey:@"nick_name"];
+                loginModel.access_token = _access_token;
+                [CommonUtil saveUserModel:loginModel];
+                
+                PersonageViewController *personage = [[PersonageViewController alloc]init];
+                personage.firstLogin = YES;
+                [personage setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+                UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:personage];
+                [self presentViewController:nc animated:YES completion:nil];
+            }
+        }
     }
+}
+
+#pragma mark - md5
+- (NSString *)md5:(NSString *)str
+{
+    
+    const char *cStr = [str UTF8String];
+    
+    unsigned char result[16];
+    
+    CC_MD5(cStr, strlen(cStr), result); // This is the md5 call
+    
+    return [NSString stringWithFormat:
+            
+            @"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x",
+            
+            result[0], result[1], result[2], result[3],
+            
+            result[4], result[5], result[6], result[7],
+            
+            result[8], result[9], result[10], result[11],
+            
+            result[12], result[13], result[14], result[15]
+            
+            ];
 }
 
 - (void)didReceiveMemoryWarning

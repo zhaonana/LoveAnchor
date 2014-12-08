@@ -52,6 +52,8 @@
     //聊天背景
     UIView *chatView;
     SocketIO *_socketIO;
+    //观众榜里的button
+    UIView *announcementView;
 }
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
@@ -348,7 +350,11 @@
     alwaysTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     [audienceScrollView addSubview:alwaysTableView];
     
-    
+    announcementView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight-30, kScreenWidth, 30)];
+    announcementView.userInteractionEnabled = YES;
+    announcementView.hidden = YES;
+    announcementView.backgroundColor = [UIColor redColor];
+    [self.view addSubview:announcementView];
     
     //抢沙发
     _sofaView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight- 130, kScreenWidth, 130)];
@@ -380,6 +386,8 @@
     }
 
 }
+/**********************************************************************************************************/
+
 #pragma mark - 点击事件
 - (void)buttonClick:(UIButton *)button
 {
@@ -433,7 +441,6 @@
 
 }
 
-
 #pragma mark - 点击播放界面方法
 - (void)liveClick:(UITapGestureRecognizer *)sender
 {
@@ -454,6 +461,8 @@
         tap = YES;
     }
 }
+/**********************************************************************************************************/
+
 #pragma mark - scrollView滑动代理
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
@@ -496,6 +505,7 @@
         privateButton.backgroundColor = [UIColor clearColor];
         synthesizeButton.backgroundColor = [UIColor clearColor];
         chatView.hidden = YES;
+        announcementView.hidden = NO;
     }
 }
 

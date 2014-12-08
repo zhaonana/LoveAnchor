@@ -7,8 +7,13 @@
 //
 
 #import "PlayViewController.h"
+#import "SocketIO.h"
+#import "SocketIOPacket.h"
+#import "SocketIOJSONSerialization.h"
+#import "ChatCell.h"
+#import "ChatModel.h"
 
-@interface PlayViewController () <VMediaPlayerDelegate, UITextFieldDelegate>
+@interface PlayViewController () <VMediaPlayerDelegate, UITextFieldDelegate, SocketIODelegate>
 
 {
     UIScrollView *_scrollView;
@@ -46,10 +51,15 @@
     UIButton *bearButton;
     //聊天背景
     UIView *chatView;
+    SocketIO *_socketIO;
 }
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
 @property (nonatomic, strong) NSURL                   *videoURL;
+@property (nonatomic, strong) UITableView             *synthesizeTableView;
+@property (nonatomic, strong) UITableView             *publicTableView;
+@property (nonatomic, strong) UITableView             *privateTableView;
+@property (nonatomic, strong) NSMutableArray          *dataArray;
 
 @end
 
@@ -58,6 +68,16 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    LoginModel *model = [CommonUtil getUserModel];
+    _dataArray = [[NSMutableArray alloc] init];
+    _socketIO = [[SocketIO alloc] initWithDelegate:self];
+    
+    //socket
+    NSDictionary *dic = @{@"room_id": @"12700590",
+                          @"access_token": model.access_token};
+    [_socketIO connectToHost:@"ttwsshowd.app1101168695.twsapp.com" onPort:80 withParams:dic];
+    
     self.view.backgroundColor = [UIColor whiteColor];
     [self shouwUI];
 }
@@ -66,9 +86,8 @@
 {
     [super viewWillAppear:animated];
  
-    
-    NSString *url = @"http://v.17173.com/api/5981245-4.m3u8";
-//    NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
+//    NSString *url = @"http://v.17173.com/api/5981245-4.m3u8";
+    NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
     self.videoURL = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
     [mMPayer setDataSource:self.videoURL];
@@ -262,23 +281,23 @@
     _scrollView.delegate = self;
     [View addSubview:_scrollView];
     //综合
-    UITableView *synthesizeTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
-    synthesizeTableView.delegate = self;
-    synthesizeTableView.dataSource = self;
-    synthesizeTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
-    [_scrollView addSubview:synthesizeTableView];
+    _synthesizeTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
+    _synthesizeTableView.delegate = self;
+    _synthesizeTableView.dataSource = self;
+    _synthesizeTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    [_scrollView addSubview:_synthesizeTableView];
     //公聊
-    UITableView *publicTableView = [[UITableView alloc]initWithFrame:CGRectMake(kScreenWidth, 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
-    publicTableView.delegate = self;
-    publicTableView.dataSource = self;
-    publicTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
-    [_scrollView addSubview:publicTableView];
+    _publicTableView = [[UITableView alloc]initWithFrame:CGRectMake(kScreenWidth, 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
+    _publicTableView.delegate = self;
+    _publicTableView.dataSource = self;
+    _publicTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    [_scrollView addSubview:_publicTableView];
     //私聊
-    UITableView *privateTableView = [[UITableView alloc]initWithFrame:CGRectMake(kScreenWidth*2, 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
-    privateTableView.delegate = self;
-    privateTableView.dataSource = self;
-    privateTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
-    [_scrollView addSubview:privateTableView];
+    _privateTableView = [[UITableView alloc]initWithFrame:CGRectMake(kScreenWidth*2, 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
+    _privateTableView.delegate = self;
+    _privateTableView.dataSource = self;
+    _privateTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    [_scrollView addSubview:_privateTableView];
     //聊天框背景
     chatView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight-45, kScreenWidth, 45)];
     chatView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
@@ -413,6 +432,8 @@
     }
 
 }
+
+
 #pragma mark - 点击播放界面方法
 - (void)liveClick:(UITapGestureRecognizer *)sender
 {
@@ -478,20 +499,27 @@
     }
 }
 
-#pragma mark - tableViewDelegate
+#pragma mark - UITableViewDataSource methods
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    static NSString *idenifier = @"UITableViewCell";
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:idenifier];
+    ChatCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ChatCell"];
     if (cell == nil) {
-        cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idenifier];
+        cell = [[[NSBundle mainBundle] loadNibNamed:@"ChatCell" owner:self options:nil] lastObject];
     }
+    [cell loadDataWithModel:[_dataArray objectAtIndex:indexPath.row]];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 15;
+    return _dataArray.count;
+}
+
+#pragma mark - UITableViewDelegate methods
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 44.0;
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -549,5 +577,64 @@
     [self.activityView setHidden:YES];
 }
 
+# pragma mark - socket.IO-objc delegate methods
+- (void)socketIODidConnect:(SocketIO *)socket
+{
+    NSLog(@"socket.io connected.");
+}
+/*
+ {"action":"room.star","data_d":{"_id":12700590,"pic":"http://ttimg.app1101168695.twsapp.com/46/6/12700590_0_200200.jpg?v=200_200_1417146527767","nick_name":"禁小泡。oO","finance":{"coin_spend_total":17365,"feather_receive_total":2625,"bean_count_total":413544},"star":{"room_id":12700590,"day_rank":2},"passTxFollow":1,"followers":186}}
+ 
+ {"content":"/给力","level":7,"from_medals":{},"from":{"_id":11157909,"spend":120996,"nick_name":"快乐仙","priv":3,"s":"","medal_list":[]},"room_id":12700590,"etime":1418033100591}
+ 
+ {"action":"room.change","data_d":{"_id":13225491,"spend":0,"nick_name":"一切在无言中","priv":3,"s":"","medal_list":[]}}
+ */
+- (void)socketIO:(SocketIO *)socket didReceiveMessage:(SocketIOPacket *)packet
+{
+    NSLog(@"didReceiveMessage()");
+    id result = packet.dataAsJSON;
+    if ([result isKindOfClass:[NSDictionary class]]) {
+        ChatModel *chatModel = [[ChatModel alloc] init];
+
+        NSString *content = [result objectForKey:@"content"];
+        NSString *nick_name = [result objectForKey:@"nick_name"];
+        NSNumber *level = [result objectForKey:@"level"];
+        NSString *action = [result objectForKey:@"action"];
+        if ([action isEqualToString:@"room.change"]) {
+            id data_d = [result objectForKey:@"data_d"];
+            if ([data_d isKindOfClass:[NSDictionary class]]) {
+                NSString *nick_name = [data_d objectForKey:@"nick_name"];
+                if (nick_name.length) {
+                    chatModel.nick_name = nick_name;
+                }
+            }
+        }
+        if (nick_name.length) {
+            chatModel.nick_name = nick_name;
+            chatModel.content = content;
+            chatModel.level = level;
+        }
+        [_dataArray addObject:chatModel];
+        [_synthesizeTableView reloadData];
+        [_synthesizeTableView scrollToRowAtIndexPath:
+         [NSIndexPath indexPathForRow:_dataArray.count - 1 inSection:0]
+                                    atScrollPosition: UITableViewScrollPositionBottom
+                                            animated:NO];
+    }
+}
+
+- (void)socketIO:(SocketIO *)socket onError:(NSError *)error
+{
+    if ([error code] == SocketIOUnauthorized) {
+        NSLog(@"not authorized");
+    } else {
+        NSLog(@"onError() %@", error);
+    }
+}
+
+- (void)socketIODidDisconnect:(SocketIO *)socket disconnectedWithError:(NSError *)error
+{
+    NSLog(@"socket.io disconnected. did error occur? %@", error);
+}
 
 @end

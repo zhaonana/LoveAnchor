@@ -12,7 +12,6 @@
 
 @interface PlayViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
-@property (nonatomic,strong) NSString *roomID;
 @property (nonatomic,strong) AllModel *allModel;
 
 @end

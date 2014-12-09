@@ -74,7 +74,6 @@
     id resutl = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
     if ([resutl isKindOfClass:[NSDictionary class]]) {
         NSArray *allDtJson = [resutl objectForKey:@"data"];
-        NSLog(@"123 == %@",allDtJson);
         NSMutableArray *allDtJson_mutable = [NSMutableArray array];
         
         for (NSDictionary *dict in allDtJson) {

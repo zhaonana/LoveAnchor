@@ -447,7 +447,7 @@
     
     unsigned char result[16];
     
-    CC_MD5(cStr, strlen(cStr), result); // This is the md5 call
+//    CC_MD5(cStr, strlen(cStr), result); // This is the md5 call
     
     return [NSString stringWithFormat:
             

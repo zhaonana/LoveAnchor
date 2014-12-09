@@ -10,7 +10,9 @@
 
 typedef enum {
     contentType,
-    changeType
+    changeType,
+    giftType,
+    featherType
 } ChatType;
 
 @interface ChatModel : NSObject
@@ -18,6 +20,10 @@ typedef enum {
 @property (nonatomic, strong) NSString *content;
 @property (nonatomic, strong) NSNumber *level;
 @property (nonatomic, strong) NSString *nick_name;
+@property (nonatomic, strong) NSString *fromNick_name;
+@property (nonatomic, strong) NSString *toNick_name;
+@property (nonatomic, strong) NSString *giftName;
+@property (nonatomic, strong) NSNumber *giftCount;
 @property (nonatomic, assign) ChatType chatType;
 
 @end

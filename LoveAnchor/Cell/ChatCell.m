@@ -26,32 +26,49 @@
     if (chatModel.level) {
         [_fuhaoImgView setHidden:NO];
         [_contentLab setHidden:NO];
-        [_enterIntoLab setHidden:YES];
+        [_giftLab setHighlighted:YES];
+
+        CGSize size = [self getRectWithText:chatModel.nick_name height:12.0 width:CGFLOAT_MAX].size;
+        [_nickNameLab setFrame:CGRectMake(39, 7, size.width, size.height)];
+        [_enterIntoLab setFrame:CGRectMake(size.width + 40, 8, 64, 12)];
+        CGSize contentSize = [self getRectWithText:chatModel.content height:CGFLOAT_MAX width:304.0].size;
+        [_contentLab setFrame:CGRectMake(8, 25, 304, contentSize.height)];
         
-        CGSize size = [self getRectWithText:chatModel.nick_name].size;
-        [_nickNameLab setFrame:CGRectMake(39, 8, size.width, size.height)];
-        [_contentLab setFrame:CGRectMake(8, 25, 304, size.height)];
         if (chatModel.level) {
-            NSInteger level = [CommonUtil getLevelInfoWithCoin:chatModel.level.intValue isRich:YES].level;
-            NSString *imageName = [NSString stringWithFormat:@"%dfu",level];
+            NSString *imageName = [NSString stringWithFormat:@"%@fu",chatModel.level];
             _fuhaoImgView.image = [UIImage imageNamed:imageName];
         }
         if (chatModel.content.length) {
             _contentLab.text = chatModel.content;
         }
+        [_enterIntoLab setText:@"说:"];
         [self loadDataWithModel:chatModel];
     }
 }
 
 - (void)loadChangeWithModel:(ChatModel *)chatModel
 {
-    [_enterIntoLab setHidden:NO];
     [_fuhaoImgView setHidden:YES];
     [_contentLab setHidden:YES];
     
-    CGSize size = [self getRectWithText:chatModel.nick_name].size;
-    [_nickNameLab setFrame:CGRectMake(8, 8, size.width, size.height)];
+    CGSize size = [self getRectWithText:chatModel.nick_name height:12.0 width:CGFLOAT_MAX].size;
+    [_nickNameLab setFrame:CGRectMake(8, 7, size.width, size.height)];
     [_enterIntoLab setFrame:CGRectMake(size.width + 12, 8, 64, 12)];
+    [_giftLab setFrame:CGRectMake(size.width + 78, 8, 64, 12)];
+
+    switch (chatModel.chatType) {
+        case changeType:
+            [_giftLab setHighlighted:YES];
+            [_enterIntoLab setText:@"进入直播间"];
+            break;
+        case featherType:
+            [_giftLab setHighlighted:NO];
+            [_giftLab setText:@"一根羽毛"];
+            [_enterIntoLab setText:@"送给主播"];
+            break;
+        default:
+            break;
+    }
     
     [self loadDataWithModel:chatModel];
 }
@@ -63,9 +80,9 @@
     }
 }
 
-- (CGRect)getRectWithText:(NSString *)text
+- (CGRect)getRectWithText:(NSString *)text height:(float)height width:(float)width
 {
-    CGRect rect = [text boundingRectWithSize:CGSizeMake(CGFLOAT_MAX, 12.0) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0]} context:nil];
+    CGRect rect = [text boundingRectWithSize:CGSizeMake(width, height) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0]} context:nil];
     return rect;
 }
 

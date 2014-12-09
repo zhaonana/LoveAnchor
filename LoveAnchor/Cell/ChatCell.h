@@ -18,12 +18,16 @@
 @property (weak, nonatomic) IBOutlet UILabel     *contentLab;
 //进入直播间
 @property (weak, nonatomic) IBOutlet UILabel     *enterIntoLab;
+//礼物
+@property (weak, nonatomic) IBOutlet UILabel     *giftLab;
 
-//进入直播间
+//进入房间提示/送给主播羽毛
 - (void)loadChangeWithModel:(ChatModel *)chatModel;
-//聊天内容
+//聊天消息
 - (void)loadContentWithModel:(ChatModel *)chatModel;
-//获得文字宽高
-- (CGRect)getRectWithText:(NSString *)text;
+//送礼物消息
+- (void)loadGiftWithModel:(ChatModel *)chatModel;
+//告诉TA
+- (void)loadTellWithModel:(ChatModel *)chatModel;
 
 @end

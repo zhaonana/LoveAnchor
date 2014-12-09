@@ -61,7 +61,7 @@
 - (void)request
 {
     NSLog(@"开始了");
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://ttapi.izhubo.com/public/room_list"]];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://ttapi.app1101815070.twsapp.com/public/room_list"]];
     [request setTimeOutSeconds:100];
     request.delegate = self;
     [request startAsynchronous];

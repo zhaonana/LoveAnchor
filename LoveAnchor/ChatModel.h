@@ -8,10 +8,16 @@
 
 #import <Foundation/Foundation.h>
 
+typedef enum {
+    contentType,
+    changeType
+} ChatType;
+
 @interface ChatModel : NSObject
 
 @property (nonatomic, strong) NSString *content;
 @property (nonatomic, strong) NSNumber *level;
 @property (nonatomic, strong) NSString *nick_name;
+@property (nonatomic, assign) ChatType chatType;
 
 @end

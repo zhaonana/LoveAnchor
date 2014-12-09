@@ -19,6 +19,11 @@
 //进入直播间
 @property (weak, nonatomic) IBOutlet UILabel     *enterIntoLab;
 
-- (void)loadDataWithModel:(ChatModel *)chatModel;
+//进入直播间
+- (void)loadChangeWithModel:(ChatModel *)chatModel;
+//聊天内容
+- (void)loadContentWithModel:(ChatModel *)chatModel;
+//获得文字宽高
+- (CGRect)getRectWithText:(NSString *)text;
 
 @end

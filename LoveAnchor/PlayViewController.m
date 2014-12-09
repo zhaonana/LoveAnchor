@@ -76,7 +76,7 @@
     _socketIO = [[SocketIO alloc] initWithDelegate:self];
     
     //socket
-    NSDictionary *dic = @{@"room_id": @"12700590",
+    NSDictionary *dic = @{@"room_id": @"10265417",
                           @"access_token": model.access_token};
     [_socketIO connectToHost:@"ttwsshowd.app1101168695.twsapp.com" onPort:80 withParams:dic];
     
@@ -516,7 +516,19 @@
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"ChatCell" owner:self options:nil] lastObject];
     }
-    [cell loadDataWithModel:[_dataArray objectAtIndex:indexPath.row]];
+    ChatModel *chatModel = [_dataArray objectAtIndex:indexPath.row];
+    switch (chatModel.chatType) {
+        case contentType: {
+            [cell loadContentWithModel:chatModel];
+        }
+            break;
+        case changeType: {
+            [cell loadChangeWithModel:chatModel];
+        }
+            break;
+        default:
+            break;
+    }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -529,7 +541,23 @@
 #pragma mark - UITableViewDelegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 44.0;
+    ChatModel *chatModel = [_dataArray objectAtIndex:indexPath.row];
+    switch (chatModel.chatType) {
+        case contentType: {
+            CGRect rect = [chatModel.content boundingRectWithSize:CGSizeMake(304.0, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0]} context:nil];
+            return rect.size.height + 28.0;
+        }
+            break;
+        case changeType: {
+            return 26.0;
+        }
+            break;
+        default: {
+            return 44.0;
+        }
+            break;
+    }
+    return 0.0;
 }
 
 -(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
@@ -593,8 +621,6 @@
     NSLog(@"socket.io connected.");
 }
 /*
- {"action":"room.star","data_d":{"_id":12700590,"pic":"http://ttimg.app1101168695.twsapp.com/46/6/12700590_0_200200.jpg?v=200_200_1417146527767","nick_name":"禁小泡。oO","finance":{"coin_spend_total":17365,"feather_receive_total":2625,"bean_count_total":413544},"star":{"room_id":12700590,"day_rank":2},"passTxFollow":1,"followers":186}}
- 
  {"content":"/给力","level":7,"from_medals":{},"from":{"_id":11157909,"spend":120996,"nick_name":"快乐仙","priv":3,"s":"","medal_list":[]},"room_id":12700590,"etime":1418033100591}
  
  {"action":"room.change","data_d":{"_id":13225491,"spend":0,"nick_name":"一切在无言中","priv":3,"s":"","medal_list":[]}}
@@ -605,25 +631,31 @@
     id result = packet.dataAsJSON;
     if ([result isKindOfClass:[NSDictionary class]]) {
         ChatModel *chatModel = [[ChatModel alloc] init];
-
-        NSString *content = [result objectForKey:@"content"];
-        NSString *nick_name = [result objectForKey:@"nick_name"];
-        NSNumber *level = [result objectForKey:@"level"];
         NSString *action = [result objectForKey:@"action"];
-        if ([action isEqualToString:@"room.change"]) {
-            id data_d = [result objectForKey:@"data_d"];
-            if ([data_d isKindOfClass:[NSDictionary class]]) {
-                NSString *nick_name = [data_d objectForKey:@"nick_name"];
-                if (nick_name.length) {
-                    chatModel.nick_name = nick_name;
+        if (action.length) {
+            if ([action isEqualToString:@"room.change"]) {
+                chatModel.chatType = changeType;
+                id data_d = [result objectForKey:@"data_d"];
+                if ([data_d isKindOfClass:[NSDictionary class]]) {
+                    NSString *nick_name = [data_d objectForKey:@"nick_name"];
+                    if (nick_name.length) {
+                        chatModel.nick_name = nick_name;
+                    }
                 }
             }
+        } else {
+            chatModel.chatType = contentType;
+            NSString *content = [result objectForKey:@"content"];
+            NSNumber *level = [result objectForKey:@"level"];
+            NSDictionary *fromDic = [result objectForKey:@"from"];
+            NSString *nick_name = [fromDic objectForKey:@"nick_name"];
+            if (nick_name.length) {
+                chatModel.nick_name = nick_name;
+                chatModel.content = content;
+                chatModel.level = level;
+            }
         }
-        if (nick_name.length) {
-            chatModel.nick_name = nick_name;
-            chatModel.content = content;
-            chatModel.level = level;
-        }
+
         [_dataArray addObject:chatModel];
         [_synthesizeTableView reloadData];
         [_synthesizeTableView scrollToRowAtIndexPath:

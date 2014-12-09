@@ -14,6 +14,7 @@
     UIScrollView *_scrollView;
     //导航
     UIView *_navView;
+    
     //视频部分
     UIImageView *_liveView;
     //升级
@@ -48,6 +49,16 @@
     UIView *chatView;
     //观众榜里的button
     UIView *announcementView;
+    //判断观众榜的左右滑动
+    UIImageView *announcementImageView;
+    //观众榜
+    UIScrollView *audienceScrollView;
+    //本场观众
+    UIButton *homeCourseButton;
+    //月榜
+    UIButton *monthButton;
+    //总榜
+    UIButton *alwaysButton;
 }
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
@@ -69,8 +80,8 @@
     [super viewWillAppear:animated];
  
     
-    NSString *url = @"http://v.17173.com/api/5981245-4.m3u8";
-//    NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
+//    NSString *url = @"http://v.17173.com/api/5981245-4.m3u8";
+    NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
     self.videoURL = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
     [mMPayer setDataSource:self.videoURL];
@@ -106,7 +117,7 @@
     
     //视频背景
     bagView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 160)];
-    bagView.image = [UIImage imageNamed:@"liaotianbeijing"];
+    bagView.image = [UIImage imageNamed:@"guanbishipin"];
     bagView.hidden = YES;
     [_liveView addSubview:bagView];
     
@@ -193,7 +204,7 @@
     View.backgroundColor = [UIColor clearColor];
     View.userInteractionEnabled = YES;
     [self.view addSubview:View];
-    
+    //button背景
     UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 28)];
     imageView.backgroundColor = [UIColor whiteColor];
     imageView.userInteractionEnabled = YES;
@@ -203,7 +214,7 @@
     HXImageView.backgroundColor = [UIColor lightGrayColor];
     [imageView addSubview:HXImageView];
     
-    //button背景
+    //判断button点击的是哪个
     _backImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 27, 62, 1)];
     _backImageView.backgroundColor = [UIColor clearColor];
     [imageView addSubview:_backImageView];
@@ -294,23 +305,26 @@
     //礼物按钮
     UIButton *giftButton = [UIButton buttonWithType:UIButtonTypeCustom];
     giftButton.frame = CGRectMake(270, 12.5, 20, 20);
+    giftButton.tag = 103;
     [giftButton setImage:[UIImage imageNamed:@"liwu"] forState:UIControlStateNormal];
     [giftButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [chatView addSubview:giftButton];
     //信息档案
     UIButton *manageButton = [UIButton buttonWithType:UIButtonTypeCustom];
     manageButton.frame = CGRectMake(295, 12.5, 15, 20);
+    manageButton.tag = 104;
     [manageButton setImage:[UIImage imageNamed:@"zhuboxiangqing"] forState:UIControlStateNormal];
     [manageButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [chatView addSubview:manageButton];
 
     //观众榜
-    UIScrollView *audienceScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(kScreenWidth*3, 0, kScreenWidth, _scrollView.frame.size.height)];
+    audienceScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(kScreenWidth*3, 0, kScreenWidth, _scrollView.frame.size.height)];
     audienceScrollView.contentSize = CGSizeMake(kScreenWidth *3, 0);
     audienceScrollView.showsHorizontalScrollIndicator = NO;
     audienceScrollView.showsVerticalScrollIndicator = NO;
     audienceScrollView.pagingEnabled = YES;
     audienceScrollView.delegate = self;
+    audienceScrollView.tag = 100;
     [_scrollView addSubview:audienceScrollView];
     //本场观众
     UITableView *homeCourseTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
@@ -330,12 +344,43 @@
     alwaysTableView.dataSource = self;
     alwaysTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     [audienceScrollView addSubview:alwaysTableView];
-    
+    //button背景
     announcementView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight-30, kScreenWidth, 30)];
     announcementView.userInteractionEnabled = YES;
     announcementView.hidden = YES;
-    announcementView.backgroundColor = [UIColor redColor];
+    announcementView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:announcementView];
+    //点击button的判断背景
+    announcementImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 29, 106, 1)];
+    announcementImageView.backgroundColor = [UIColor redColor];
+    [announcementView addSubview:announcementImageView];
+    //本场观众
+    homeCourseButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    homeCourseButton.frame = CGRectMake(0, 0, 120, 30);
+    homeCourseButton.tag = 105;
+    [homeCourseButton setTitle:@"本场观众榜" forState:UIControlStateNormal];
+    [homeCourseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [homeCourseButton setBackgroundColor:[UIColor colorWithRed:228/255.0 green:105./255.0 blue:80/255.0 alpha:1]];
+    [homeCourseButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [announcementView addSubview:homeCourseButton];
+    //月榜
+    monthButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    monthButton.frame = CGRectMake(120, 0, 100, 30);
+    monthButton.tag = 106;
+    [monthButton setTitle:@"月榜" forState:UIControlStateNormal];
+    [monthButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [monthButton setBackgroundColor:[UIColor colorWithRed:245/255.0 green:146/255.0 blue:123/255.0 alpha:1]];
+    [monthButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [announcementView addSubview:monthButton];
+    //总榜
+    alwaysButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    alwaysButton.frame = CGRectMake(220, 0, 100, 30);
+    alwaysButton.tag = 107;
+    [alwaysButton setTitle:@"总榜" forState:UIControlStateNormal];
+    [alwaysButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [alwaysButton setBackgroundColor:[UIColor colorWithRed:253/255.0 green:193/255.0 blue:176/255.0 alpha:1]];
+    [alwaysButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [announcementView addSubview:alwaysButton];
     
     //抢沙发
     _sofaView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight- 130, kScreenWidth, 130)];
@@ -404,7 +449,7 @@
             _scrollView.contentSize = CGSizeMake(kScreenWidth *4, kScreenHeight-253);
         }
     } else {
-        NSLog(@"%ld",button.tag);
+        NSLog(@"%ld",(long)button.tag);
         if (button.selected) {
             return;
         }
@@ -448,10 +493,45 @@
 #pragma mark - scrollView滑动代理
 -(void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    [UIView animateWithDuration:0 animations:^{
-        [self changed];
-    }];
+    if (scrollView.tag == 100) {
+        [self announcementchanged];
+    }else {
+        [UIView animateWithDuration:0 animations:^{
+            [self changed];
+        }];
+    }
 }
+
+- (void)announcementchanged
+{
+    CGRect rect = announcementImageView.frame;
+    rect.origin.x = audienceScrollView.contentOffset.x/4;
+    NSLog(@"ffffff = %f",rect.origin.x);
+    announcementImageView.frame = rect;
+    if (rect.origin.x == 0) {
+        [homeCourseButton setBackgroundColor:[UIColor colorWithRed:228/255.0 green:105./255.0 blue:80/255.0 alpha:1]];
+        [monthButton setBackgroundColor:[UIColor colorWithRed:245/255.0 green:146/255.0 blue:123/255.0 alpha:1]];
+        [alwaysButton setBackgroundColor:[UIColor colorWithRed:253/255.0 green:193/255.0 blue:176/255.0 alpha:1]];
+        alwaysButton.frame = CGRectMake(220, 0, 100, 30);
+        monthButton.frame = CGRectMake(120, 0, 100, 30);
+        homeCourseButton.frame = CGRectMake(0, 0, 120, 30);
+    }else if (rect.origin.x == 80) {
+        [homeCourseButton setBackgroundColor:[UIColor colorWithRed:253/255.0 green:193/255.0 blue:176/255.0 alpha:1]];
+        [monthButton setBackgroundColor:[UIColor colorWithRed:228/255.0 green:105./255.0 blue:80/255.0 alpha:1]];
+        [alwaysButton setBackgroundColor:[UIColor colorWithRed:245/255.0 green:146/255.0 blue:123/255.0 alpha:1]];
+        alwaysButton.frame = CGRectMake(220, 0, 100, 30);
+        monthButton.frame = CGRectMake(100, 0, 120, 30);
+        homeCourseButton.frame = CGRectMake(0, 0, 100, 30);
+    }else {
+        [homeCourseButton setBackgroundColor:[UIColor colorWithRed:245/255.0 green:146/255.0 blue:123/255.0 alpha:1]];
+        [monthButton setBackgroundColor:[UIColor colorWithRed:253/255.0 green:193/255.0 blue:176/255.0 alpha:1]];
+        [alwaysButton setBackgroundColor:[UIColor colorWithRed:228/255.0 green:105./255.0 blue:80/255.0 alpha:1]];
+        alwaysButton.frame = CGRectMake(200, 0, 120, 30);
+        monthButton.frame = CGRectMake(100, 0, 100, 30);
+        homeCourseButton.frame = CGRectMake(0, 0, 100, 30);
+    }
+}
+
 - (void)changed
 {
     CGRect rect = _backImageView.frame;
@@ -468,18 +548,24 @@
         audienceButton.backgroundColor = [UIColor clearColor];
         publicButton.backgroundColor = [UIColor clearColor];
         privateButton.backgroundColor = [UIColor clearColor];
+        announcementView.hidden = YES;
+        chatView.hidden = NO;
     } else if (rect.origin.x == 80) {
         publicButton.selected = YES;
         publicButton.backgroundColor = textFontColor;
         audienceButton.backgroundColor = [UIColor clearColor];
         privateButton.backgroundColor = [UIColor clearColor];
         synthesizeButton.backgroundColor = [UIColor clearColor];
+        announcementView.hidden = YES;
+        chatView.hidden = NO;
     } else if (rect.origin.x == 160) {
         privateButton.selected = YES;
         privateButton.backgroundColor = textFontColor;
         audienceButton.backgroundColor = [UIColor clearColor];
         publicButton.backgroundColor = [UIColor clearColor];
         synthesizeButton.backgroundColor = [UIColor clearColor];
+        announcementView.hidden = YES;
+        chatView.hidden = NO;
     } else if (rect.origin.x == 240){
         audienceButton.selected = YES;
         audienceButton.backgroundColor = textFontColor;

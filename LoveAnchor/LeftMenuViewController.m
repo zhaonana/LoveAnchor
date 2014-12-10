@@ -182,7 +182,8 @@
 
 - (void)request
 {
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/info/%@",model.access_token]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%@user/info/%@",BaseURL,model.access_token];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 100;
     [request setTimeOutSeconds:30];

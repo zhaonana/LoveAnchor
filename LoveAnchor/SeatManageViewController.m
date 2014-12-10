@@ -146,7 +146,7 @@
 #pragma mark - 数据解析
 - (void)requestWithParams:(NSString *)params tag:(int)tag;
 {
-    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/%@",params]];
+    NSURL *url = [NSURL URLWithString:[NSString stringWithFormat:@"%@%@",BaseURL,params]];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:url];
     request.delegate = self;
     request.tag = tag;

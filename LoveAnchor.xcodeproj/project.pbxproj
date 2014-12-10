@@ -599,6 +599,7 @@
 		3944F0531A27361900429734 /* libffmpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libffmpeg.a; sourceTree = "<group>"; };
 		3944F0541A27361900429734 /* libopenssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libopenssl.a; sourceTree = "<group>"; };
 		3944F0551A27361900429734 /* libVitamio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libVitamio.a; sourceTree = "<group>"; };
+		39A56EBC1A37EBCA008D0BB8 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		39B55D751A2D64940088B6E5 /* QZoneConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QZoneConnection.framework; sourceTree = "<group>"; };
 		39B55D761A2D64940088B6E5 /* SinaWeiboConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SinaWeiboConnection.framework; sourceTree = "<group>"; };
 		39B55D781A2D64940088B6E5 /* AGCommon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AGCommon.framework; sourceTree = "<group>"; };
@@ -1657,6 +1658,7 @@
 				F7456F0219986A2800CF28E8 /* XDSSegmentedViewController.m */,
 				39B663CF1A2588CB0033D28C /* CommonUtil.h */,
 				39B663D01A2588CB0033D28C /* CommonUtil.m */,
+				39A56EBC1A37EBCA008D0BB8 /* Common.h */,
 				392265561A359DEB00767721 /* Socket.IO */,
 				39B55D731A2D64940088B6E5 /* ShareSDK */,
 				3944F0471A27361900429734 /* Vitamio */,

@@ -518,7 +518,8 @@
 //紫V
 - (void)purpleVRequest
 {
-    ASIHTTPRequest *purpleRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/shop/buy_vip2/%@/%d?roomid=%@",model.access_token,type,nil]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%@shop/buy_vip2/%@/%d?roomid=",BaseURL,model.access_token,type];
+    ASIHTTPRequest *purpleRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     purpleRequest.delegate = self;
     purpleRequest.tag = 100;
     [purpleRequest setTimeOutSeconds:10];
@@ -527,7 +528,8 @@
 //黄V
 - (void)yellowVRequest
 {
-    ASIHTTPRequest *yellowRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/shop/buy_vip/%@/%d?roomid=%@",model.access_token,type,nil]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%@shop/buy_vip/%@/%d?roomid=",BaseURL,model.access_token,type];
+    ASIHTTPRequest *yellowRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     yellowRequest.delegate = self;
     yellowRequest.tag = 101;
     [yellowRequest setTimeOutSeconds:10];
@@ -536,7 +538,8 @@
 //座驾
 - (void)seatRequest
 {
-    ASIHTTPRequest *seatRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/show/cars_list"]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%@show/cars_list",BaseURL];
+    ASIHTTPRequest *seatRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     seatRequest.delegate = self;
     seatRequest.tag = 102;
     [seatRequest setTimeOutSeconds:30];
@@ -545,7 +548,8 @@
 //够买座驾
 - (void)purchaseSeatRequest:(id)sender
 {
-    ASIHTTPRequest *purchaseRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/shop/buy_car/%@/%@",model.access_token,sender]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%@shop/buy_car/%@/%@",BaseURL,model.access_token,sender];
+    ASIHTTPRequest *purchaseRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     purchaseRequest.delegate = self;
     purchaseRequest.tag = 103;
     [purchaseRequest setTimeOutSeconds:20];
@@ -555,7 +559,6 @@
 -(void)requestFinished:(ASIHTTPRequest *)request
 {
     if (request.tag == 100) {
-        NSLog(@"rsult == %@",request.responseString);
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result isKindOfClass:[NSDictionary class]]) {
             int purple1 = [[result objectForKey:@"code"] intValue];
@@ -578,7 +581,6 @@
             }
         }
     } else if (request.tag == 101) {
-        NSLog(@"rsult == %@",request.responseString);
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result isKindOfClass:[NSDictionary class]]) {
             int yellow1 = [[result objectForKey:@"code"] intValue];
@@ -601,7 +603,6 @@
             }
         }
     } else if (request.tag == 102) {
-        NSLog(@"座驾 == %@",request.responseString);
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         [imageArray removeAllObjects];
         [namaArray removeAllObjects];
@@ -618,7 +619,6 @@
         }
         [seatButtonView reloadData];
     } else if (request.tag == 103) {
-        NSLog(@"购买座驾 == %@",request.responseString);
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result isKindOfClass:[NSDictionary class]]) {
             int purchase = [[result objectForKey:@"code"] intValue];

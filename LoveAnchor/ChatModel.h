@@ -9,8 +9,11 @@
 #import <Foundation/Foundation.h>
 
 typedef enum {
-    contentType,
-    changeType
+    contentType,    //聊天消息
+    changeType,     //进入房间提示
+    giftType,       //送礼物消息
+    featherType,    //送主播羽毛
+    tellTAType,     //对TA说
 } ChatType;
 
 @interface ChatModel : NSObject
@@ -18,6 +21,9 @@ typedef enum {
 @property (nonatomic, strong) NSString *content;
 @property (nonatomic, strong) NSNumber *level;
 @property (nonatomic, strong) NSString *nick_name;
+@property (nonatomic, strong) NSString *toNick_name;
+@property (nonatomic, strong) NSString *giftName;
+@property (nonatomic, strong) NSNumber *giftCount;
 @property (nonatomic, assign) ChatType chatType;
 
 @end

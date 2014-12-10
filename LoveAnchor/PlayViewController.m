@@ -69,10 +69,18 @@
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
 @property (nonatomic, strong) NSURL                   *videoURL;
+//综合
 @property (nonatomic, strong) UITableView             *synthesizeTableView;
+//公聊
 @property (nonatomic, strong) UITableView             *publicTableView;
+//私聊
 @property (nonatomic, strong) UITableView             *privateTableView;
+//综合
 @property (nonatomic, strong) NSMutableArray          *dataArray;
+//公聊
+@property (nonatomic, strong) NSMutableArray          *publicDataArray;
+//私聊
+@property (nonatomic, strong) NSMutableArray          *privateArray;
 
 @end
 
@@ -84,12 +92,16 @@
     
     LoginModel *model = [CommonUtil getUserModel];
     _dataArray = [[NSMutableArray alloc] init];
+    _publicDataArray = [[NSMutableArray alloc] init];
+    _privateArray = [[NSMutableArray alloc] init];
     _socketIO = [[SocketIO alloc] initWithDelegate:self];
     
     //socket
-    NSDictionary *dic = @{@"room_id": @"10265417",
-                          @"access_token": model.access_token};
-    [_socketIO connectToHost:@"ttwsshowd.app1101168695.twsapp.com" onPort:80 withParams:dic];
+    if (model) {
+        NSDictionary *dic = @{@"room_id": self.allModel._id,
+                              @"access_token": model.access_token};
+        [_socketIO connectToHost:BaseHost onPort:80 withParams:dic];
+    }
     
     self.view.backgroundColor = [UIColor whiteColor];
     [self shouwUI];
@@ -98,7 +110,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
- 
 
 //    NSString *url = @"http://v.17173.com/api/5981245-4.m3u8";
     NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
@@ -296,18 +307,21 @@
     [View addSubview:_scrollView];
     //综合
     _synthesizeTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
+    _synthesizeTableView.tag = 1000;
     _synthesizeTableView.delegate = self;
     _synthesizeTableView.dataSource = self;
     _synthesizeTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     [_scrollView addSubview:_synthesizeTableView];
     //公聊
     _publicTableView = [[UITableView alloc]initWithFrame:CGRectMake(kScreenWidth, 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
+    _publicTableView.tag = 1001;
     _publicTableView.delegate = self;
     _publicTableView.dataSource = self;
     _publicTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     [_scrollView addSubview:_publicTableView];
     //私聊
     _privateTableView = [[UITableView alloc]initWithFrame:CGRectMake(kScreenWidth*2, 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
+    _privateTableView.tag = 1002;
     _privateTableView.delegate = self;
     _privateTableView.dataSource = self;
     _privateTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
@@ -603,47 +617,97 @@
     if (cell == nil) {
         cell = [[[NSBundle mainBundle] loadNibNamed:@"ChatCell" owner:self options:nil] lastObject];
     }
-    ChatModel *chatModel = [_dataArray objectAtIndex:indexPath.row];
-    switch (chatModel.chatType) {
-        case contentType: {
+    switch (tableView.tag) {
+        case 1000: {
+            ChatModel *chatModel = [_dataArray objectAtIndex:indexPath.row];
+            switch (chatModel.chatType) {
+                case contentType:
+                case tellTAType:
+                    [cell loadContentWithModel:chatModel];
+                    break;
+                case changeType:
+                case featherType:
+                case giftType:
+                    [cell loadChangeWithModel:chatModel];
+                    break;
+                default:
+                    break;
+            }
+        }
+            break;
+        case 1001: {
+            ChatModel *chatModel = [_publicDataArray objectAtIndex:indexPath.row];
             [cell loadContentWithModel:chatModel];
         }
             break;
-        case changeType: {
-            [cell loadChangeWithModel:chatModel];
+        case 1002: {
+            
         }
             break;
         default:
             break;
     }
+    
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return _dataArray.count;
+    switch (tableView.tag) {
+        case 1000:
+            return _dataArray.count;
+            break;
+        case 1001:
+            return _publicDataArray.count;
+            break;
+        case 1002:
+            return _privateArray.count;
+            break;
+        default:
+            break;
+    }
+    return 0;
 }
 
 #pragma mark - UITableViewDelegate methods
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ChatModel *chatModel = [_dataArray objectAtIndex:indexPath.row];
-    switch (chatModel.chatType) {
-        case contentType: {
+    switch (tableView.tag) {
+        case 1000: {
+            ChatModel *chatModel = [_dataArray objectAtIndex:indexPath.row];
+            switch (chatModel.chatType) {
+                case contentType:
+                case tellTAType: {
+                    CGRect rect = [chatModel.content boundingRectWithSize:CGSizeMake(304.0, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0]} context:nil];
+                    return rect.size.height + 30.0;
+                }
+                    break;
+                case changeType:
+                case featherType:
+                case giftType:
+                    return 26.0;
+                    break;
+                default:
+                    return 44.0;
+                    break;
+            }
+        }
+            break;
+        case 1001: {
+            ChatModel *chatModel = [_publicDataArray objectAtIndex:indexPath.row];
             CGRect rect = [chatModel.content boundingRectWithSize:CGSizeMake(304.0, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0]} context:nil];
-            return rect.size.height + 28.0;
+            return rect.size.height + 30.0;
         }
             break;
-        case changeType: {
-            return 26.0;
+        case 1002: {
+            
         }
             break;
-        default: {
-            return 44.0;
-        }
+        default:
             break;
     }
+    
     return 0.0;
 }
 
@@ -710,7 +774,17 @@
 /*
  {"content":"/给力","level":7,"from_medals":{},"from":{"_id":11157909,"spend":120996,"nick_name":"快乐仙","priv":3,"s":"","medal_list":[]},"room_id":12700590,"etime":1418033100591}
  
+ {"content":"亏死了","level":10,"from_medals":{"1":1418202588407},"to":{"private":false,"_id":12695998,"nick_name":"小贝贝","level":2,"vip":0,"priv":3},"from":{"_id":12256761,"spend":397151,"nick_name":"0014&clubs;十四爷失忆了","priv":3,"s":"","vip":2,"car":16,"medal_list":["1"],"vip_hiding":0},"room_id":12695998,"etime":1418191732714}
+ 
  {"action":"room.change","data_d":{"_id":13225491,"spend":0,"nick_name":"一切在无言中","priv":3,"s":"","medal_list":[]}}
+ 
+ {"action":"gift.notify","data_d":{"from":{"_id":12843524,"nick_name":"华冉","priv":3,"finance":{"coin_spend_total":14362},"qd":"ttxy"},"to":{"_id":10265417,"nick_name":"青楼、风尘女子","priv":2,"finance":{"bean_count_total":2412676,"coin_spend_total":70509}},"gift":{"_id":138,"name":"奔驰跑车","count":1,"coin_price":6000},"room_id":10265417,"win_coin":[]}}
+ 
+ {"action":"gift.marquee","data_d":{"from":{"_id":12843524,"nick_name":"华冉","finance":{"coin_spend_total":20362,"bean_count_total":0}},"to":{"_id":10265417,"nick_name":"青楼、风尘女子","priv":2,"finance":{"bean_count_total":2412676,"coin_spend_total":70509}},"gift":{"_id":138,"name":"奔驰跑车","count":1},"room_id":10265417,"t":1418111245286}}
+ 
+ {"action":"gift.feather","data_d":{"_id":11663047,"nick_name":"ミ忆&rarr;傷.","user":{"_id":11663047,"nick_name":"ミ忆&rarr;傷.","priv":3,"finance":{"feather_send_total":33,"coin_spend_total":33},"qd":"ttxy"}}}
+ 
+ {"action":"room.star","data_d":{"_id":13165230,"nick_name":"小小叮当","finance":{"bean_count_total":169373,"feather_receive_total":774,"coin_spend_total":54},"star":{"room_id":13165230},"pic":"http://ttimg.app1101168695.twsapp.com/46/6/13165230_0_200200.jpg?v=548_548_1417776204762","followers":194}}
  */
 - (void)socketIO:(SocketIO *)socket didReceiveMessage:(SocketIOPacket *)packet
 {
@@ -729,27 +803,74 @@
                         chatModel.nick_name = nick_name;
                     }
                 }
+                [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
+            } else if ([action isEqualToString:@"gift.notify"]) {
+                chatModel.chatType = giftType;
+                id data_d = [result objectForKey:@"data_d"];
+                if ([data_d isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *fromDic = [data_d objectForKey:@"from"];
+                    NSString *fromNick = [fromDic objectForKey:@"nick_name"];
+                    if (fromNick.length) {
+                        chatModel.nick_name = fromNick;
+                    }
+                    NSDictionary *toDic = [data_d objectForKey:@"to"];
+                    NSString *toNick = [toDic objectForKey:@"nick_name"];
+                    if (toNick.length) {
+                        chatModel.toNick_name = toNick;
+                    }
+                    NSDictionary *giftDic = [data_d objectForKey:@"gift"];
+                    NSString *giftName = [giftDic objectForKey:@"name"];
+                    NSNumber *giftNum = [giftDic objectForKey:@"count"];
+                    if (giftName.length) {
+                        chatModel.giftName = giftName;
+                    }
+                    if (giftNum) {
+                        chatModel.giftCount = giftNum;
+                    }
+                    [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
+                }
+            } else if ([action isEqualToString:@"gift.feather"]) {
+                chatModel.chatType = featherType;
+                id data_d = [result objectForKey:@"data_d"];
+                NSString *nick_name = [data_d objectForKey:@"nick_name"];
+                if (nick_name.length) {
+                    chatModel.nick_name = nick_name;
+                }
+                [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
             }
         } else {
-            chatModel.chatType = contentType;
             NSString *content = [result objectForKey:@"content"];
             NSNumber *level = [result objectForKey:@"level"];
             NSDictionary *fromDic = [result objectForKey:@"from"];
             NSString *nick_name = [fromDic objectForKey:@"nick_name"];
+            NSDictionary *toDic = [result objectForKey:@"to"];
+            if (toDic) {
+                chatModel.chatType = tellTAType;
+                NSString *toNick = [toDic objectForKey:@"nick_name"];
+                chatModel.toNick_name = toNick;
+            } else {
+                chatModel.chatType = contentType;
+            }
             if (nick_name.length) {
                 chatModel.nick_name = nick_name;
                 chatModel.content = content;
                 chatModel.level = level;
             }
+            [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
+            [self reloadDataWithTableView:_publicTableView dataArray:_publicDataArray chatModel:chatModel];
         }
-
-        [_dataArray addObject:chatModel];
-        [_synthesizeTableView reloadData];
-        [_synthesizeTableView scrollToRowAtIndexPath:
-         [NSIndexPath indexPathForRow:_dataArray.count - 1 inSection:0]
-                                    atScrollPosition: UITableViewScrollPositionBottom
-                                            animated:NO];
     }
+}
+
+//根据对应数据源刷新对应tableView
+- (void)reloadDataWithTableView:(UITableView *)tableView dataArray:(NSMutableArray *)dataArray chatModel:(ChatModel *)chatModel
+{
+    [dataArray addObject:chatModel];
+    [tableView reloadData];
+    [tableView scrollToRowAtIndexPath:
+     [NSIndexPath indexPathForRow:dataArray.count - 1 inSection:0]
+                                atScrollPosition: UITableViewScrollPositionBottom
+                                        animated:NO];
 }
 
 - (void)socketIO:(SocketIO *)socket onError:(NSError *)error

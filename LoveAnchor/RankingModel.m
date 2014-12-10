@@ -12,7 +12,7 @@
 
 -(void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
-    NSLog(@"排行榜没有定义的key = %@",key);
+//    NSLog(@"排行榜没有定义的key = %@",key);
 }
 
 @end

@@ -14,16 +14,18 @@
 @property (weak, nonatomic) IBOutlet UIImageView *fuhaoImgView;
 //昵称
 @property (weak, nonatomic) IBOutlet UILabel     *nickNameLab;
+//对方昵称
+@property (weak, nonatomic) IBOutlet UILabel     *toNickLab;
 //聊天内容
 @property (weak, nonatomic) IBOutlet UILabel     *contentLab;
 //进入直播间
 @property (weak, nonatomic) IBOutlet UILabel     *enterIntoLab;
+//礼物
+@property (weak, nonatomic) IBOutlet UILabel     *giftLab;
 
-//进入直播间
+//进入房间提示/送给主播羽毛
 - (void)loadChangeWithModel:(ChatModel *)chatModel;
-//聊天内容
+//聊天消息
 - (void)loadContentWithModel:(ChatModel *)chatModel;
-//获得文字宽高
-- (CGRect)getRectWithText:(NSString *)text;
 
 @end

@@ -11,6 +11,6 @@
 @implementation BadgeModel
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
-    NSLog(@"搜索没有定义的key = %@",key);
+//    NSLog(@"搜索没有定义的key = %@",key);
 }
 @end

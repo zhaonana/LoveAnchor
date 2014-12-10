@@ -280,8 +280,8 @@
 #pragma mark - 注册
 - (void)request
 {
-    ASIHTTPRequest *request = [[ASIHTTPRequest alloc]initWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/ttus/register?nick_name=%@&user_name=%@&password=%@&auth_code=%@&auth_key=%@",_nameTextField.text,_nameTextField.text,_passTextField.text,_validationTextField.text,auth_key]]];
-    NSLog(@"0000 == %@",request);
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/register?nick_name=%@&user_name=%@&password=%@&auth_code=%@&auth_key=%@",BaseURL,_nameTextField.text,_nameTextField.text,_passTextField.text,_validationTextField.text,auth_key];
+    ASIHTTPRequest *request = [[ASIHTTPRequest alloc]initWithURL:[NSURL URLWithString:urlStr]];
     [request setTimeOutSeconds:10];
     request.tag = 1;
     request.delegate = self;
@@ -290,7 +290,8 @@
 #pragma mark - 获取验证码
 - (void)information
 {
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://ttapi.izhubo.com/ttus/authcode_image"]];
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/authcode_image",BaseURL];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.tag = 0;
     [request setTimeOutSeconds:10];
     request.delegate = self;
@@ -299,7 +300,8 @@
 #pragma mark - 验证验证码
 - (void)verification
 {
-    ASIHTTPRequest *request8 = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/ttus/checkCodeVeri?auth_code=%@&auth_key=%@",_validationTextField.text,auth_key]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/checkCodeVeri?auth_code=%@&auth_key=%@",BaseURL,_validationTextField.text,auth_key];
+    ASIHTTPRequest *request8 = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     [request8 setTimeOutSeconds:10];
     request8.tag = 2;
     request8.delegate = self;
@@ -309,7 +311,8 @@
 #pragma mark - 更新验证码
 - (void)updateTheVerificationCode
 {
-    ASIHTTPRequest *updateRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/ttus/authcode?id1=%@",auth_key]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/authcode?id1=%@",BaseURL,auth_key];
+    ASIHTTPRequest *updateRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     updateRequest.delegate = self;
     updateRequest.tag = 4;
     [updateRequest setTimeOutSeconds:10];
@@ -319,7 +322,8 @@
 #pragma mark - 登陆
 - (void)login
 {
-    ASIHTTPRequest *loginRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/ttus/login?user_name=%@&password=%@&auth_code=%@&auth_key=%@",_nameTextField.text,_passTextField.text,_validationTextField.text,auth_key]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/login?user_name=%@&password=%@&auth_code=%@&auth_key=%@",BaseURL,_nameTextField.text,_passTextField.text,_validationTextField.text,auth_key];
+    ASIHTTPRequest *loginRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     [loginRequest setTimeOutSeconds:10];
     loginRequest.tag = 3;
     loginRequest.delegate = self;

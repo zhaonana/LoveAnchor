@@ -132,7 +132,7 @@
 #pragma mark - 解析
 - (void)request
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%suser/following_list/%@",BaseURL,model.access_token];
+    NSString *urlStr = [NSString stringWithFormat:@"%@user/following_list/%@",BaseURL,model.access_token];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     [request setTimeOutSeconds:100];

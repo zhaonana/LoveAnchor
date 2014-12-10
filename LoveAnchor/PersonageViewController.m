@@ -728,7 +728,7 @@
 //所有数据
 - (void)request
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%suser/info/%@",BaseURL,model.access_token];
+    NSString *urlStr = [NSString stringWithFormat:@"%@user/info/%@",BaseURL,model.access_token];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 100;
@@ -738,7 +738,7 @@
 //徽章
 - (void)badgeRequest
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%szone/user_medal/%@",BaseURL,[dict objectForKey:@"_id"]];
+    NSString *urlStr = [NSString stringWithFormat:@"%@zone/user_medal/%@",BaseURL,[dict objectForKey:@"_id"]];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 101;
@@ -748,7 +748,7 @@
 //座驾
 - (void)seatRequest
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%suser/car_info/%@",BaseURL,model.access_token];
+    NSString *urlStr = [NSString stringWithFormat:@"%@user/car_info/%@",BaseURL,model.access_token];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 102;
@@ -758,7 +758,7 @@
 //全部座驾
 - (void)allSeatRequest
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%sshow/cars_list",BaseURL];
+    NSString *urlStr = [NSString stringWithFormat:@"%@show/cars_list",BaseURL];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 106;
@@ -769,7 +769,7 @@
 //性别
 - (void)sexRequest
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%suser/edit/%@",BaseURL,model.access_token];
+    NSString *urlStr = [NSString stringWithFormat:@"%@user/edit/%@",BaseURL,model.access_token];
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 103;
@@ -779,7 +779,7 @@
 //星座
 - (void)constellationRequest
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%suser/edit/%@",BaseURL,model.access_token];
+    NSString *urlStr = [NSString stringWithFormat:@"%@user/edit/%@",BaseURL,model.access_token];
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 104;
@@ -789,7 +789,7 @@
 //城市
 - (void)cityRequest
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%suser/edit/%@",BaseURL,model.access_token];
+    NSString *urlStr = [NSString stringWithFormat:@"%@user/edit/%@",BaseURL,model.access_token];
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 105;

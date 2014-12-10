@@ -280,7 +280,7 @@
 #pragma mark - 注册
 - (void)request
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%sttus/register?nick_name=%@&user_name=%@&password=%@&auth_code=%@&auth_key=%@",BaseURL,_nameTextField.text,_nameTextField.text,_passTextField.text,_validationTextField.text,auth_key];
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/register?nick_name=%@&user_name=%@&password=%@&auth_code=%@&auth_key=%@",BaseURL,_nameTextField.text,_nameTextField.text,_passTextField.text,_validationTextField.text,auth_key];
     ASIHTTPRequest *request = [[ASIHTTPRequest alloc]initWithURL:[NSURL URLWithString:urlStr]];
     [request setTimeOutSeconds:10];
     request.tag = 1;
@@ -290,7 +290,7 @@
 #pragma mark - 获取验证码
 - (void)information
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%sttus/authcode_image",BaseURL];
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/authcode_image",BaseURL];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.tag = 0;
     [request setTimeOutSeconds:10];
@@ -300,7 +300,7 @@
 #pragma mark - 验证验证码
 - (void)verification
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%sttus/checkCodeVeri?auth_code=%@&auth_key=%@",BaseURL,_validationTextField.text,auth_key];
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/checkCodeVeri?auth_code=%@&auth_key=%@",BaseURL,_validationTextField.text,auth_key];
     ASIHTTPRequest *request8 = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     [request8 setTimeOutSeconds:10];
     request8.tag = 2;
@@ -311,7 +311,7 @@
 #pragma mark - 更新验证码
 - (void)updateTheVerificationCode
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%sttus/authcode?id1=%@",BaseURL,auth_key];
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/authcode?id1=%@",BaseURL,auth_key];
     ASIHTTPRequest *updateRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     updateRequest.delegate = self;
     updateRequest.tag = 4;
@@ -322,7 +322,7 @@
 #pragma mark - 登陆
 - (void)login
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%sttus/login?user_name=%@&password=%@&auth_code=%@&auth_key=%@",BaseURL,_nameTextField.text,_passTextField.text,_validationTextField.text,auth_key];
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/login?user_name=%@&password=%@&auth_code=%@&auth_key=%@",BaseURL,_nameTextField.text,_passTextField.text,_validationTextField.text,auth_key];
     ASIHTTPRequest *loginRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     [loginRequest setTimeOutSeconds:10];
     loginRequest.tag = 3;

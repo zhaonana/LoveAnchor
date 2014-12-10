@@ -518,7 +518,7 @@
 //紫V
 - (void)purpleVRequest
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%sshop/buy_vip2/%@/%d?roomid=",BaseURL,model.access_token,type];
+    NSString *urlStr = [NSString stringWithFormat:@"%@shop/buy_vip2/%@/%d?roomid=",BaseURL,model.access_token,type];
     ASIHTTPRequest *purpleRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     purpleRequest.delegate = self;
     purpleRequest.tag = 100;
@@ -528,7 +528,7 @@
 //黄V
 - (void)yellowVRequest
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%sshop/buy_vip/%@/%d?roomid=",BaseURL,model.access_token,type];
+    NSString *urlStr = [NSString stringWithFormat:@"%@shop/buy_vip/%@/%d?roomid=",BaseURL,model.access_token,type];
     ASIHTTPRequest *yellowRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     yellowRequest.delegate = self;
     yellowRequest.tag = 101;
@@ -538,7 +538,7 @@
 //座驾
 - (void)seatRequest
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%sshow/cars_list",BaseURL];
+    NSString *urlStr = [NSString stringWithFormat:@"%@show/cars_list",BaseURL];
     ASIHTTPRequest *seatRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     seatRequest.delegate = self;
     seatRequest.tag = 102;
@@ -548,7 +548,7 @@
 //够买座驾
 - (void)purchaseSeatRequest:(id)sender
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%sshop/buy_car/%@/%@",BaseURL,model.access_token,sender];
+    NSString *urlStr = [NSString stringWithFormat:@"%@shop/buy_car/%@/%@",BaseURL,model.access_token,sender];
     ASIHTTPRequest *purchaseRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     purchaseRequest.delegate = self;
     purchaseRequest.tag = 103;

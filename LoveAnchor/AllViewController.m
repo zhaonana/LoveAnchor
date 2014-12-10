@@ -60,7 +60,7 @@
 #pragma mark - 数据解析
 - (void)request
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%spublic/room_list",BaseURL];
+    NSString *urlStr = [NSString stringWithFormat:@"%@public/room_list",BaseURL];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     [request setTimeOutSeconds:100];
     request.delegate = self;

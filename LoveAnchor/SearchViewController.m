@@ -48,8 +48,8 @@
 }
 - (void)initSet
 {
-    NSString *nameUrl = [NSString stringWithFormat:@"%spublic/room_list?nick_name=%@",BaseURL,_searchBar.text];
-    NSString *idUrl = [NSString stringWithFormat:@"%spublic/room_list?room_id=%@",BaseURL,_searchBar.text];
+    NSString *nameUrl = [NSString stringWithFormat:@"%@public/room_list?nick_name=%@",BaseURL,_searchBar.text];
+    NSString *idUrl = [NSString stringWithFormat:@"%@public/room_list?room_id=%@",BaseURL,_searchBar.text];
     NSArray *array = [NSArray arrayWithObjects:nameUrl,idUrl, nil];
     
     _dic = [[NSDictionary alloc]initWithObjects:[NSArray arrayWithObject:array] forKeys:[NSArray arrayWithObject:@"0"]];

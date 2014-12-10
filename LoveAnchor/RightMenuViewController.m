@@ -222,7 +222,7 @@
 #pragma mark - 数据
 - (void)request
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%spublic/room_list",BaseURL];
+    NSString *urlStr = [NSString stringWithFormat:@"%@public/room_list",BaseURL];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 100;
@@ -231,7 +231,7 @@
 }
 - (void)requestWithSbean:(int)sbean ebean:(int)ebean tag:(NSInteger)tag
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%spublic/room_list?page=1&size=20&sbean=%d&ebean=%d&sort=0",BaseURL,sbean,ebean];
+    NSString *urlStr = [NSString stringWithFormat:@"%@public/room_list?page=1&size=20&sbean=%d&ebean=%d&sort=0",BaseURL,sbean,ebean];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = tag;

@@ -98,9 +98,9 @@
     
     //socket
     if (model) {
-        NSDictionary *dic = @{@"room_id": @"12965241",
+        NSDictionary *dic = @{@"room_id": self.allModel._id,
                               @"access_token": model.access_token};
-        [_socketIO connectToHost:@"ttwsshowd.app1101168695.twsapp.com" onPort:80 withParams:dic];
+        [_socketIO connectToHost:BaseHost onPort:80 withParams:dic];
     }
     
     self.view.backgroundColor = [UIColor whiteColor];
@@ -110,7 +110,6 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
- 
 
 //    NSString *url = @"http://v.17173.com/api/5981245-4.m3u8";
     NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];

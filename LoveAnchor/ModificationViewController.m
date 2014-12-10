@@ -117,7 +117,7 @@
 #pragma mark - 修改昵称
 - (void)nickRequest
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%suser/edit/%@",BaseURL,model.access_token];
+    NSString *urlStr = [NSString stringWithFormat:@"%@user/edit/%@",BaseURL,model.access_token];
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     NSString *str = [NSString stringWithFormat:@"%@",_modificationTextField.text];

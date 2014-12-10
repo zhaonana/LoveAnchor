@@ -274,7 +274,7 @@
     NSString *md5token = [self md5:usertoken];
     NSString *encodingNickname = [nickname stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
     NSString *encodingPicurl = [picurl stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
-    NSString *urlStr = [NSString stringWithFormat:@"%s/ttus/t3login?userid=%@&usertoken=%@&via=iphone&t3pf=%@&nickname=%@&picurl=%@",BaseURL,userid,md5token,t3pf,encodingNickname,encodingPicurl];
+    NSString *urlStr = [NSString stringWithFormat:@"%@/ttus/t3login?userid=%@&usertoken=%@&via=iphone&t3pf=%@&nickname=%@&picurl=%@",BaseURL,userid,md5token,t3pf,encodingNickname,encodingPicurl];
     ASIHTTPRequest *logRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     logRequest.delegate = self;
     logRequest.tag = 4;
@@ -291,7 +291,7 @@
 //所有数据
 - (void)allRequestWithToken:(NSString *)access_token
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%suser/info/%@",BaseURL,access_token];
+    NSString *urlStr = [NSString stringWithFormat:@"%@user/info/%@",BaseURL,access_token];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 5;
@@ -302,7 +302,7 @@
 #pragma mark - 登陆
 - (void)LoginRequest
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%sttus/login?user_name=%@&password=%@&auth_code=%@&auth_key=%@",BaseURL,_nameTextField.text,_passTextField.text,_validationTextField.text,_getAuth_key];
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/login?user_name=%@&password=%@&auth_code=%@&auth_key=%@",BaseURL,_nameTextField.text,_passTextField.text,_validationTextField.text,_getAuth_key];
     ASIHTTPRequest *logRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     logRequest.delegate = self;
     logRequest.tag = 3;
@@ -313,7 +313,7 @@
 #pragma mark - 获取验证码
 - (void)getVerificationCode
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%sttus/authcode_image",BaseURL];
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/authcode_image",BaseURL];
     ASIHTTPRequest *getRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     [getRequest setTimeOutSeconds:10];
     getRequest.delegate = self;
@@ -325,7 +325,7 @@
 #pragma mark - 验证验证码
 - (void)verifyTheVerificationCode
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%sttus/checkCodeVeri?auth_code=%@&auth_key=%@",BaseURL,_validationTextField.text,_getAuth_key];
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/checkCodeVeri?auth_code=%@&auth_key=%@",BaseURL,_validationTextField.text,_getAuth_key];
     ASIHTTPRequest *verifyRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     verifyRequest.delegate = self;
     verifyRequest.tag = 1;
@@ -335,7 +335,7 @@
 #pragma mark - 更新验证码
 - (void)updateTheVerificationCode
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%sttus/authcode?id1=%@",BaseURL,_getAuth_key];
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/authcode?id1=%@",BaseURL,_getAuth_key];
     ASIHTTPRequest *updateRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     updateRequest.delegate = self;
     updateRequest.tag = 2;

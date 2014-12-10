@@ -182,7 +182,7 @@
 
 - (void)request
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%suser/info/%@",BaseURL,model.access_token];
+    NSString *urlStr = [NSString stringWithFormat:@"%@user/info/%@",BaseURL,model.access_token];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 100;

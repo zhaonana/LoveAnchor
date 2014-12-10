@@ -728,7 +728,8 @@
 //所有数据
 - (void)request
 {
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/info/%@",model.access_token]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%suser/info/%@",BaseURL,model.access_token];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 100;
     [request setTimeOutSeconds:30];
@@ -737,7 +738,8 @@
 //徽章
 - (void)badgeRequest
 {
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/zone/user_medal/%@",[dict objectForKey:@"_id"]]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%szone/user_medal/%@",BaseURL,[dict objectForKey:@"_id"]];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 101;
     [request setTimeOutSeconds:30];
@@ -746,7 +748,8 @@
 //座驾
 - (void)seatRequest
 {
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/car_info/%@",model.access_token]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%suser/car_info/%@",BaseURL,model.access_token];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 102;
     [request setTimeOutSeconds:30];
@@ -755,7 +758,8 @@
 //全部座驾
 - (void)allSeatRequest
 {
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://ttapi.izhubo.com/show/cars_list"]];
+    NSString *urlStr = [NSString stringWithFormat:@"%sshow/cars_list",BaseURL];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 106;
     [request setTimeOutSeconds:30];
@@ -765,7 +769,8 @@
 //性别
 - (void)sexRequest
 {
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/edit/%@",model.access_token]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%suser/edit/%@",BaseURL,model.access_token];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 103;
     [request setPostValue:[NSString stringWithFormat:@"%ld",(long)tag] forKey:@"sex"];
@@ -774,7 +779,8 @@
 //星座
 - (void)constellationRequest
 {
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/edit/%@",model.access_token]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%suser/edit/%@",BaseURL,model.access_token];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 104;
     [request setPostValue:[NSString stringWithFormat:@"%ld",(long)constellationTag+1] forKey:@"constellation"];
@@ -783,7 +789,8 @@
 //城市
 - (void)cityRequest
 {
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/edit/%@",model.access_token]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%suser/edit/%@",BaseURL,model.access_token];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 105;
     [request setPostValue:label5.text forKey:@"location"];

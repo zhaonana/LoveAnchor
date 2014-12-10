@@ -117,10 +117,10 @@
 #pragma mark - 修改昵称
 - (void)nickRequest
 {
-    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/edit/%@",model.access_token]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%suser/edit/%@",BaseURL,model.access_token];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     NSString *str = [NSString stringWithFormat:@"%@",_modificationTextField.text];
-    NSLog(@"1111--%@",str);
     [request setPostValue:str forKey:@"nick_name"];
     [request startAsynchronous];
 }

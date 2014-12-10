@@ -60,8 +60,8 @@
 #pragma mark - 数据解析
 - (void)request
 {
-    NSLog(@"开始了");
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://ttapi.app1101815070.twsapp.com/public/room_list"]];
+    NSString *urlStr = [NSString stringWithFormat:@"%spublic/room_list",BaseURL];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     [request setTimeOutSeconds:100];
     request.delegate = self;
     [request startAsynchronous];
@@ -69,8 +69,6 @@
 
 -(void)requestFinished:(ASIHTTPRequest *)request
 {   
-    NSLog(@"大厅成功");
-    NSLog(@"result = %@",request.responseString);
     id resutl = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
     if ([resutl isKindOfClass:[NSDictionary class]]) {
         NSArray *allDtJson = [resutl objectForKey:@"data"];

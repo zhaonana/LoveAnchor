@@ -63,16 +63,12 @@
     #import "UIImageView+WebCache.h"
     #import "HZAreaPickerView.h"
     #import "CommonUtil.h"
-
+    #import "Common.h"
 #endif
 
 
 #import "ViewControllerMacro.h"
 
-//直播大厅
-#define ZHIBODATINGURL            @"http://ttapi.izhubo.com/public/room_list"
-//关注
-#define GUANZHUURL                @"http://ttapi.izhubo.com/user/following_list/{access_token}"
 //明星日榜
 #define MINGXINGRIBANG            @"http://ttapi.izhubo.com/rank/star_day/20"
 //明星周榜
@@ -98,9 +94,5 @@
 //人气超榜
 #define RENQICHAOBANG             @"http://ttapi.izhubo.com/rank/feather_total/20"
 
-//搜索昵称
-#define SOUSUONICHENG             @"http://ttapi.izhubo.com/public/room_list?nick_name="
-//搜素房间号
-#define SOUSUOFANGJIAN            @"http://ttapi.izhubo.com/public/room_list?room_id="
 
 

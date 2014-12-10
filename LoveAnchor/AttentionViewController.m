@@ -132,7 +132,8 @@
 #pragma mark - 解析
 - (void)request
 {
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/user/following_list/%@",model.access_token]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%suser/following_list/%@",BaseURL,model.access_token];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     [request setTimeOutSeconds:100];
     [request startAsynchronous];

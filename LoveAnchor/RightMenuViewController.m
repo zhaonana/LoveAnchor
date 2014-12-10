@@ -222,7 +222,8 @@
 #pragma mark - 数据
 - (void)request
 {
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:@"http://ttapi.izhubo.com/public/room_list"]];
+    NSString *urlStr = [NSString stringWithFormat:@"%spublic/room_list",BaseURL];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = 100;
     [request setTimeOutSeconds:100];
@@ -230,7 +231,8 @@
 }
 - (void)requestWithSbean:(int)sbean ebean:(int)ebean tag:(NSInteger)tag
 {
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"http://ttapi.izhubo.com/public/room_list?page=1&size=20&sbean=%d&ebean=%d&sort=0",sbean,ebean]]];
+    NSString *urlStr = [NSString stringWithFormat:@"%spublic/room_list?page=1&size=20&sbean=%d&ebean=%d&sort=0",BaseURL,sbean,ebean];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
     request.tag = tag;
     [request setTimeOutSeconds:100];
@@ -239,7 +241,6 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"zhibofenlei = %@",request.responseString);
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
     if ([result isKindOfClass:[NSDictionary class]]) {
         switch (request.tag) {

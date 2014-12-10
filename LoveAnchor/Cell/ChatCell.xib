@@ -26,6 +26,14 @@
                         <color key="textColor" red="0.89411764709999997" green="0.41176470590000003" blue="0.31372549020000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="5cZ-Ay-GgR" userLabel="Label - 昵称">
+                        <rect key="frame" x="39" y="7" width="272" height="12"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" red="0.89411764709999997" green="0.41176470590000003" blue="0.31372549020000001" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8aU-ZC-2om" userLabel="Label - 聊天内容">
                         <rect key="frame" x="8" y="25" width="304" height="12"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -57,6 +65,7 @@
                 <outlet property="fuhaoImgView" destination="Hd2-Dv-lfW" id="ZbM-eH-nrH"/>
                 <outlet property="giftLab" destination="Sm1-Uw-cgu" id="j3M-58-Zbb"/>
                 <outlet property="nickNameLab" destination="1Ag-KN-xhs" id="hML-TR-3QI"/>
+                <outlet property="toNickLab" destination="5cZ-Ay-GgR" id="cXk-fR-LwV"/>
             </connections>
             <point key="canvasLocation" x="226" y="271"/>
         </tableViewCell>

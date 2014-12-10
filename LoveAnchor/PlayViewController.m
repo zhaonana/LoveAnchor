@@ -622,10 +622,12 @@
             ChatModel *chatModel = [_dataArray objectAtIndex:indexPath.row];
             switch (chatModel.chatType) {
                 case contentType:
+                case tellTAType:
                     [cell loadContentWithModel:chatModel];
                     break;
                 case changeType:
                 case featherType:
+                case giftType:
                     [cell loadChangeWithModel:chatModel];
                     break;
                 default:
@@ -675,18 +677,19 @@
         case 1000: {
             ChatModel *chatModel = [_dataArray objectAtIndex:indexPath.row];
             switch (chatModel.chatType) {
-                case contentType: {
+                case contentType:
+                case tellTAType: {
                     CGRect rect = [chatModel.content boundingRectWithSize:CGSizeMake(304.0, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0]} context:nil];
                     return rect.size.height + 30.0;
                 }
                     break;
                 case changeType:
                 case featherType:
+                case giftType:
                     return 26.0;
                     break;
-                default: {
+                default:
                     return 44.0;
-                }
                     break;
             }
         }
@@ -771,6 +774,8 @@
 /*
  {"content":"/给力","level":7,"from_medals":{},"from":{"_id":11157909,"spend":120996,"nick_name":"快乐仙","priv":3,"s":"","medal_list":[]},"room_id":12700590,"etime":1418033100591}
  
+ {"content":"亏死了","level":10,"from_medals":{"1":1418202588407},"to":{"private":false,"_id":12695998,"nick_name":"小贝贝","level":2,"vip":0,"priv":3},"from":{"_id":12256761,"spend":397151,"nick_name":"0014&clubs;十四爷失忆了","priv":3,"s":"","vip":2,"car":16,"medal_list":["1"],"vip_hiding":0},"room_id":12695998,"etime":1418191732714}
+ 
  {"action":"room.change","data_d":{"_id":13225491,"spend":0,"nick_name":"一切在无言中","priv":3,"s":"","medal_list":[]}}
  
  {"action":"gift.notify","data_d":{"from":{"_id":12843524,"nick_name":"华冉","priv":3,"finance":{"coin_spend_total":14362},"qd":"ttxy"},"to":{"_id":10265417,"nick_name":"青楼、风尘女子","priv":2,"finance":{"bean_count_total":2412676,"coin_spend_total":70509}},"gift":{"_id":138,"name":"奔驰跑车","count":1,"coin_price":6000},"room_id":10265417,"win_coin":[]}}
@@ -806,7 +811,7 @@
                     NSDictionary *fromDic = [data_d objectForKey:@"from"];
                     NSString *fromNick = [fromDic objectForKey:@"nick_name"];
                     if (fromNick.length) {
-                        chatModel.fromNick_name = fromNick;
+                        chatModel.nick_name = fromNick;
                     }
                     NSDictionary *toDic = [data_d objectForKey:@"to"];
                     NSString *toNick = [toDic objectForKey:@"nick_name"];
@@ -834,11 +839,18 @@
                 [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
             }
         } else {
-            chatModel.chatType = contentType;
             NSString *content = [result objectForKey:@"content"];
             NSNumber *level = [result objectForKey:@"level"];
             NSDictionary *fromDic = [result objectForKey:@"from"];
             NSString *nick_name = [fromDic objectForKey:@"nick_name"];
+            NSDictionary *toDic = [result objectForKey:@"to"];
+            if (toDic) {
+                chatModel.chatType = tellTAType;
+                NSString *toNick = [toDic objectForKey:@"nick_name"];
+                chatModel.toNick_name = toNick;
+            } else {
+                chatModel.chatType = contentType;
+            }
             if (nick_name.length) {
                 chatModel.nick_name = nick_name;
                 chatModel.content = content;

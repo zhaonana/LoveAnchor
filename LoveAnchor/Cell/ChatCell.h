@@ -14,6 +14,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *fuhaoImgView;
 //昵称
 @property (weak, nonatomic) IBOutlet UILabel     *nickNameLab;
+//对方昵称
+@property (weak, nonatomic) IBOutlet UILabel     *toNickLab;
 //聊天内容
 @property (weak, nonatomic) IBOutlet UILabel     *contentLab;
 //进入直播间
@@ -25,9 +27,5 @@
 - (void)loadChangeWithModel:(ChatModel *)chatModel;
 //聊天消息
 - (void)loadContentWithModel:(ChatModel *)chatModel;
-//送礼物消息
-- (void)loadGiftWithModel:(ChatModel *)chatModel;
-//告诉TA
-- (void)loadTellWithModel:(ChatModel *)chatModel;
 
 @end

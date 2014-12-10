@@ -11,7 +11,7 @@
 @implementation LoginModel
 - (void)setValue:(id)value forUndefinedKey:(NSString *)key
 {
-    NSLog(@"搜索没有定义的key = %@",key);
+//    NSLog(@"搜索没有定义的key = %@",key);
 }
 
 - (void)encodeWithCoder:(NSCoder *)aCoder

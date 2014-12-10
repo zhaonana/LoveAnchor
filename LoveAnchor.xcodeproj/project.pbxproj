@@ -21,6 +21,8 @@
 		3944F0581A27361900429734 /* libffmpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0531A27361900429734 /* libffmpeg.a */; };
 		3944F0591A27361900429734 /* libopenssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0541A27361900429734 /* libopenssl.a */; };
 		3944F05A1A27361900429734 /* libVitamio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0551A27361900429734 /* libVitamio.a */; };
+		39A56EC81A383A66008D0BB8 /* CommonUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 39A56EC51A383A66008D0BB8 /* CommonUtil.m */; };
+		39A56EC91A383A66008D0BB8 /* NSString+TrimmingAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 39A56EC71A383A66008D0BB8 /* NSString+TrimmingAdditions.m */; };
 		39B55D871A2D64940088B6E5 /* QZoneConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39B55D751A2D64940088B6E5 /* QZoneConnection.framework */; };
 		39B55D881A2D64940088B6E5 /* SinaWeiboConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39B55D761A2D64940088B6E5 /* SinaWeiboConnection.framework */; };
 		39B55D891A2D64940088B6E5 /* AGCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39B55D781A2D64940088B6E5 /* AGCommon.framework */; };
@@ -224,7 +226,6 @@
 		39B663CA1A24A3EB0033D28C /* 0fu.png in Resources */ = {isa = PBXBuildFile; fileRef = 39B663C81A24A3EB0033D28C /* 0fu.png */; };
 		39B663CB1A24A3EB0033D28C /* 0fu@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 39B663C91A24A3EB0033D28C /* 0fu@2x.png */; };
 		39B663CE1A257EF30033D28C /* LevelInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B663CD1A257EF30033D28C /* LevelInfoModel.m */; };
-		39B663D11A2588CB0033D28C /* CommonUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 39B663D01A2588CB0033D28C /* CommonUtil.m */; };
 		F703DB371A174D5200C53D4C /* SeatManageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F703DB361A174D5200C53D4C /* SeatManageViewController.m */; };
 		F71890F11A12195B005ECCA9 /* huangV1.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890ED1A12195B005ECCA9 /* huangV1.png */; };
 		F71890F21A12195B005ECCA9 /* huangV1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890EE1A12195B005ECCA9 /* huangV1@2x.png */; };
@@ -600,6 +601,10 @@
 		3944F0541A27361900429734 /* libopenssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libopenssl.a; sourceTree = "<group>"; };
 		3944F0551A27361900429734 /* libVitamio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libVitamio.a; sourceTree = "<group>"; };
 		39A56EBC1A37EBCA008D0BB8 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
+		39A56EC41A383A66008D0BB8 /* CommonUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonUtil.h; sourceTree = "<group>"; };
+		39A56EC51A383A66008D0BB8 /* CommonUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonUtil.m; sourceTree = "<group>"; };
+		39A56EC61A383A66008D0BB8 /* NSString+TrimmingAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+TrimmingAdditions.h"; sourceTree = "<group>"; };
+		39A56EC71A383A66008D0BB8 /* NSString+TrimmingAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+TrimmingAdditions.m"; sourceTree = "<group>"; };
 		39B55D751A2D64940088B6E5 /* QZoneConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QZoneConnection.framework; sourceTree = "<group>"; };
 		39B55D761A2D64940088B6E5 /* SinaWeiboConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SinaWeiboConnection.framework; sourceTree = "<group>"; };
 		39B55D781A2D64940088B6E5 /* AGCommon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AGCommon.framework; sourceTree = "<group>"; };
@@ -802,8 +807,6 @@
 		39B663C91A24A3EB0033D28C /* 0fu@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "0fu@2x.png"; sourceTree = "<group>"; };
 		39B663CC1A257EF30033D28C /* LevelInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelInfoModel.h; sourceTree = "<group>"; };
 		39B663CD1A257EF30033D28C /* LevelInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LevelInfoModel.m; sourceTree = "<group>"; };
-		39B663CF1A2588CB0033D28C /* CommonUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommonUtil.h; sourceTree = "<group>"; };
-		39B663D01A2588CB0033D28C /* CommonUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommonUtil.m; sourceTree = "<group>"; };
 		F703DB351A174D5200C53D4C /* SeatManageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeatManageViewController.h; sourceTree = "<group>"; };
 		F703DB361A174D5200C53D4C /* SeatManageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeatManageViewController.m; sourceTree = "<group>"; };
 		F71890ED1A12195B005ECCA9 /* huangV1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = huangV1.png; sourceTree = "<group>"; };
@@ -1341,6 +1344,17 @@
 			path = Vitamio;
 			sourceTree = "<group>";
 		};
+		39A56EBD1A382B59008D0BB8 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				39A56EC41A383A66008D0BB8 /* CommonUtil.h */,
+				39A56EC51A383A66008D0BB8 /* CommonUtil.m */,
+				39A56EC61A383A66008D0BB8 /* NSString+TrimmingAdditions.h */,
+				39A56EC71A383A66008D0BB8 /* NSString+TrimmingAdditions.m */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
 		39B55D731A2D64940088B6E5 /* ShareSDK */ = {
 			isa = PBXGroup;
 			children = (
@@ -1656,9 +1670,8 @@
 				F7456E4C1998672700CF28E8 /* TabBarViewController.m */,
 				F7456F0119986A2800CF28E8 /* XDSSegmentedViewController.h */,
 				F7456F0219986A2800CF28E8 /* XDSSegmentedViewController.m */,
-				39B663CF1A2588CB0033D28C /* CommonUtil.h */,
-				39B663D01A2588CB0033D28C /* CommonUtil.m */,
 				39A56EBC1A37EBCA008D0BB8 /* Common.h */,
+				39A56EBD1A382B59008D0BB8 /* Util */,
 				392265561A359DEB00767721 /* Socket.IO */,
 				39B55D731A2D64940088B6E5 /* ShareSDK */,
 				3944F0471A27361900429734 /* Vitamio */,
@@ -2745,7 +2758,6 @@
 				F7B70E611A1C9F910064D56E /* DynamicModel.m in Sources */,
 				F75D703319F25A49004C144B /* OneCell.m in Sources */,
 				F75D703619F26503004C144B /* TwoCell.m in Sources */,
-				39B663D11A2588CB0033D28C /* CommonUtil.m in Sources */,
 				3922656C1A359DEC00767721 /* SocketIOPacket.m in Sources */,
 				F7C7CCE019ADB2D3003FCC03 /* LeftMenuViewController.m in Sources */,
 				F7C7CCAE19AD8FE7003FCC03 /* ASIFormDataRequest.m in Sources */,
@@ -2753,6 +2765,7 @@
 				F75D701419F242E0004C144B /* DatumViewController.m in Sources */,
 				F7C7CCE319ADB2F9003FCC03 /* RightMenuViewController.m in Sources */,
 				F7C7CCCF19AD9007003FCC03 /* UIButton+WebCache.m in Sources */,
+				39A56EC91A383A66008D0BB8 /* NSString+TrimmingAdditions.m in Sources */,
 				F7B5B87519ECF0EA0006ACCB /* StorecollectionVIewCell.m in Sources */,
 				F7C7CCCC19AD9007003FCC03 /* SDWebImageDownloader.m in Sources */,
 				F7C7CCAC19AD8FE7003FCC03 /* ASIDataDecompressor.m in Sources */,
@@ -2773,6 +2786,7 @@
 				F7B70E5E1A1C5F680064D56E /* SeatManageModel.m in Sources */,
 				F7B1D7C119C83F3000C26A16 /* LoginViewController.m in Sources */,
 				F78FAF2A1A0C96030055BEFC /* YellowVCollectionViewCell.m in Sources */,
+				39A56EC81A383A66008D0BB8 /* CommonUtil.m in Sources */,
 				F78FA81019CA976B00445235 /* PlayViewController.m in Sources */,
 				392265711A359DEC00767721 /* SRWebSocket.m in Sources */,
 				3922657F1A35B8AE00767721 /* ChatCell.m in Sources */,

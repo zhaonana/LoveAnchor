@@ -29,7 +29,7 @@
         [_giftLab setHidden:YES];
 
         CGSize size = [self getRectWithText:chatModel.nick_name height:12.0 width:CGFLOAT_MAX].size;
-        [_nickNameLab setFrame:CGRectMake(39, 8, size.width, 12)];
+        [_nickNameLab setFrame:CGRectMake(38, 8, size.width, 12)];
         [_enterIntoLab setFrame:CGRectMake(size.width + 40, 8, 64, 12)];
         CGSize contentSize = [self getRectWithText:chatModel.content height:CGFLOAT_MAX width:304.0].size;
         [_contentLab setFrame:CGRectMake(8, 25, 304, contentSize.height)];
@@ -107,7 +107,7 @@
 }
 
 - (void)loadDataWithModel:(ChatModel *)chatModel
-{
+{ 
     if (chatModel.nick_name.length) {
         _nickNameLab.text = chatModel.nick_name;
     }

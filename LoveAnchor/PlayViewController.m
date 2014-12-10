@@ -12,6 +12,7 @@
 #import "SocketIOJSONSerialization.h"
 #import "ChatCell.h"
 #import "ChatModel.h"
+#import "NSString+TrimmingAdditions.h"
 
 @interface PlayViewController () <VMediaPlayerDelegate, UITextFieldDelegate, SocketIODelegate>
 
@@ -798,7 +799,7 @@
                 chatModel.chatType = changeType;
                 id data_d = [result objectForKey:@"data_d"];
                 if ([data_d isKindOfClass:[NSDictionary class]]) {
-                    NSString *nick_name = [data_d objectForKey:@"nick_name"];
+                    NSString *nick_name = [[data_d objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                     if (nick_name.length) {
                         chatModel.nick_name = nick_name;
                     }
@@ -809,12 +810,12 @@
                 id data_d = [result objectForKey:@"data_d"];
                 if ([data_d isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *fromDic = [data_d objectForKey:@"from"];
-                    NSString *fromNick = [fromDic objectForKey:@"nick_name"];
+                    NSString *fromNick = [[fromDic objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                     if (fromNick.length) {
                         chatModel.nick_name = fromNick;
                     }
                     NSDictionary *toDic = [data_d objectForKey:@"to"];
-                    NSString *toNick = [toDic objectForKey:@"nick_name"];
+                    NSString *toNick = [[toDic objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                     if (toNick.length) {
                         chatModel.toNick_name = toNick;
                     }
@@ -832,7 +833,7 @@
             } else if ([action isEqualToString:@"gift.feather"]) {
                 chatModel.chatType = featherType;
                 id data_d = [result objectForKey:@"data_d"];
-                NSString *nick_name = [data_d objectForKey:@"nick_name"];
+                NSString *nick_name = [[data_d objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                 if (nick_name.length) {
                     chatModel.nick_name = nick_name;
                 }
@@ -842,11 +843,11 @@
             NSString *content = [result objectForKey:@"content"];
             NSNumber *level = [result objectForKey:@"level"];
             NSDictionary *fromDic = [result objectForKey:@"from"];
-            NSString *nick_name = [fromDic objectForKey:@"nick_name"];
+            NSString *nick_name = [[fromDic objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
             NSDictionary *toDic = [result objectForKey:@"to"];
             if (toDic) {
                 chatModel.chatType = tellTAType;
-                NSString *toNick = [toDic objectForKey:@"nick_name"];
+                NSString *toNick = [[toDic objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                 chatModel.toNick_name = toNick;
             } else {
                 chatModel.chatType = contentType;

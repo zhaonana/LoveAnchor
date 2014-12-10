@@ -97,9 +97,11 @@
     _socketIO = [[SocketIO alloc] initWithDelegate:self];
     
     //socket
-    NSDictionary *dic = @{@"room_id": @"13165230",
-                          @"access_token": model.access_token};
-    [_socketIO connectToHost:@"ttwsshowd.app1101168695.twsapp.com" onPort:80 withParams:dic];
+    if (model) {
+        NSDictionary *dic = @{@"room_id": @"12965241",
+                              @"access_token": model.access_token};
+        [_socketIO connectToHost:@"ttwsshowd.app1101168695.twsapp.com" onPort:80 withParams:dic];
+    }
     
     self.view.backgroundColor = [UIColor whiteColor];
     [self shouwUI];

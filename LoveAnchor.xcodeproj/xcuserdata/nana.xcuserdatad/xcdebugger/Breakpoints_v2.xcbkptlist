@@ -20,12 +20,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "LoveAnchor/PlayViewController.m"
-            timestampString = "439808156.406906"
+            timestampString = "439814562.733039"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "701"
-            endingLineNumber = "701"
-            landmarkName = "-socketIO:didReceiveMessage:"
+            startingLineNumber = "703"
+            endingLineNumber = "703"
+            landmarkName = "-tableView:heightForRowAtIndexPath:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

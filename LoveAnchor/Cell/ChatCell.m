@@ -31,16 +31,22 @@
         CGSize size = [self getRectWithText:chatModel.nick_name height:12.0 width:CGFLOAT_MAX].size;
         [_nickNameLab setFrame:CGRectMake(38, 8, size.width, 12)];
         [_enterIntoLab setFrame:CGRectMake(size.width + 40, 8, 64, 12)];
-        CGSize contentSize = [self getRectWithText:chatModel.content height:CGFLOAT_MAX width:304.0].size;
-        [_contentLab setFrame:CGRectMake(8, 25, 304, contentSize.height)];
-        
+        if (chatModel.content.length) {
+            [_contentLab setEmojiText:chatModel.content];
+        }
+        [_contentLab setFrame:CGRectMake(8, 25, 304, 12)];
+        _contentLab.font = [UIFont systemFontOfSize:12.0f];
+        [_contentLab setNumberOfLines:0];
+        [_contentLab sizeToFit];
+        _contentLab.isNeedAtAndPoundSign = YES;
+
+        _contentLab.customEmojiRegex = @"/[a-zA-Z0-9\u4e00-\u9fa5]+";
+        _contentLab.customEmojiPlistName = @"expressionImage.plist";
         if (chatModel.level) {
             NSString *imageName = [NSString stringWithFormat:@"%@fu",chatModel.level];
             _fuhaoImgView.image = [UIImage imageNamed:imageName];
         }
-        if (chatModel.content.length) {
-            _contentLab.text = chatModel.content;
-        }
+        
         switch (chatModel.chatType) {
             case contentType:
                 [_toNickLab setHidden:YES];

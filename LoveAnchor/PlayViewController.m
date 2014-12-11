@@ -680,7 +680,7 @@
             switch (chatModel.chatType) {
                 case contentType:
                 case tellTAType: {
-                    CGRect rect = [chatModel.content boundingRectWithSize:CGSizeMake(304.0, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0]} context:nil];
+                    CGRect rect = [chatModel.content boundingRectWithSize:CGSizeMake(294.0, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0]} context:nil];
                     return rect.size.height + 30.0;
                 }
                     break;
@@ -786,6 +786,8 @@
  {"action":"gift.feather","data_d":{"_id":11663047,"nick_name":"ミ忆&rarr;傷.","user":{"_id":11663047,"nick_name":"ミ忆&rarr;傷.","priv":3,"finance":{"feather_send_total":33,"coin_spend_total":33},"qd":"ttxy"}}}
  
  {"action":"room.star","data_d":{"_id":13165230,"nick_name":"小小叮当","finance":{"bean_count_total":169373,"feather_receive_total":774,"coin_spend_total":54},"star":{"room_id":13165230},"pic":"http://ttimg.app1101168695.twsapp.com/46/6/13165230_0_200200.jpg?v=548_548_1417776204762","followers":194}}
+ 
+ {"action":"manage.shutup","data_d":{"xy_user_id":13025690,"nick_name":"有钱难买我愿意","f_id":12539754,"f_name":"淡淡的忧伤；淡淡的怀念","minute":720}}
  */
 - (void)socketIO:(SocketIO *)socket didReceiveMessage:(SocketIOPacket *)packet
 {

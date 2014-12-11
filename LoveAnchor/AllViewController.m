@@ -7,6 +7,8 @@
 //
 
 #import "AllViewController.h"
+#import "MJRefresh.h"
+
 #define REFRESH_NOTFICATION @"refreshNotification"
 
 @interface AllViewController () <ThirdRowTableViewCellDelegate,FirstRowTableViewCellDelegate,SecondRowTableViewCellDelegate>
@@ -34,7 +36,8 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self shouUI];
     [self request];
-
+    [self setupRefresh];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:REFRESH_NOTFICATION object:nil];
 }
 
@@ -57,6 +60,30 @@
     [self.view addSubview:_tableView];
     
 }
+
+/**
+ *  集成刷新控件
+ */
+- (void)setupRefresh
+{
+    //下拉刷新(进入刷新状态就会调用self的headerRereshing)
+    [_tableView addHeaderWithTarget:self action:@selector(headerRereshing)];
+    [_tableView headerBeginRefreshing];
+}
+
+#pragma mark 开始进入刷新状态
+- (void)headerRereshing
+{
+    //请求数据
+    [self request];
+    
+    //2秒后刷新表格UI
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // (最好在刷新表格后调用)调用endRefreshing可以结束刷新状态
+        [_tableView headerEndRefreshing];
+    });
+}
+
 #pragma mark - 数据解析
 - (void)request
 {
@@ -79,6 +106,8 @@
             [model setValuesForKeysWithDictionary:dict];
             [allDtJson_mutable addObject:model];
         }
+        
+        [_dataArray removeAllObjects];
         
         NSArray *firstRowData = @[[allDtJson_mutable objectAtIndex:0]];
         [_dataArray addObject:firstRowData];

@@ -310,12 +310,12 @@ static inline CGFloat TTTFlushFactorForTextAlignment(NSTextAlignment textAlignme
         if (self.customEmojiRegularExpression) {
             //爱主播的表情没有结束符号,所以有可能会发现过长的只有头部才是表情的段，需要循环检测一次。爱主播的最大表情特殊字符是2个长度，检测2次即可
             if (!imageName&&emojiKey.length>2) {
-                NSUInteger maxDetctIndex = emojiKey.length>2+2?2:emojiKey.length-2;
+                NSUInteger maxDetctIndex = emojiKey.length>3?2:emojiKey.length-1;
                 //从头开始检测是否有对应的
                 for (NSUInteger i=0; i<maxDetctIndex; i++) {
-                    imageName = emojiDict[[emojiKey substringToIndex:3+i]];
+                    imageName = emojiDict[[emojiKey substringToIndex:2+i]];
                     if (imageName) {
-                        otherAppendStr = [[NSMutableAttributedString alloc]initWithString:[emojiKey substringFromIndex:3+i]];
+                        otherAppendStr = [[NSMutableAttributedString alloc]initWithString:[emojiKey substringFromIndex:2+i]];
                         break;
                     }
                 }

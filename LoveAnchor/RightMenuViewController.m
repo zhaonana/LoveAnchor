@@ -7,7 +7,9 @@
 //
 
 #import "RightMenuViewController.h"
+
 #define REFRESH_NOTFICATION @"refreshNotification"
+#define REFRESH_BACK_NOTFICATION @"refreshBackNotification"
 
 @interface RightMenuViewController ()<ASIHTTPRequestDelegate>
 {
@@ -22,6 +24,7 @@
     NSMutableArray *dataArr3;
     NSMutableArray *dataArr4;
     NSMutableArray *dataArr5;
+    NSString *_liveType;
 }
 @end
 
@@ -43,6 +46,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshBackView:) name:REFRESH_BACK_NOTFICATION object:nil];
+
     UIImageView *imageView = [[UIImageView alloc] initWithFrame:self.view.bounds];
     imageView.image = [UIImage imageNamed:@"zhuyebeijing"];
     imageView.userInteractionEnabled = YES;
@@ -56,14 +62,30 @@
     [imageView addSubview:rightTableView];
 
     [self requestWithSbean:1616000 ebean:0 tag:1];
-    
     [self requestWithSbean:561000 ebean:1616000 tag:2];
-    
     [self requestWithSbean:106000 ebean:561000 tag:3];
-    
     [self requestWithSbean:0 ebean:106000 tag:4];
-    
     [self request];
+}
+
+- (void)refreshBackView:(NSNotification *)notification
+{
+    if ([notification.object isEqualToString:@"allType"]) {
+        _liveType = @"allType";
+        [self request];
+    } else if ([notification.object isEqualToString:@"superstarType"]) {
+        _liveType = @"superstarType";
+        [self requestWithSbean:1616000 ebean:0 tag:1];
+    } else if ([notification.object isEqualToString:@"giantstarType"]) {
+        _liveType = @"giantstarType";
+        [self requestWithSbean:561000 ebean:1616000 tag:2];
+    } else if ([notification.object isEqualToString:@"starType"]) {
+        _liveType = @"starType";
+        [self requestWithSbean:106000 ebean:561000 tag:3];
+    } else if ([notification.object isEqualToString:@"rookieType"]) {
+        _liveType = @"rookieType";
+        [self requestWithSbean:0 ebean:106000 tag:4];
+    }
 }
 
 #pragma mark - tableViewDelegate
@@ -196,27 +218,27 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSMutableArray *dataArray = [NSMutableArray array];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     switch (indexPath.row) {
         case 0:
-            dataArray = dataArr5;
+            [dic setObject:dataArr5 forKey:@"allType"];
             break;
         case 1:
-            dataArray = dataArr1;
+            [dic setObject:dataArr1 forKey:@"superstarType"];
             break;
         case 2:
-            dataArray = dataArr2;
+            [dic setObject:dataArr2 forKey:@"giantstarType"];
             break;
         case 3:
-            dataArray = dataArr3;
+            [dic setObject:dataArr3 forKey:@"starType"];
             break;
         case 4:
-            dataArray = dataArr4;
+            [dic setObject:dataArr4 forKey:@"rookieType"];
             break;
         default:
             break;
     }
-    [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_NOTFICATION object:dataArray];
+    [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_NOTFICATION object:nil userInfo:dic];
 }
 
 #pragma mark - 数据
@@ -242,36 +264,52 @@
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+    NSMutableDictionary *dic = [NSMutableDictionary dictionary];
     if ([result isKindOfClass:[NSDictionary class]]) {
         switch (request.tag) {
             case 1:
                 array1 = [result objectForKey:@"data"];
                 if (array1.count) {
                     dataArr1 = [self createDataArrayWithData:array1];
+                    if ([_liveType isEqualToString:@"allType"]) {
+                        [dic setObject:dataArr1 forKey:_liveType];
+                    }
                 }
                 break;
             case 2:
                 array2 = [result objectForKey:@"data"];
                 if (array2.count) {
                     dataArr2 = [self createDataArrayWithData:array2];
+                    if ([_liveType isEqualToString:@"superstarType"]) {
+                        [dic setObject:dataArr1 forKey:_liveType];
+                    }
                 }
                 break;
             case 3:
                 array3 = [result objectForKey:@"data"];
                 if (array3.count) {
                     dataArr3 = [self createDataArrayWithData:array3];
+                    if ([_liveType isEqualToString:@"giantstarType"]) {
+                        [dic setObject:dataArr1 forKey:_liveType];
+                    }
                 }
                 break;
             case 4:
                 array4 = [result objectForKey:@"data"];
                 if (array4.count) {
                     dataArr4 = [self createDataArrayWithData:array4];
+                    if ([_liveType isEqualToString:@"starType"]) {
+                        [dic setObject:dataArr1 forKey:_liveType];
+                    }
                 }
                 break;
             case 100:
                 array5 = [result objectForKey:@"data"];
                 if (array5.count) {
                     dataArr5 = [self createDataArrayWithData:array5];
+                    if ([_liveType isEqualToString:@"rookieType"]) {
+                        [dic setObject:dataArr1 forKey:_liveType];
+                    }
                 }
                 break;
             default:

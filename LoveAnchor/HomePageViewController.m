@@ -78,7 +78,6 @@
 
 - (void)buttonClick:(UIButton *)button
 {
-    NSLog(@"别点了 要着火了");
     if (button.tag == 1000) {
         [self leftClick];
         

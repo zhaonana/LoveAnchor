@@ -10,12 +10,14 @@
 #import "MJRefresh.h"
 
 #define REFRESH_NOTFICATION @"refreshNotification"
+#define REFRESH_BACK_NOTFICATION @"refreshBackNotification"
 
 @interface AllViewController () <ThirdRowTableViewCellDelegate,FirstRowTableViewCellDelegate,SecondRowTableViewCellDelegate>
 {
     NSMutableArray *_dataArray;
     UITableView *_tableView;
     BOOL _tag;
+    NSString *_liveType;
 }
 @end
 
@@ -43,7 +45,27 @@
 
 - (void)refreshView:(NSNotification *)notification
 {
-    _dataArray = [NSMutableArray arrayWithArray:notification.object];
+    NSDictionary *userInfo = notification.userInfo;
+    if ([userInfo objectForKey:@"allType"]) {
+        _liveType = @"allType";
+        _dataArray = [NSMutableArray arrayWithArray:[userInfo objectForKey:@"allType"]];
+    }
+    if ([userInfo objectForKey:@"superstarType"]) {
+        _dataArray = [NSMutableArray arrayWithArray:[userInfo objectForKey:@"superstarType"]];
+        _liveType = @"superstarType";
+    }
+    if ([userInfo objectForKey:@"giantstarType"]) {
+        _dataArray = [NSMutableArray arrayWithArray:[userInfo objectForKey:@"giantstarType"]];
+        _liveType = @"giantstarType";
+    }
+    if ([userInfo objectForKey:@"starType"]) {
+        _dataArray = [NSMutableArray arrayWithArray:[userInfo objectForKey:@"starType"]];
+        _liveType = @"starType";
+    }
+    if ([userInfo objectForKey:@"rookieType"]) {
+        _dataArray = [NSMutableArray arrayWithArray:[userInfo objectForKey:@"rookieType"]];
+        _liveType = @"rookieType";
+    }
     [_tableView reloadData];
     [self.home rightClick];
 }
@@ -75,7 +97,11 @@
 - (void)headerRereshing
 {
     //请求数据
-    [self request];
+    if (_liveType.length) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_BACK_NOTFICATION object:_liveType];
+    } else {
+        [self request];
+    }
     
     //2秒后刷新表格UI
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

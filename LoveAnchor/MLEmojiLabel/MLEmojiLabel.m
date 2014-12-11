@@ -39,7 +39,10 @@ REGULAREXPRESSION(AtRegularExpression, @"@[\\u4e00-\\u9fa5\\w\\-]+")
 REGULAREXPRESSION_OPTION(PoundSignRegularExpression, @"#([\\u4e00-\\u9fa5\\w\\-]+)#", NSRegularExpressionCaseInsensitive)
 
 //微信的表情符其实不是这种格式，这个格式的只是让人看起来更友好。。
-REGULAREXPRESSION(EmojiRegularExpression, @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]")
+//REGULAREXPRESSION(EmojiRegularExpression, @"\\[[a-zA-Z0-9\\u4e00-\\u9fa5]+\\]")
+
+//爱主播的正则
+REGULAREXPRESSION(EmojiRegularExpression, @"/[a-zA-Z0-9\u4e00-\u9fa5]+")
 
 //@"/:[\\w:~!@$&*()|+<>',?-]{1,8}" , // @"/:[\\x21-\\x2E\\x30-\\x7E]{1,8}" ，经过检测发现\w会匹配中文，好奇葩。
 REGULAREXPRESSION(SlashEmojiRegularExpression, @"/:[\\x21-\\x2E\\x30-\\x7E]{1,8}")
@@ -109,10 +112,6 @@ static CGFloat widthCallback(void *refCon) {
  *  PS.已经在里面把init里的修改掉了
  */
 - (void)commonInit {
-    
-    //这个是用来生成plist时候用到
-    //[self initPlist];
-    
     self.userInteractionEnabled = YES;
     self.multipleTouchEnabled = NO;
     
@@ -273,11 +272,6 @@ static inline CGFloat TTTFlushFactorForTextAlignment(NSTextAlignment textAlignme
  */
 - (NSMutableAttributedString*)mutableAttributeStringWithEmojiText:(NSString*)emojiText
 {
-    //获取所有表情的位置
-//    NSArray *emojis = [kEmojiRegularExpression() matchesInString:emojiText
-//                                                         options:NSMatchingWithTransparentBounds
-//                                                           range:NSMakeRange(0, [emojiText length])];
-
     NSArray *emojis = nil;
     
     if (self.customEmojiRegularExpression) {
@@ -313,16 +307,15 @@ static inline CGFloat TTTFlushFactorForTextAlignment(NSTextAlignment textAlignme
         NSMutableAttributedString *otherAppendStr = nil;
         
 		NSString *imageName = emojiDict[emojiKey];
-        if (!self.customEmojiRegularExpression) {
-            //微信的表情没有结束符号,所以有可能会发现过长的只有头部才是表情的段，需要循环检测一次。微信最大表情特殊字符是8个长度，检测8次即可
+        if (self.customEmojiRegularExpression) {
+            //爱主播的表情没有结束符号,所以有可能会发现过长的只有头部才是表情的段，需要循环检测一次。爱主播的最大表情特殊字符是2个长度，检测2次即可
             if (!imageName&&emojiKey.length>2) {
-                NSUInteger maxDetctIndex = emojiKey.length>8+2?8:emojiKey.length-2;
+                NSUInteger maxDetctIndex = emojiKey.length>2+2?2:emojiKey.length-2;
                 //从头开始检测是否有对应的
                 for (NSUInteger i=0; i<maxDetctIndex; i++) {
-                    //                NSLog(@"%@",[emojiKey substringToIndex:3+i]);
                     imageName = emojiDict[[emojiKey substringToIndex:3+i]];
                     if (imageName) {
-                        otherAppendStr  = [[NSMutableAttributedString alloc]initWithString:[emojiKey substringFromIndex:3+i]];
+                        otherAppendStr = [[NSMutableAttributedString alloc]initWithString:[emojiKey substringFromIndex:3+i]];
                         break;
                     }
                 }
@@ -504,49 +497,6 @@ didSelectLinkWithTextCheckingResult:(NSTextCheckingResult *)result;
             }
         }
     }
-}
-
-
-#pragma mark - other
-//为了生成plist方便的一个方法罢了
-- (void)initPlist
-{
-//    NSString *testString = @"/::)/::~/::B/::|/:8-)/::</::$/::X/::Z/::'(/::-|/::@/::P/::D/::O/::(/::+/:--b/::Q/::T/:,@P/:,@-D/::d/:,@o/::g/:|-)/::!/::L/::>/::,@/:,@f/::-S/:?/:,@x/:,@@/::8/:,@!/:!!!/:xx/:bye/:wipe/:dig/:handclap/:&-(/:B-)/:<@/:@>/::-O/:>-|/:P-(/::'|/:X-)/::*/:@x/:8*/:pd/:<W>/:beer/:basketb/:oo/:coffee/:eat/:pig/:rose/:fade/:showlove/:heart/:break/:cake/:li/:bome/:kn/:footb/:ladybug/:shit/:moon/:sun/:gift/:hug/:strong/:weak/:share/:v/:@)/:jj/:@@/:bad/:lvu/:no/:ok/:love/:<L>/:jump/:shake/:<O>/:circle/:kotow/:turn/:skip/:oY";
-//    NSMutableArray *testArray = [NSMutableArray array];
-//    NSMutableDictionary *testDict = [NSMutableDictionary dictionary];
-//    [kSlashEmojiRegularExpression() enumerateMatchesInString:testString options:0 range:NSMakeRange(0, testString.length) usingBlock:^(NSTextCheckingResult *result, __unused NSMatchingFlags flags, __unused BOOL *stop) {
-//        [testArray addObject:[testString substringWithRange:result.range]];
-//        [testDict setObject:[NSString stringWithFormat:@"Expression_%lu",testArray.count] forKey:[testString substringWithRange:result.range]];
-//    }];
-//    
-//    NSString *documentDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-//    NSString *doc = [NSString stringWithFormat:@"%@/expression.plist",documentDir];
-//    NSLog(@"%@,length:%lu",doc,testArray.count);
-//    if ([testArray writeToFile:doc atomically:YES]) {
-//        NSLog(@"归档expression.plist成功");
-//    }
-//    doc = [NSString stringWithFormat:@"%@/expressionImage.plist",documentDir];
-//    if ([testDict writeToFile:doc atomically:YES]) {
-//        NSLog(@"归档到expressionImage.plist成功");
-//    }
-    
-    NSString *testString = @"[微笑][撇嘴][色][发呆][得意][流泪][害羞][住嘴][睡][大哭][尴尬][生气][调皮][呲牙][惊讶][难过][酷][冷汗][淘气][吐][偷笑][可爱][白眼][傲慢][舔][困][惊恐][汗][大笑][大兵][奋斗][咒骂][疑问][嘘][晕][折磨][囧][骷髅][敲打][拜拜][擦汗][抠鼻][高兴][糗大了][窃笑][左哼哼][右哼哼][哈欠][鄙视][委屈][快哭了][阴险][亲亲][吓][可怜][菜刀][咖啡][吃饭][猪头][吻][爱心][心碎][闪电][炸弹][便便][月亮][太阳][拥抱][给力][不给力][握手][胜利][抱拳][勾引][拳头][差劲][爱你][NO][OK][双喜][发财][喝彩][祈祷][爆筋][飞机][开车][熊猫][打伞][纸巾][药]";
-        NSMutableArray *testArray = [NSMutableArray array];
-        NSMutableDictionary *testDict = [NSMutableDictionary dictionary];
-        [kEmojiRegularExpression() enumerateMatchesInString:testString options:0 range:NSMakeRange(0, testString.length) usingBlock:^(NSTextCheckingResult *result, __unused NSMatchingFlags flags, __unused BOOL *stop) {
-            [testArray addObject:[testString substringWithRange:result.range]];
-            [testDict setObject:[NSString stringWithFormat:@"f_static_0%ld",testArray.count] forKey:[testString substringWithRange:result.range]];
-        }];
-        NSString *documentDir = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) objectAtIndex:0];
-        NSString *doc = [NSString stringWithFormat:@"%@/expression.plist",documentDir];
-        NSLog(@"%@,length:%ld",doc,testArray.count);
-        if ([testArray writeToFile:doc atomically:YES]) {
-            NSLog(@"归档expression.plist成功");
-        }
-        doc = [NSString stringWithFormat:@"%@/expressionImage.plist",documentDir];
-        if ([testDict writeToFile:doc atomically:YES]) {
-            NSLog(@"归档到expressionImage.plist成功");
-        }
 }
 
 @end

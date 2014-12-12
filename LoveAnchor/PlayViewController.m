@@ -13,8 +13,9 @@
 #import "ChatCell.h"
 #import "ChatModel.h"
 #import "NSString+TrimmingAdditions.h"
+#import "RankCell.h"
 
-@interface PlayViewController () <VMediaPlayerDelegate, UITextFieldDelegate, SocketIODelegate>
+@interface PlayViewController () <VMediaPlayerDelegate, UITextFieldDelegate, SocketIODelegate, ASIHTTPRequestDelegate>
 
 {
     UIScrollView *_scrollView;
@@ -82,6 +83,18 @@
 @property (nonatomic, strong) NSMutableArray          *publicDataArray;
 //私聊
 @property (nonatomic, strong) NSMutableArray          *privateArray;
+//本场观众榜
+@property (nonatomic, strong) UITableView             *homeCourseTableView;
+//月榜
+@property (nonatomic, strong) UITableView             *monthTableView;
+//总榜
+@property (nonatomic, strong) UITableView             *alwaysTableView;
+//本场观众榜
+@property (nonatomic, strong) NSMutableArray          *homeCourseArray;
+//月榜
+@property (nonatomic, strong) NSMutableArray          *monthArray;
+//总榜
+@property (nonatomic, strong) NSMutableArray          *alwaysArray;
 
 @end
 
@@ -95,6 +108,10 @@
     _dataArray = [[NSMutableArray alloc] init];
     _publicDataArray = [[NSMutableArray alloc] init];
     _privateArray = [[NSMutableArray alloc] init];
+    _homeCourseArray = [[NSMutableArray alloc] init];
+    _monthArray = [[NSMutableArray alloc] init];
+    _alwaysArray = [[NSMutableArray alloc] init];
+    
     _socketIO = [[SocketIO alloc] initWithDelegate:self];
     
     //socket
@@ -111,6 +128,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+
+    [self requestWithParam:@"room_user_live" tag:500];
+    [self requestWithParam:@"room_user_month" tag:501];
+    [self requestWithParam:@"room_user_total" tag:502];
 
 //    NSString *url = @"http://v.17173.com/api/5981245-4.m3u8";
     NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
@@ -362,23 +383,26 @@
     audienceScrollView.tag = 100;
     [_scrollView addSubview:audienceScrollView];
     //本场观众
-    UITableView *homeCourseTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
-    homeCourseTableView.delegate = self;
-    homeCourseTableView.dataSource = self;
-    homeCourseTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
-    [audienceScrollView addSubview:homeCourseTableView];
+    _homeCourseTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
+    _homeCourseTableView.tag = 600;
+    _homeCourseTableView.delegate = self;
+    _homeCourseTableView.dataSource = self;
+    _homeCourseTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    [audienceScrollView addSubview:_homeCourseTableView];
     //月榜
-    UITableView *monthTableView = [[UITableView alloc]initWithFrame:CGRectMake(kScreenWidth, 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
-    monthTableView.delegate = self;
-    monthTableView.dataSource = self;
-    monthTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
-    [audienceScrollView addSubview:monthTableView];
+    _monthTableView = [[UITableView alloc]initWithFrame:CGRectMake(kScreenWidth, 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
+    _monthTableView.tag = 601;
+    _monthTableView.delegate = self;
+    _monthTableView.dataSource = self;
+    _monthTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    [audienceScrollView addSubview:_monthTableView];
     //总榜
-    UITableView *alwaysTableView = [[UITableView alloc]initWithFrame:CGRectMake(kScreenWidth*2  , 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
-    alwaysTableView.delegate = self;
-    alwaysTableView.dataSource = self;
-    alwaysTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
-    [audienceScrollView addSubview:alwaysTableView];
+    _alwaysTableView = [[UITableView alloc]initWithFrame:CGRectMake(kScreenWidth*2  , 0, kScreenWidth, _scrollView.frame.size.height) style:UITableViewStylePlain];
+    _alwaysTableView.tag = 602;
+    _alwaysTableView.delegate = self;
+    _alwaysTableView.dataSource = self;
+    _alwaysTableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    [audienceScrollView addSubview:_alwaysTableView];
     //button背景
     announcementView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight-30, kScreenWidth, 30)];
     announcementView.userInteractionEnabled = YES;
@@ -614,12 +638,12 @@
 #pragma mark - UITableViewDataSource methods
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ChatCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ChatCell"];
-    if (cell == nil) {
-        cell = [[[NSBundle mainBundle] loadNibNamed:@"ChatCell" owner:self options:nil] lastObject];
-    }
     switch (tableView.tag) {
-        case 1000: {
+        case 1000: {    //综合
+            ChatCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ChatCell"];
+            if (cell == nil) {
+                cell = [[[NSBundle mainBundle] loadNibNamed:@"ChatCell" owner:self options:nil] lastObject];
+            }
             ChatModel *chatModel = [_dataArray objectAtIndex:indexPath.row];
             switch (chatModel.chatType) {
                 case contentType:
@@ -634,23 +658,62 @@
                 default:
                     break;
             }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
         }
             break;
-        case 1001: {
+        case 1001: {    //公聊
+            ChatCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ChatCell"];
+            if (cell == nil) {
+                cell = [[[NSBundle mainBundle] loadNibNamed:@"ChatCell" owner:self options:nil] lastObject];
+            }
             ChatModel *chatModel = [_publicDataArray objectAtIndex:indexPath.row];
             [cell loadContentWithModel:chatModel];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
         }
             break;
-        case 1002: {
+        case 1002: {    //私聊
             
+        }
+            break;
+        case 600: {     //本场观众
+            RankCell *rankCell = [tableView dequeueReusableCellWithIdentifier:@"RankCell"];
+            if (rankCell == nil) {
+                rankCell = [[[NSBundle mainBundle] loadNibNamed:@"RankCell" owner:self options:nil] lastObject];
+            }
+            RankingModel *rankModel = [_homeCourseArray objectAtIndex:indexPath.row];
+            [rankCell loadDataWithRankModel:rankModel];
+            rankCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return rankCell;
+        }
+            break;
+        case 601: {     //月榜
+            RankCell *rankCell = [tableView dequeueReusableCellWithIdentifier:@"RankCell"];
+            if (rankCell == nil) {
+                rankCell = [[[NSBundle mainBundle] loadNibNamed:@"RankCell" owner:self options:nil] lastObject];
+            }
+            RankingModel *rankModel = [_monthArray objectAtIndex:indexPath.row];
+            [rankCell loadDataWithRankModel:rankModel];
+            rankCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return rankCell;
+        }
+            break;
+        case 602: {     //总榜
+            RankCell *rankCell = [tableView dequeueReusableCellWithIdentifier:@"RankCell"];
+            if (rankCell == nil) {
+                rankCell = [[[NSBundle mainBundle] loadNibNamed:@"RankCell" owner:self options:nil] lastObject];
+            }
+            RankingModel *rankModel = [_alwaysArray objectAtIndex:indexPath.row];
+            [rankCell loadDataWithRankModel:rankModel];
+            rankCell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return rankCell;
         }
             break;
         default:
             break;
     }
-    
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    return cell;
+    return nil;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -664,6 +727,15 @@
             break;
         case 1002:
             return _privateArray.count;
+            break;
+        case 600:
+            return _homeCourseArray.count;
+            break;
+        case 601:
+            return _monthArray.count;
+            break;
+        case 602:
+            return _alwaysArray.count;
             break;
         default:
             break;
@@ -702,6 +774,18 @@
         }
             break;
         case 1002: {
+            
+        }
+            break;
+        case 600: {
+            return 44.0;
+        }
+            break;
+        case 601: {
+            
+        }
+            break;
+        case 602: {
             
         }
             break;
@@ -888,6 +972,75 @@
 - (void)socketIODidDisconnect:(SocketIO *)socket disconnectedWithError:(NSError *)error
 {
     NSLog(@"socket.io disconnected. did error occur? %@", error);
+}
+
+#pragma mark - request
+- (void)requestWithParam:(NSString *)param tag:(NSInteger)tag
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@rank/%@/%@?size=%@",BaseURL,param,self.allModel._id,self.allModel.visiter_count];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    [request setTimeOutSeconds:100];
+    request.delegate = self;
+    request.tag = tag;
+    [request startAsynchronous];
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+    switch (request.tag) {
+        case 500: { //本场观众
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSNumber *code = [result objectForKey:@"code"];
+                if (code.intValue == 1) {
+                    NSArray *dataArr = [result objectForKey:@"data"];
+                    for (NSDictionary *dic in dataArr) {
+                        RankingModel *rankModel = [[RankingModel alloc] init];
+                        rankModel.nick_name = [dic objectForKey:@"nick_name"];
+                        rankModel.pic = [dic objectForKey:@"pic"];
+                        [_homeCourseArray addObject:rankModel];
+                    }
+                    [_homeCourseTableView reloadData];
+                }
+            }
+        }
+            break;
+        case 501: { //月榜
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSNumber *code = [result objectForKey:@"code"];
+                if (code.intValue == 1) {
+                    NSArray *dataArr = [result objectForKey:@"data"];
+                    for (NSDictionary *dic in dataArr) {
+                        RankingModel *rankModel = [[RankingModel alloc] init];
+                        rankModel.nick_name = [dic objectForKey:@"nick_name"];
+                        rankModel.pic = [dic objectForKey:@"pic"];
+                        [_monthArray addObject:rankModel];
+                    }
+                }
+                [_monthTableView reloadData];
+            }
+        }
+            break;
+        case 502: { //总榜
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSNumber *code = [result objectForKey:@"code"];
+                if (code.intValue == 1) {
+                    NSArray *dataArr = [result objectForKey:@"data"];
+                    for (NSDictionary *dic in dataArr) {
+                        RankingModel *rankModel = [[RankingModel alloc] init];
+                        rankModel.nick_name = [dic objectForKey:@"nick_name"];
+                        rankModel.pic = [dic objectForKey:@"pic"];
+                        [_alwaysArray addObject:rankModel];
+                    }
+                }
+                [_alwaysTableView reloadData];
+            }
+        }
+            break;
+        default:
+            break;
+    }
+    
 }
 
 @end

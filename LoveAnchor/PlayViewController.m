@@ -997,7 +997,6 @@
     NSLog(@"socket.io disconnected. did error occur? %@", error);
 }
 
-<<<<<<< HEAD
 #pragma mark - 键盘回收
 -(BOOL)textFieldShouldReturn:(UITextField *)textField
 {
@@ -1009,7 +1008,8 @@
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
     _inputView.hidden = NO;
-=======
+}
+
 #pragma mark - request
 - (void)requestWithParam:(NSString *)param tag:(NSInteger)tag
 {
@@ -1081,8 +1081,6 @@
         default:
             break;
     }
-    
->>>>>>> c7e6a5b5421dfb3a403188c301fb75c73dca187f
 }
 
 @end

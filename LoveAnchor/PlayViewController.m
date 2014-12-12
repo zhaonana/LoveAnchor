@@ -18,55 +18,56 @@
 @interface PlayViewController () <VMediaPlayerDelegate, UITextFieldDelegate, SocketIODelegate, ASIHTTPRequestDelegate>
 
 {
+    BOOL tap;
     UIScrollView *_scrollView;
     //导航
-    UIView *_navView;
-    
+    UIView       *_navView;
     //视频部分
-    UIImageView *_liveView;
+    UIImageView  *_liveView;
     //升级
-    UIImageView *_upgradeView;
+    UIImageView  *_upgradeView;
     //羽毛
-    UIImageView *_yumaoView;
+    UIImageView  *_yumaoView;
     //主播详情
-    UIView *_classifyView;
-    BOOL tap;
+    UIView       *_classifyView;
     //button背景
-    UIImageView *_backImageView;
+    UIImageView  *_backImageView;
     //综合
-    UIButton *synthesizeButton;
+    UIButton     *synthesizeButton;
     //公聊
-    UIButton *publicButton;
+    UIButton     *publicButton;
     //私聊
-    UIButton *privateButton;
+    UIButton     *privateButton;
     //观众
-    UIButton *audienceButton;
+    UIButton     *audienceButton;
     //抢沙发
-    UIView *_sofaView;
+    UIView       *_sofaView;
     //聊天输入框
-    UITextField *_chatTextField;
+    UITextField  *_chatTextField;
     VMediaPlayer *mMPayer;
     //视频背景
-    UIImageView *bagView;
+    UIImageView  *bagView;
     //下半部的背景VIew
-    UIView *View;
+    UIView       *View;
     //关闭视频
-    UIButton *bearButton;
+    UIButton     *bearButton;
     //聊天背景
-    UIView *chatView;
-    SocketIO *_socketIO;
+    UIView       *chatView;
+    SocketIO     *_socketIO;
     //观众榜里的button
-    UIView *announcementView;
+    UIView       *announcementView;
     //判断观众榜的左右滑动
-    UIImageView *announcementImageView;
+    UIImageView  *announcementImageView;
     //观众榜
     UIScrollView *audienceScrollView;
     //本场观众
-    UIButton *homeCourseButton;
+    UIButton     *homeCourseButton;
     //月榜
-    UIButton *monthButton;
+    UIButton     *monthButton;
     //总榜
-    UIButton *alwaysButton;
+    UIButton     *alwaysButton;
+    //textfield输入状态
+    UIView       *_inputView;
 }
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
@@ -128,12 +129,12 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-
+    
     [self requestWithParam:@"room_user_live" tag:500];
     [self requestWithParam:@"room_user_month" tag:501];
     [self requestWithParam:@"room_user_total" tag:502];
 
-//    NSString *url = @"http://v.17173.com/api/5981245-4.m3u8";
+
     NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
     self.videoURL = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
@@ -246,7 +247,7 @@
     //关闭视频
     bearButton = [UIButton buttonWithType:UIButtonTypeCustom];
     bearButton.frame = CGRectMake(280, 200, 35, 35);
-    [bearButton setImage:[UIImage imageNamed:@"shipinguanbi"] forState:UIControlStateNormal];
+    [bearButton setImage:[UIImage imageNamed:@"shipin"] forState:UIControlStateNormal];
     bearButton.tag = 1000;
     [bearButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_liveView addSubview:bearButton];
@@ -352,19 +353,25 @@
     chatView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight-45, kScreenWidth, 45)];
     chatView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
     [self.view addSubview:chatView];
+    //聊天的白框
+    UIView *chatBView = [[UIView alloc]initWithFrame:CGRectMake(5, 5, 260, 35)];
+    chatBView.backgroundColor = [UIColor whiteColor];
+    [chatView addSubview:chatBView];
+    //表情
+    UIImageView *faceView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 7.5, 20, 20)];
+    faceView.image = [UIImage imageNamed:@"biaoqing"];
+    [chatBView addSubview:faceView];
+    
     //聊天框
-    _chatTextField = [[UITextField alloc]initWithFrame:CGRectMake(5, 5, 260, 35)];
+    _chatTextField = [[UITextField alloc]initWithFrame:CGRectMake(27, 0, 233, 35)];
     _chatTextField.backgroundColor = [UIColor whiteColor];
     _chatTextField.borderStyle = UITextBorderStyleNone;
     _chatTextField.delegate = self;
-    [chatView addSubview:_chatTextField];
+    [chatBView addSubview:_chatTextField];
     //礼物按钮
-    UIButton *giftButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    giftButton.frame = CGRectMake(270, 12.5, 20, 20);
-    giftButton.tag = 103;
-    [giftButton setImage:[UIImage imageNamed:@"liwu"] forState:UIControlStateNormal];
-    [giftButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-    [chatView addSubview:giftButton];
+    UIImageView *giftImageView = [[UIImageView alloc]initWithFrame:CGRectMake(270, 12.5, 20, 20)];
+    giftImageView.image = [UIImage imageNamed:@"liwu"];
+    [chatView addSubview:giftImageView];
     //信息档案
     UIButton *manageButton = [UIButton buttonWithType:UIButtonTypeCustom];
     manageButton.frame = CGRectMake(295, 12.5, 15, 20);
@@ -372,6 +379,25 @@
     [manageButton setImage:[UIImage imageNamed:@"zhuboxiangqing"] forState:UIControlStateNormal];
     [manageButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [chatView addSubview:manageButton];
+    //textfield输入状态
+    _inputView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight-216-75, kScreenWidth, 75)];
+    _inputView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
+    _inputView.hidden = YES;
+    [self.view addSubview:_inputView];
+    //所有人
+    UILabel *allLabel = [[UILabel alloc]initWithFrame:CGRectMake(6, 5, 130, 20)];
+    allLabel.text = @"所有人";
+    allLabel.backgroundColor = [UIColor whiteColor];
+    allLabel.textAlignment = NSTextAlignmentCenter;
+    allLabel.textColor = [UIColor lightGrayColor];
+    [_inputView addSubview:allLabel];
+    
+    //悄悄话
+    UIImageView *quietlyImageView = [[UIImageView alloc]initWithFrame:CGRectMake(146, 5, 20, 20)];
+    quietlyImageView.image = [UIImage imageNamed:@"qiaoqiaohuaweixuanzhong"];
+    [_inputView addSubview:quietlyImageView];
+    
+    
 
     //观众榜
     audienceScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(kScreenWidth*3, 0, kScreenWidth, _scrollView.frame.size.height)];
@@ -491,7 +517,7 @@
     } else if (button.tag == 1000) {
         if (button.selected) {
             bearButton.frame = CGRectMake(280, 200, 35, 35);
-            [button setImage:[UIImage imageNamed:@"shipinguanbi"] forState:UIControlStateNormal];
+            [bearButton setImage:[UIImage imageNamed:@"shipin"] forState:UIControlStateNormal];
             button.selected = NO;
             bagView.hidden = YES;
             View.frame = CGRectMake(0, kScreenHeight-308, kScreenWidth, kScreenHeight-260);
@@ -499,7 +525,7 @@
             _scrollView.contentSize = CGSizeMake(kScreenWidth *4, kScreenHeight-333);
         } else {
             bearButton.frame = CGRectMake(280, 120, 35, 35);
-           [button setImage:[UIImage imageNamed:@"shipin"] forState:UIControlStateNormal];
+           [bearButton setImage:[UIImage imageNamed:@"shipinguanbi"] forState:UIControlStateNormal];
             button.selected = YES;
             bagView.hidden = NO;
             View.frame = CGRectMake(0, kScreenHeight-388, kScreenWidth, kScreenHeight-180);
@@ -971,6 +997,19 @@
     NSLog(@"socket.io disconnected. did error occur? %@", error);
 }
 
+<<<<<<< HEAD
+#pragma mark - 键盘回收
+-(BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    _inputView.hidden = YES;
+    [_chatTextField resignFirstResponder];
+    return YES;
+}
+
+-(void)textFieldDidBeginEditing:(UITextField *)textField
+{
+    _inputView.hidden = NO;
+=======
 #pragma mark - request
 - (void)requestWithParam:(NSString *)param tag:(NSInteger)tag
 {
@@ -1043,6 +1082,7 @@
             break;
     }
     
+>>>>>>> c7e6a5b5421dfb3a403188c301fb75c73dca187f
 }
 
 @end

@@ -9,9 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @interface RankCell : UITableViewCell
-
+//头像
 @property (weak, nonatomic) IBOutlet UIImageView *headImgView;
+//昵称
 @property (weak, nonatomic) IBOutlet UILabel     *nickNameLab;
+//金币
+@property (weak, nonatomic) IBOutlet UILabel     *coinLab;
 
 - (void)loadDataWithRankModel:(RankingModel *)rankModel;
 

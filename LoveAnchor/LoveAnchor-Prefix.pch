@@ -70,29 +70,29 @@
 #import "ViewControllerMacro.h"
 
 //明星日榜
-#define MINGXINGRIBANG            @"http://ttapi.izhubo.com/rank/star_day/20"
+#define MINGXINGRIBANG            @"http://ttapi.app1101168695.twsapp.com/rank/star_day/20"
 //明星周榜
-#define MINGXINGZHOUBANG          @"http://ttapi.izhubo.com/rank/star_week/20"
+#define MINGXINGZHOUBANG          @"http://ttapi.app1101168695.twsapp.com/rank/star_week/20"
 //明星月榜
-#define MINGXINGYUEBANG           @"http://ttapi.izhubo.com/rank/star_month/20"
+#define MINGXINGYUEBANG           @"http://ttapi.app1101168695.twsapp.com/rank/star_month/20"
 //明星超榜
-#define MINGXINGCHAOBANG          @"http://ttapi.izhubo.com/rank/star_total/20/"
+#define MINGXINGCHAOBANG          @"http://ttapi.app1101168695.twsapp.com/rank/star_total/20/"
 //富豪日榜
-#define FUHAORIBANG               @"http://ttapi.izhubo.com/rank/user_day/20"
+#define FUHAORIBANG               @"http://ttapi.app1101168695.twsapp.com/rank/user_day/20"
 //富豪周榜
-#define FUHAOZHOUBANG             @"http://ttapi.izhubo.com/rank/user_week/20"
+#define FUHAOZHOUBANG             @"http://ttapi.app1101168695.twsapp.com/rank/user_week/20"
 //富豪月榜
-#define FUHAOYUEBANG              @"http://ttapi.izhubo.com/rank/user_month/20"
+#define FUHAOYUEBANG              @"http://ttapi.app1101168695.twsapp.com/rank/user_month/20"
 //富豪超榜
-#define FUHAOCHAOBANG             @"http://ttapi.izhubo.com/rank/user_total/20"
+#define FUHAOCHAOBANG             @"http://ttapi.app1101168695.twsapp.com/rank/user_total/20"
 //人气日榜
-#define RENQIRIBANG               @"http://ttapi.izhubo.com/rank/feather_day/20"
+#define RENQIRIBANG               @"http://ttapi.app1101168695.twsapp.com/rank/feather_day/20"
 //人气周榜
-#define RENQIZHOUBANG             @"http://ttapi.izhubo.com/rank/feather_week/20"
+#define RENQIZHOUBANG             @"http://ttapi.app1101168695.twsapp.com/rank/feather_week/20"
 //人气月榜
-#define RENQIYUEBANG              @"http://ttapi.izhubo.com/rank/feather_month/20"
+#define RENQIYUEBANG              @"http://ttapi.app1101168695.twsapp.com/rank/feather_month/20"
 //人气超榜
-#define RENQICHAOBANG             @"http://ttapi.izhubo.com/rank/feather_total/20"
+#define RENQICHAOBANG             @"http://ttapi.app1101168695.twsapp.com/rank/feather_total/20"
 
 
 

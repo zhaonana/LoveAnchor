@@ -30,6 +30,9 @@
     if (rankModel.nick_name.length) {
         [_nickNameLab setText:rankModel.nick_name];
     }
+    if (rankModel.coin_spend) {
+        [_coinLab setText:[NSString stringWithFormat:@"%@金币",rankModel.coin_spend]];
+    }
 }
 
 @end

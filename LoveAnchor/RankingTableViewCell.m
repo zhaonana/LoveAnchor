@@ -66,11 +66,11 @@
         nickLabel.text = [NSString stringWithFormat:@"%@",model.nick_name];
         
         UILabel *rankingLabel = (UILabel *)[self.contentView viewWithTag:103];
-        rankingLabel.text = [NSString stringWithFormat:@"%@",model.finance];
-        NSLog(@"model.finance = %@",model.finance);
+        NSNumber *coinNum = [model.finance objectForKey:@"bean_count_total"];
+        NSInteger level = [CommonUtil getLevelInfoWithCoin:coinNum.intValue isRich:NO].level;
+        rankingLabel.text = [NSString stringWithFormat:@"%d",level];
         UILabel *roomLabel = (UILabel *)[self.contentView viewWithTag:104];
         roomLabel.text = [NSString stringWithFormat:@"%@",(model._id)];
-        NSLog(@"model.star = %@",model.star);
     }
 }
 

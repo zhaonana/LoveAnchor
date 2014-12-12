@@ -136,8 +136,6 @@
 - (void)requestWithTag:(NSInteger)tag andTag2:(NSInteger)tag2
 {
     NSArray *arr = [_dict objectForKey:[NSString stringWithFormat:@"%ld",tag]];
-    NSLog(@"arr:%@",arr);
-    NSLog(@"url:%@",[_dict objectForKey:[NSString stringWithFormat:@"%ld",tag]][tag2]);
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[_dict objectForKey:[NSString stringWithFormat:@"%ld",tag]][tag2]]];
     request.delegate = self;
     [request setTimeOutSeconds:20];
@@ -147,19 +145,14 @@
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     [_dataArray removeAllObjects];
-    NSLog(@"排行榜成功");
-    NSLog(@"request = %@",request.responseString);
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
     if ([result isKindOfClass:[NSDictionary class]]) {
         NSArray *allData = [result objectForKey:@"data"];
         NSMutableArray *allData_mutable = [NSMutableArray array];
-        NSLog(@"data == %@",allData);
     for (NSDictionary *dict in allData) {
         RankingModel *model = [[RankingModel alloc]init];
         [model setValuesForKeysWithDictionary:dict];
-        NSLog(@"model == %@",model);
         [allData_mutable addObject:model];
-        NSLog(@"allData_mutable == %@",allData_mutable);
         }
         NSUInteger count = [allData_mutable count];
         for (int i = 0; i < count; i++) {
@@ -200,7 +193,6 @@
 
 - (void)buttonClick:(UIButton *)button
 {
-    NSLog(@"别点老子");
     if (button.tag == 1000) {
         if (!leftisVisible) {
             [[SliderViewController sharedSliderController] leftItemClick];

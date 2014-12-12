@@ -476,7 +476,6 @@
 #pragma mark - 点击事件
 - (void)buttonClick:(UIButton *)button
 {
-    NSLog(@"1");
     if (button.tag == 100) {
         [mMPayer reset];
         [mMPayer unSetupPlayer];
@@ -508,7 +507,6 @@
             _scrollView.contentSize = CGSizeMake(kScreenWidth *4, kScreenHeight-253);
         }
     } else {
-        NSLog(@"%ld",(long)button.tag);
         if (button.selected) {
             return;
         }
@@ -843,7 +841,6 @@
 - (void)mediaPlayer:(VMediaPlayer *)player playbackComplete:(id)arg
 {
     
-    
 }
 
 - (void)mediaPlayer:(VMediaPlayer *)player error:(id)arg
@@ -977,7 +974,7 @@
 #pragma mark - request
 - (void)requestWithParam:(NSString *)param tag:(NSInteger)tag
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%@rank/%@/%@?size=%@",BaseURL,param,self.allModel._id,self.allModel.visiter_count];
+    NSString *urlStr = [NSString stringWithFormat:@"%@rank/%@/%@?size=3456",BaseURL,param,self.allModel._id];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     [request setTimeOutSeconds:100];
     request.delegate = self;
@@ -998,6 +995,7 @@
                         RankingModel *rankModel = [[RankingModel alloc] init];
                         rankModel.nick_name = [dic objectForKey:@"nick_name"];
                         rankModel.pic = [dic objectForKey:@"pic"];
+                        rankModel.coin_spend = [dic objectForKey:@"coin_spend"];
                         [_homeCourseArray addObject:rankModel];
                     }
                     [_homeCourseTableView reloadData];
@@ -1014,6 +1012,8 @@
                         RankingModel *rankModel = [[RankingModel alloc] init];
                         rankModel.nick_name = [dic objectForKey:@"nick_name"];
                         rankModel.pic = [dic objectForKey:@"pic"];
+                        rankModel.coin_spend = [dic objectForKey:@"coin_spend"];
+                        rankModel.rank = [dic objectForKey:@"rank"];
                         [_monthArray addObject:rankModel];
                     }
                 }
@@ -1030,6 +1030,8 @@
                         RankingModel *rankModel = [[RankingModel alloc] init];
                         rankModel.nick_name = [dic objectForKey:@"nick_name"];
                         rankModel.pic = [dic objectForKey:@"pic"];
+                        rankModel.coin_spend = [dic objectForKey:@"coin_spend"];
+                        rankModel.rank = [dic objectForKey:@"rank"];
                         [_alwaysArray addObject:rankModel];
                     }
                 }

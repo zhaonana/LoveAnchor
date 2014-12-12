@@ -147,7 +147,7 @@
         for (NSDictionary *dict in allData) {
             SearchModel *model = [[SearchModel alloc]init];
             [model setValuesForKeysWithDictionary:dict];
-            model.bean_count_total = [model.finance objectForKey:@"bean_count_total"];
+            model.bean_count_total = [model.finance objectForKey:@"coin_spend_total"];
             [allData_mutable addObject:model];
         }
         for (int i = 0; i < [allData_mutable count]; i++) {

@@ -391,7 +391,7 @@
     } else if (indexPath.section == 2 && indexPath.row == 1) {
         UIImageView *image3 = [[UIImageView alloc]initWithFrame:CGRectMake(139, 15, 25, 12)];
         NSDictionary *dic = [dict objectForKey:@"finance"];
-        NSNumber *coin = [dic objectForKey:@"coin_count"];
+        NSNumber *coin = [dic objectForKey:@"coin_spend_total"];
         NSInteger level = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:YES].level;
         image3.image = [UIImage imageNamed:[NSString stringWithFormat:@"%ldfu",(long)level]];
         [cell addSubview:image3];
@@ -414,7 +414,7 @@
     } else if (indexPath.section == 2 && indexPath.row == 2) {
         UIImageView *image6 = [[UIImageView alloc]initWithFrame:CGRectMake(148, 13, 16, 16)];
         NSDictionary *dic = [dict objectForKey:@"finance"];
-        NSNumber *coin = [dic objectForKey:@"coin_count"];
+        NSNumber *coin = [dic objectForKey:@"bean_count_total"];
         NSInteger level = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:NO].level;
         image6.image = [UIImage imageNamed:[NSString stringWithFormat:@"%ldzhubo",(long)level]];
         [cell addSubview:image6];
@@ -842,13 +842,10 @@
         }
         [_tableView reloadData];
     } else if (request.tag ==103) {
-        NSLog(@"性别 == %@",request.responseString);
         [self request];
     } else if (request.tag ==104) {
-        NSLog(@"星座 == %@",request.responseString);
         [self request];
     } else if (request.tag == 105) {
-        NSLog(@"城市 == %@",request.responseString);
         [self request];
     } else if (request.tag == 106) {
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];

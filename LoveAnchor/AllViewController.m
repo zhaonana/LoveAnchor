@@ -7,13 +7,17 @@
 //
 
 #import "AllViewController.h"
+#import "MJRefresh.h"
+
 #define REFRESH_NOTFICATION @"refreshNotification"
+#define REFRESH_BACK_NOTFICATION @"refreshBackNotification"
 
 @interface AllViewController () <ThirdRowTableViewCellDelegate,FirstRowTableViewCellDelegate,SecondRowTableViewCellDelegate>
 {
     NSMutableArray *_dataArray;
     UITableView *_tableView;
     BOOL _tag;
+    NSString *_liveType;
 }
 @end
 
@@ -34,13 +38,34 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self shouUI];
     [self request];
-
+    [self setupRefresh];
+    
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshView:) name:REFRESH_NOTFICATION object:nil];
 }
 
 - (void)refreshView:(NSNotification *)notification
 {
-    _dataArray = [NSMutableArray arrayWithArray:notification.object];
+    NSDictionary *userInfo = notification.userInfo;
+    if ([userInfo objectForKey:@"allType"]) {
+        _liveType = @"allType";
+        _dataArray = [NSMutableArray arrayWithArray:[userInfo objectForKey:@"allType"]];
+    }
+    if ([userInfo objectForKey:@"superstarType"]) {
+        _dataArray = [NSMutableArray arrayWithArray:[userInfo objectForKey:@"superstarType"]];
+        _liveType = @"superstarType";
+    }
+    if ([userInfo objectForKey:@"giantstarType"]) {
+        _dataArray = [NSMutableArray arrayWithArray:[userInfo objectForKey:@"giantstarType"]];
+        _liveType = @"giantstarType";
+    }
+    if ([userInfo objectForKey:@"starType"]) {
+        _dataArray = [NSMutableArray arrayWithArray:[userInfo objectForKey:@"starType"]];
+        _liveType = @"starType";
+    }
+    if ([userInfo objectForKey:@"rookieType"]) {
+        _dataArray = [NSMutableArray arrayWithArray:[userInfo objectForKey:@"rookieType"]];
+        _liveType = @"rookieType";
+    }
     [_tableView reloadData];
     [self.home rightClick];
 }
@@ -57,6 +82,34 @@
     [self.view addSubview:_tableView];
     
 }
+
+/**
+ *  集成刷新控件
+ */
+- (void)setupRefresh
+{
+    //下拉刷新(进入刷新状态就会调用self的headerRereshing)
+    [_tableView addHeaderWithTarget:self action:@selector(headerRereshing)];
+    [_tableView headerBeginRefreshing];
+}
+
+#pragma mark 开始进入刷新状态
+- (void)headerRereshing
+{
+    //请求数据
+    if (_liveType.length) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_BACK_NOTFICATION object:_liveType];
+    } else {
+        [self request];
+    }
+    
+    //2秒后刷新表格UI
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // (最好在刷新表格后调用)调用endRefreshing可以结束刷新状态
+        [_tableView headerEndRefreshing];
+    });
+}
+
 #pragma mark - 数据解析
 - (void)request
 {
@@ -79,6 +132,8 @@
             [model setValuesForKeysWithDictionary:dict];
             [allDtJson_mutable addObject:model];
         }
+        
+        [_dataArray removeAllObjects];
         
         NSArray *firstRowData = @[[allDtJson_mutable objectAtIndex:0]];
         [_dataArray addObject:firstRowData];

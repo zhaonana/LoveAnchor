@@ -8,20 +8,22 @@
 
 #import <UIKit/UIKit.h>
 #import "ChatModel.h"
+#import "MLEmojiLabel.h"
 
 @interface ChatCell : UITableViewCell
 //富豪等级
-@property (weak, nonatomic) IBOutlet UIImageView *fuhaoImgView;
+@property (weak, nonatomic) IBOutlet UIImageView  *fuhaoImgView;
 //昵称
-@property (weak, nonatomic) IBOutlet UILabel     *nickNameLab;
+@property (weak, nonatomic) IBOutlet UILabel      *nickNameLab;
 //对方昵称
-@property (weak, nonatomic) IBOutlet UILabel     *toNickLab;
+@property (weak, nonatomic) IBOutlet UILabel      *toNickLab;
 //聊天内容
-@property (weak, nonatomic) IBOutlet UILabel     *contentLab;
+@property (weak, nonatomic) IBOutlet MLEmojiLabel *contentLab;
 //进入直播间
-@property (weak, nonatomic) IBOutlet UILabel     *enterIntoLab;
+@property (weak, nonatomic) IBOutlet UILabel      *enterIntoLab;
 //礼物
-@property (weak, nonatomic) IBOutlet UILabel     *giftLab;
+@property (weak, nonatomic) IBOutlet UILabel      *giftLab;
+
 
 //进入房间提示/送给主播羽毛
 - (void)loadChangeWithModel:(ChatModel *)chatModel;

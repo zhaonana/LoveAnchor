@@ -351,6 +351,7 @@
     [_scrollView addSubview:_privateTableView];
     //聊天框背景
     chatView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight-45, kScreenWidth, 45)];
+    chatView.backgroundColor = [UIColor clearColor];
     chatView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
     [self.view addSubview:chatView];
     //聊天的白框

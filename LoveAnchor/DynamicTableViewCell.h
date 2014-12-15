@@ -7,21 +7,22 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "DynamicModel.h"
 
 @interface DynamicTableViewCell : UITableViewCell
 //头像
 @property (nonatomic, strong) UIImageView *headImageView;
 //昵称
-@property (nonatomic, strong) UILabel *nikeNameLabel;
+@property (nonatomic, strong) UILabel     *nikeNameLabel;
 //房间号
-@property (nonatomic, strong) UILabel *numberLabel;
-//等级
-@property (nonatomic, strong) UILabel *rankLabel;
+@property (nonatomic, strong) UILabel     *numberLabel;
 //皇冠
-@property (nonatomic, strong) UIImageView *crownImageVIew;
+@property (nonatomic, strong) UIImageView *crownImageView;
 //删除
-@property (nonatomic, strong) UIButton *delegeteButton;
+@property (nonatomic, strong) UIButton    *deleteButton;
+//删除按钮block
+@property (nonatomic, copy) void (^deleteButtonBlock)();
 
-- (void)setCellData:(NSArray *)modelArray;
+- (void)loadCellDataWithModel:(DynamicModel *)model;
 
 @end

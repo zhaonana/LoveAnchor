@@ -15,7 +15,6 @@
 @property (nonatomic, strong) NSNumber     *_id;
 //等级
 @property (nonatomic, strong) NSDictionary *finance;
-@property (nonatomic, strong) NSNumber     *bean_count_total;
 //昵称
 @property (nonatomic, strong) NSString     *nick_name;
 

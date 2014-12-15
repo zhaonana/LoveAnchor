@@ -15,7 +15,7 @@
 @property (nonatomic, strong) NSString *bean_count_total;
 @property (nonatomic, strong) NSString *pic;
 @property (nonatomic, strong) NSString *timestamp;
-@property (nonatomic, strong) NSString *roomId;
+@property (nonatomic, strong) NSNumber *roomId;
 @property (nonatomic, strong) NSString *live;
 
 @end

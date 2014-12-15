@@ -43,6 +43,7 @@
     if (self) {
         _dataArray = [NSMutableArray array];
         page = 0;
+        page2 = 10;
     }
     return self;
 }
@@ -54,7 +55,7 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self initSet];
     [self showUI];
-    [self requestWithTag:0 andTag2:0];
+    [self requestWithTag:10 andTag2:0];
 }
 - (void)initSet {
     NSArray *arr1 = [NSArray arrayWithObjects:MINGXINGRIBANG,MINGXINGZHOUBANG,MINGXINGYUEBANG,MINGXINGCHAOBANG, nil];
@@ -135,9 +136,9 @@
 #pragma mark - 解析
 - (void)requestWithTag:(NSInteger)tag andTag2:(NSInteger)tag2
 {
-    NSArray *arr = [_dict objectForKey:[NSString stringWithFormat:@"%ld",tag]];
-    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[_dict objectForKey:[NSString stringWithFormat:@"%ld",tag]][tag2]]];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[_dict objectForKey:[NSString stringWithFormat:@"%d",tag - 10]][tag2]]];
     request.delegate = self;
+    request.tag = tag;
     [request setTimeOutSeconds:20];
     [request startAsynchronous];
 }
@@ -150,10 +151,23 @@
         NSArray *allData = [result objectForKey:@"data"];
         NSMutableArray *allData_mutable = [NSMutableArray array];
     for (NSDictionary *dict in allData) {
-        RankingModel *model = [[RankingModel alloc]init];
-        [model setValuesForKeysWithDictionary:dict];
-        [allData_mutable addObject:model];
+        RankingModel *rankModel = [[RankingModel alloc] init];
+        [rankModel getRankModelWithDictionary:dict];
+        switch (request.tag) {
+            case 10:
+                rankModel.rankType = starType;
+                break;
+            case 11:
+                rankModel.rankType = richType;
+                break;
+            case 12:
+                rankModel.rankType = popularityType;
+                break;
+            default:
+                break;
         }
+        [allData_mutable addObject:rankModel];
+    }
         NSUInteger count = [allData_mutable count];
         for (int i = 0; i < count; i++) {
             NSArray *firstData = @[[allData_mutable objectAtIndex:i]];
@@ -188,7 +202,6 @@
         default:
             break;
     }
-    NSLog( @"%d",page);
 }
 
 - (void)buttonClick:(UIButton *)button
@@ -224,13 +237,13 @@
             }
         }
         if (button.tag == 100) {
-            page2 = 0;
+            page2 = 10;
             [self requestWithTag:page2 andTag2:page];
         } else if (button.tag == 101) {
-            page2 = 1;
+            page2 = 11;
             [self requestWithTag:page2 andTag2:page];
         } else if (button.tag == 102) {
-            page2 = 2;
+            page2 = 12;
             [self requestWithTag:page2 andTag2:page];
         }
     }
@@ -241,47 +254,36 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     NSArray *modelArray = [_dataArray objectAtIndex:indexPath.row];
-    if (indexPath.row == 0) {
-        static NSString *idenifier = @"RankingTableViewCell";
-        RankingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:idenifier];
-        if (cell == nil) {
-            cell = [[RankingTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idenifier];
-        }
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        UIImageView *diyiImageVIew = [[UIImageView alloc]initWithFrame:CGRectMake(18, 18, 20, 20)];
-        diyiImageVIew.image = [UIImage imageNamed:@"paihangbangdiyiming"];
-        [cell setCellData:modelArray];
-        [cell addSubview:diyiImageVIew];
-        return cell;
-    }else if (indexPath.row == 1||indexPath.row == 2) {
-        static NSString *idenifier = @"CellID";
-        RankingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:idenifier];
-        if (cell == nil) {
-            cell = [[RankingTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idenifier];
-            
-        }
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        cell.numberLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row+1];
-        cell.numberLabel.textColor = [UIColor colorWithRed:205/255.0 green:35/255.0 blue:33/255.0 alpha:0.8];
-        [cell setCellData:modelArray];
-        return cell;
-    }
-    static NSString *idenifier = @"Cell";
-    RankingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:idenifier];
+    static NSString *identifier = @"RankingCell";
+    RankingTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
     if (cell == nil) {
-        cell = [[RankingTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idenifier];
-        
+        cell = [[RankingTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    cell.numberLabel.text = [NSString stringWithFormat:@"%ld",indexPath.row+1];
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     [cell setCellData:modelArray];
+    
+    if (indexPath.row == 0) {
+        [cell.firstImgView setHidden:NO];
+        [cell.numberLabel setHidden:YES];
+    } else if (indexPath.row == 1||indexPath.row == 2) {
+        [cell.firstImgView setHidden:YES];
+        [cell.numberLabel setHidden:NO];
+        cell.numberLabel.text = [NSString stringWithFormat:@"%d",indexPath.row+1];
+        cell.numberLabel.textColor = [UIColor colorWithRed:205/255.0 green:35/255.0 blue:33/255.0 alpha:0.8];
+    } else {
+        [cell.firstImgView setHidden:YES];
+        [cell.numberLabel setHidden:NO];
+        cell.numberLabel.text = [NSString stringWithFormat:@"%d",indexPath.row+1];
+        cell.numberLabel.textColor = [UIColor colorWithRed:109/255.0 green:109/255.0 blue:109/255.0 alpha:0.8];
+    }
     return cell;
 
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [_dataArray count];;
+    return [_dataArray count];
 }
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -289,9 +291,8 @@
     return 55;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"%ld",(long)indexPath.row);
     DatumViewController *datum = [[DatumViewController alloc]init];
     [self presentViewController:datum animated:YES completion:nil];
 }

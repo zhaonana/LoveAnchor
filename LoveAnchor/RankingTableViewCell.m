@@ -15,19 +15,15 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.headImageView = [[UIImageView alloc]initWithFrame:CGRectMake(45, 5, 45, 45)];
-        self.headImageView.image = [UIImage imageNamed:@"touxiang1"];
         self.headImageView.layer.borderColor = [UIColor clearColor].CGColor;
         self.headImageView.layer.borderWidth = 5.0;
         self.headImageView.layer.cornerRadius = 25.0;
-        self.headImageView.tag = 101;
         
         self.headImageView.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:self.headImageView];
         
         self.nickNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(95, 30, 200, 18)];
-        self.nickNameLabel.text = @"心疼到爆也要强作欢笑ゞ";
         self.nickNameLabel.font = [UIFont systemFontOfSize:13];
-        self.nickNameLabel.tag = 102;
         [self.contentView addSubview:self.nickNameLabel];
         
         self.numberLabel = [[UILabel alloc]initWithFrame:CGRectMake(18, 18, 20, 20)];
@@ -35,19 +31,14 @@
         self.numberLabel.textColor = [UIColor colorWithRed:109/255.0 green:109/255.0 blue:109/255.0 alpha:0.8];
         [self.contentView addSubview:self.numberLabel];
         
-        self.rankLabel = [[UILabel alloc]initWithFrame:CGRectMake(95, 7, 18, 17)];
-        self.rankLabel.text = @"12";
-        self.rankLabel.tag = 103;
-        self.rankLabel.font = [UIFont systemFontOfSize:15];
-        [self.contentView addSubview:self.rankLabel];
+        self.firstImgView = [[UIImageView alloc]initWithFrame:CGRectMake(18, 18, 20, 20)];
+        self.firstImgView.image = [UIImage imageNamed:@"paihangbangdiyiming"];
+        [self.contentView addSubview:self.firstImgView];
         
-        self.crownImageView = [[UIImageView alloc]initWithFrame:CGRectMake(113, 7, 20, 17)];
-        self.crownImageView.image = [UIImage imageNamed:@"huangguan"];
+        self.crownImageView = [[UIImageView alloc]initWithFrame:CGRectMake(98, 7, 16, 16)];
         [self.contentView addSubview:self.crownImageView];
         
-        self.RoomNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(140, 7, 80, 18)];
-        self.RoomNumberLabel.text = @"(768687)";
-        self.RoomNumberLabel.tag = 104;
+        self.RoomNumberLabel = [[UILabel alloc]initWithFrame:CGRectMake(120, 7, 80, 18)];
         self.RoomNumberLabel.textColor = [UIColor colorWithRed:205/255.0 green:35/255.0 blue:33/255.0 alpha:0.8];
         [self.contentView addSubview:self.RoomNumberLabel];
         
@@ -59,23 +50,33 @@
 {
     for (int i = 0; i < [modelArray count]; i++) {
         RankingModel *model = [modelArray objectAtIndex:i];
-        UIImageView *imageView = (UIImageView *)[self.contentView viewWithTag:101];
-        [imageView setImageWithURL:[NSURL URLWithString:model.pic]];
+        [_headImageView setImageWithURL:[NSURL URLWithString:model.pic]];
         
-        UILabel *nickLabel = (UILabel *)[self.contentView viewWithTag:102];
-        nickLabel.text = [NSString stringWithFormat:@"%@",model.nick_name];
+        _nickNameLabel.text = [NSString stringWithFormat:@"%@",model.nick_name];
         
-        UILabel *rankingLabel = (UILabel *)[self.contentView viewWithTag:103];
-        NSNumber *coinNum = [model.finance objectForKey:@"coin_spend_total"];
-        NSInteger level = [CommonUtil getLevelInfoWithCoin:coinNum.intValue isRich:NO].level;
-        rankingLabel.text = [NSString stringWithFormat:@"%d",level];
-        UILabel *roomLabel = (UILabel *)[self.contentView viewWithTag:104];
-        roomLabel.text = [NSString stringWithFormat:@"%@",(model._id)];
+        NSInteger coinNum = 0;
+        NSInteger liveLevel = 0;
+        NSInteger richLevel = 0;
+        if (model.rankType == richType) {
+            if ([model.finance objectForKey:@"coin_spend_total"]) {
+                coinNum = [[model.finance objectForKey:@"coin_spend_total"] intValue];
+                richLevel = [CommonUtil getLevelInfoWithCoin:coinNum isRich:YES].level;
+                NSString *imageName = [NSString stringWithFormat:@"%ldfu",(long)richLevel];
+                [_crownImageView setFrame:CGRectMake(94, 10, 25, 12)];
+                [_crownImageView setImage:[UIImage imageNamed:imageName]];
+            }
+        } else {
+            if ([model.finance objectForKey:@"bean_count_total"]) {
+                coinNum = [[model.finance objectForKey:@"bean_count_total"] intValue];
+                liveLevel = [CommonUtil getLevelInfoWithCoin:coinNum isRich:NO].level;
+                NSString *imageName = [NSString stringWithFormat:@"%ldzhubo",(long)liveLevel];
+                [_crownImageView setFrame:CGRectMake(98, 7, 16, 16)];
+                [_crownImageView setImage:[UIImage imageNamed:imageName]];
+            }
+        }
+        
+        _RoomNumberLabel.text = [NSString stringWithFormat:@"%@",model._id];
     }
-}
-
-- (void)awakeFromNib
-{
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

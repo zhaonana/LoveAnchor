@@ -12,15 +12,15 @@
 //头像
 @property (nonatomic, strong) UIImageView *headImageView;
 //昵称
-@property (nonatomic, strong) UILabel *nickNameLabel;
+@property (nonatomic, strong) UILabel     *nickNameLabel;
 //编号
-@property (nonatomic, strong) UILabel *numberLabel;
+@property (nonatomic, strong) UILabel     *numberLabel;
 //皇冠
 @property (nonatomic, strong) UIImageView *crownImageView;
-//等级
-@property (nonatomic, strong) UILabel *rankLabel;
 //房间号
-@property (nonatomic, strong) UILabel *RoomNumberLabel;
+@property (nonatomic, strong) UILabel     *RoomNumberLabel;
+//第一个
+@property (nonatomic, strong) UIImageView *firstImgView;
 
 - (void)setCellData:(NSArray *)modelArray;
 

@@ -43,6 +43,7 @@
     if (self) {
         _dataArray = [NSMutableArray array];
         page = 0;
+        page2 = 10;
     }
     return self;
 }

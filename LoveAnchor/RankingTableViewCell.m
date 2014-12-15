@@ -66,7 +66,7 @@
         nickLabel.text = [NSString stringWithFormat:@"%@",model.nick_name];
         
         UILabel *rankingLabel = (UILabel *)[self.contentView viewWithTag:103];
-        NSNumber *coinNum = [model.finance objectForKey:@"bean_count_total"];
+        NSNumber *coinNum = [model.finance objectForKey:@"coin_spend_total"];
         NSInteger level = [CommonUtil getLevelInfoWithCoin:coinNum.intValue isRich:NO].level;
         rankingLabel.text = [NSString stringWithFormat:@"%d",level];
         UILabel *roomLabel = (UILabel *)[self.contentView viewWithTag:104];

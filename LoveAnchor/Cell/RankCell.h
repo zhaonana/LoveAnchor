@@ -13,6 +13,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *headImgView;
 //昵称
 @property (weak, nonatomic) IBOutlet UILabel     *nickNameLab;
+//财富等级
+@property (weak, nonatomic) IBOutlet UIImageView *levelImgView;
 //金币
 @property (weak, nonatomic) IBOutlet UILabel     *coinLab;
 

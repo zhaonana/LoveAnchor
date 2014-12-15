@@ -17,8 +17,6 @@
 @property (nonatomic, strong) UILabel     *numberLabel;
 //皇冠
 @property (nonatomic, strong) UIImageView *crownImageView;
-//等级
-@property (nonatomic, strong) UILabel     *rankLabel;
 //房间号
 @property (nonatomic, strong) UILabel     *RoomNumberLabel;
 //第一个

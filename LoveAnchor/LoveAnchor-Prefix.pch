@@ -58,7 +58,6 @@
     #import "LoginModel.h"
     #import "BadgeModel.h"
     #import "SeatManageModel.h"
-    #import "DynamicModel.h"
     #import <QuartzCore/QuartzCore.h>
     #import "UIImageView+WebCache.h"
     #import "HZAreaPickerView.h"

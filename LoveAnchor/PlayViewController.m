@@ -1032,10 +1032,7 @@
                     NSArray *dataArr = [result objectForKey:@"data"];
                     for (NSDictionary *dic in dataArr) {
                         RankingModel *rankModel = [[RankingModel alloc] init];
-                        rankModel.nick_name = [dic objectForKey:@"nick_name"];
-                        rankModel.pic = [dic objectForKey:@"pic"];
-                        rankModel.coin_spend = [dic objectForKey:@"coin_spend"];
-                        rankModel.coin_spend_total = [[dic objectForKey:@"finance"] objectForKey:@"coin_spend_total"];
+                        [rankModel getRankModelWithDictionary:dic];
                         [_homeCourseArray addObject:rankModel];
                     }
                     [_homeCourseTableView reloadData];
@@ -1050,11 +1047,7 @@
                     NSArray *dataArr = [result objectForKey:@"data"];
                     for (NSDictionary *dic in dataArr) {
                         RankingModel *rankModel = [[RankingModel alloc] init];
-                        rankModel.nick_name = [dic objectForKey:@"nick_name"];
-                        rankModel.pic = [dic objectForKey:@"pic"];
-                        rankModel.coin_spend = [dic objectForKey:@"coin_spend"];
-                        rankModel.coin_spend_total = [[dic objectForKey:@"finance"] objectForKey:@"coin_spend_total"];
-                        rankModel.rank = [dic objectForKey:@"rank"];
+                        [rankModel getRankModelWithDictionary:dic];
                         [_monthArray addObject:rankModel];
                     }
                 }
@@ -1069,11 +1062,7 @@
                     NSArray *dataArr = [result objectForKey:@"data"];
                     for (NSDictionary *dic in dataArr) {
                         RankingModel *rankModel = [[RankingModel alloc] init];
-                        rankModel.nick_name = [dic objectForKey:@"nick_name"];
-                        rankModel.pic = [dic objectForKey:@"pic"];
-                        rankModel.coin_spend = [dic objectForKey:@"coin_spend"];
-                        rankModel.coin_spend_total = [[dic objectForKey:@"finance"] objectForKey:@"coin_spend_total"];
-                        rankModel.rank = [dic objectForKey:@"rank"];
+                        [rankModel getRankModelWithDictionary:dic];
                         [_alwaysArray addObject:rankModel];
                     }
                 }

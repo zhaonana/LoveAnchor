@@ -24,7 +24,6 @@
 //礼物
 @property (weak, nonatomic) IBOutlet UILabel      *giftLab;
 
-
 //进入房间提示/送给主播羽毛
 - (void)loadChangeWithModel:(ChatModel *)chatModel;
 //聊天消息

@@ -15,4 +15,18 @@
 //    NSLog(@"排行榜没有定义的key = %@",key);
 }
 
+- (RankingModel *)getRankModelWithDictionary:(NSDictionary *)dic
+{
+    self.pic = [dic objectForKey:@"pic"];
+    self._id = [dic objectForKey:@"_id"];
+    self.nick_name = [dic objectForKey:@"nick_name"];
+    self.finance = [dic objectForKey:@"finance"];
+    self.bean_count_total = [[dic objectForKey:@"finance"] objectForKey:@"bean_count_total"];
+    self.coin_spend_total = [[dic objectForKey:@"finance"] objectForKey:@"coin_spend_total"];
+    self.star = [dic objectForKey:@"star"];
+    self.coin_spend = [dic objectForKey:@"coin_spend"];
+    self.rank = [dic objectForKey:@"rank"];
+    return self;
+}
+
 @end

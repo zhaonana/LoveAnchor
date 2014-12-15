@@ -17,13 +17,19 @@ typedef enum {
 } ChatType;
 
 @interface ChatModel : NSObject
-
+//聊天内容
 @property (nonatomic, strong) NSString *content;
+//财富等级
 @property (nonatomic, strong) NSNumber *level;
+//昵称
 @property (nonatomic, strong) NSString *nick_name;
+//对方昵称
 @property (nonatomic, strong) NSString *toNick_name;
+//礼物名称
 @property (nonatomic, strong) NSString *giftName;
+//礼物数量
 @property (nonatomic, strong) NSNumber *giftCount;
+//聊天类型
 @property (nonatomic, assign) ChatType chatType;
 
 @end

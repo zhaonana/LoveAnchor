@@ -33,6 +33,10 @@
     if (rankModel.coin_spend) {
         [_coinLab setText:[NSString stringWithFormat:@"%@金币",rankModel.coin_spend]];
     }
+    if (rankModel.coin_spend_total) {
+        NSInteger level = [CommonUtil getLevelInfoWithCoin:rankModel.coin_spend_total.intValue isRich:YES].level;
+        [_levelImgView setImage:[UIImage imageNamed:[NSString stringWithFormat:@"%dfu",level]]];
+    }
 }
 
 @end

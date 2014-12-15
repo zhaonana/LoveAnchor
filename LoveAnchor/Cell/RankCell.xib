@@ -15,7 +15,7 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="swi-xB-gmq" userLabel="Image View - 头像">
-                        <rect key="frame" x="8" y="5" width="33" height="33"/>
+                        <rect key="frame" x="8" y="5" width="33" height="33.5"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lHU-fO-sfK" userLabel="Label - 昵称">
@@ -32,11 +32,16 @@
                         <color key="textColor" red="0.89411764709999997" green="0.41176470590000003" blue="0.31372549020000001" alpha="1" colorSpace="calibratedRGB"/>
                         <nil key="highlightedColor"/>
                     </label>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="YTD-yc-FqT" userLabel="Image View - 财富等级">
+                        <rect key="frame" x="49" y="23" width="25" height="12"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    </imageView>
                 </subviews>
             </tableViewCellContentView>
             <connections>
                 <outlet property="coinLab" destination="Y6M-XR-jrt" id="so3-XI-NbX"/>
                 <outlet property="headImgView" destination="swi-xB-gmq" id="91e-iZ-tEE"/>
+                <outlet property="levelImgView" destination="YTD-yc-FqT" id="HYx-zV-bKX"/>
                 <outlet property="nickNameLab" destination="lHU-fO-sfK" id="MKu-kH-sAP"/>
             </connections>
             <point key="canvasLocation" x="226" y="248"/>

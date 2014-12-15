@@ -457,7 +457,7 @@
         label8.font = [UIFont systemFontOfSize:14];
         NSDictionary *dic = [dict objectForKey:@"finance"];
         if ([dict objectForKey:@"finance"]) {
-            label8.text = [NSString stringWithFormat:@"%d个",[[dic objectForKey:@"bean_count"]intValue]];
+            label8.text = [NSString stringWithFormat:@"%d个",[[dic objectForKey:@"coin_count"]intValue]];
         }
         label8.textColor = [UIColor lightGrayColor];
         label8.textAlignment = NSTextAlignmentLeft;

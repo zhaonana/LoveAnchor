@@ -1035,6 +1035,7 @@
                         rankModel.nick_name = [dic objectForKey:@"nick_name"];
                         rankModel.pic = [dic objectForKey:@"pic"];
                         rankModel.coin_spend = [dic objectForKey:@"coin_spend"];
+                        rankModel.coin_spend_total = [[dic objectForKey:@"finance"] objectForKey:@"coin_spend_total"];
                         [_homeCourseArray addObject:rankModel];
                     }
                     [_homeCourseTableView reloadData];
@@ -1052,6 +1053,7 @@
                         rankModel.nick_name = [dic objectForKey:@"nick_name"];
                         rankModel.pic = [dic objectForKey:@"pic"];
                         rankModel.coin_spend = [dic objectForKey:@"coin_spend"];
+                        rankModel.coin_spend_total = [[dic objectForKey:@"finance"] objectForKey:@"coin_spend_total"];
                         rankModel.rank = [dic objectForKey:@"rank"];
                         [_monthArray addObject:rankModel];
                     }
@@ -1070,6 +1072,7 @@
                         rankModel.nick_name = [dic objectForKey:@"nick_name"];
                         rankModel.pic = [dic objectForKey:@"pic"];
                         rankModel.coin_spend = [dic objectForKey:@"coin_spend"];
+                        rankModel.coin_spend_total = [[dic objectForKey:@"finance"] objectForKey:@"coin_spend_total"];
                         rankModel.rank = [dic objectForKey:@"rank"];
                         [_alwaysArray addObject:rankModel];
                     }

@@ -15,9 +15,12 @@
 @property (nonatomic, strong) NSNumber     *_id;
 //昵称
 @property (nonatomic, strong) NSString     *nick_name;
-//主播等级
+//等级
 @property (nonatomic, strong) NSDictionary *finance;
+//主播等级
 @property (nonatomic, strong) NSNumber     *bean_count_total;
+//财富等级
+@property (nonatomic, strong) NSNumber     *coin_spend_total;
 //房间号
 @property (nonatomic, strong) NSString     *star;
 //用户贡献

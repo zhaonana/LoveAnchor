@@ -88,7 +88,7 @@
     }
     NSString *urlStr = [NSMutableString stringWithFormat:@"%@viewlog/del/%@?",BaseURL,model.access_token];
     for (NSString *ids in allRoomIds) {
-        urlStr = [urlStr stringByAppendingString:ids];
+        urlStr = [urlStr stringByAppendingFormat:[urlStr hasSuffix:@"?"] ? @"%@" : @"&%@",ids];
     }
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;

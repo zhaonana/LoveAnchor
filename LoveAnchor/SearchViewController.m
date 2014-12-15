@@ -97,17 +97,14 @@
 #pragma mark - 点击事件
 - (void)segmentedClick:(UISegmentedControl *)seg
 {
-    NSLog(@"你大爷");
     switch (seg.selectedSegmentIndex) {
         case 0:
             segPage = 0;
             _searchBar.placeholder = @"请输入昵称";
-            //            [self requestWithTag:btnPage andTag1:0];
             break;
         case 1:
             segPage = 1;
             _searchBar.placeholder = @"请输入房间号";
-            //            [self requestWithTag:btnPage andTag1:1];
             break;
             
         default:
@@ -147,7 +144,6 @@
         for (NSDictionary *dict in allData) {
             SearchModel *model = [[SearchModel alloc]init];
             [model setValuesForKeysWithDictionary:dict];
-            model.bean_count_total = [model.finance objectForKey:@"coin_spend_total"];
             [allData_mutable addObject:model];
         }
         for (int i = 0; i < [allData_mutable count]; i++) {

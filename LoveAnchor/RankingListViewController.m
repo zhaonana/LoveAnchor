@@ -167,7 +167,7 @@
                 break;
         }
         [allData_mutable addObject:rankModel];
-        }
+    }
         NSUInteger count = [allData_mutable count];
         for (int i = 0; i < count; i++) {
             NSArray *firstData = @[[allData_mutable objectAtIndex:i]];

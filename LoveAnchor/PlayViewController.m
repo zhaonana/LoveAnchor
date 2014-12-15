@@ -68,6 +68,8 @@
     UIButton     *alwaysButton;
     //textfield输入状态
     UIView       *_inputView;
+    //聊天框
+    UIView       *chatBView;
 }
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
@@ -124,6 +126,10 @@
     
     self.view.backgroundColor = [UIColor whiteColor];
     [self shouwUI];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(keyboardWasHidden:) name:UIKeyboardDidHideNotification object:nil];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -355,20 +361,21 @@
     chatView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
     [self.view addSubview:chatView];
     //聊天的白框
-    UIView *chatBView = [[UIView alloc]initWithFrame:CGRectMake(5, 5, 260, 35)];
+    chatBView = [[UIView alloc]initWithFrame:CGRectMake(5, 5, 260, 35)];
     chatBView.backgroundColor = [UIColor whiteColor];
     [chatView addSubview:chatBView];
     //表情
     UIImageView *faceView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 7.5, 20, 20)];
     faceView.image = [UIImage imageNamed:@"biaoqing"];
     [chatBView addSubview:faceView];
-    
     //聊天框
     _chatTextField = [[UITextField alloc]initWithFrame:CGRectMake(27, 0, 233, 35)];
-    _chatTextField.backgroundColor = [UIColor whiteColor];
+    _chatTextField.backgroundColor = [UIColor clearColor];
     _chatTextField.borderStyle = UITextBorderStyleNone;
+    _chatTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     _chatTextField.delegate = self;
     [chatBView addSubview:_chatTextField];
+    
     //礼物按钮
     UIImageView *giftImageView = [[UIImageView alloc]initWithFrame:CGRectMake(270, 12.5, 20, 20)];
     giftImageView.image = [UIImage imageNamed:@"liwu"];
@@ -380,25 +387,65 @@
     [manageButton setImage:[UIImage imageNamed:@"zhuboxiangqing"] forState:UIControlStateNormal];
     [manageButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [chatView addSubview:manageButton];
+/************************************************************************************************/
     //textfield输入状态
-    _inputView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight-216-75, kScreenWidth, 75)];
+    _inputView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight, kScreenWidth, 75)];
     _inputView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
-    _inputView.hidden = YES;
     [self.view addSubview:_inputView];
+    //箭头
+    UIImageView *arrowsView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 130, 20)];
+    arrowsView.image = [UIImage imageNamed:@"xiala"];
+    [_inputView addSubview:arrowsView];
     //所有人
-    UILabel *allLabel = [[UILabel alloc]initWithFrame:CGRectMake(6, 5, 130, 20)];
+    UILabel *allLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 110, 20)];
     allLabel.text = @"所有人";
-    allLabel.backgroundColor = [UIColor whiteColor];
+    allLabel.backgroundColor = [UIColor clearColor];
     allLabel.textAlignment = NSTextAlignmentCenter;
+    allLabel.font = [UIFont systemFontOfSize:14];
     allLabel.textColor = [UIColor lightGrayColor];
-    [_inputView addSubview:allLabel];
-    
+    [arrowsView addSubview:allLabel];
     //悄悄话
-    UIImageView *quietlyImageView = [[UIImageView alloc]initWithFrame:CGRectMake(146, 5, 20, 20)];
+    UIView *QQHView = [[UIView alloc]initWithFrame:CGRectMake(146, 5, 80, 20)];
+    QQHView.backgroundColor = [UIColor clearColor];
+    [_inputView addSubview:QQHView];
+    //悄悄话
+    UIImageView *quietlyImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 20, 20)];
     quietlyImageView.image = [UIImage imageNamed:@"qiaoqiaohuaweixuanzhong"];
-    [_inputView addSubview:quietlyImageView];
+    [QQHView addSubview:quietlyImageView];
+    // 悄悄话
+    UILabel *QQHLabel = [[UILabel alloc]initWithFrame:CGRectMake(25, 0, 55, 20)];
+    QQHLabel.text = @"悄悄话";
+    QQHLabel.backgroundColor = [UIColor clearColor];
+    QQHLabel.textColor = [UIColor lightGrayColor];
+    [QQHView addSubview:QQHLabel];
+    //礼物
+    UIView *LWView = [[UIView alloc]initWithFrame:CGRectMake(245, 5, 70, 20)];
+    LWView.backgroundColor = [UIColor clearColor];
+    [_inputView addSubview:LWView];
+    //礼物
+    UIImageView *newGifImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 20, 20)];
+    newGifImageView.image = [UIImage imageNamed:@"liwu"];
+    [LWView addSubview:newGifImageView];
+    //礼物字
+    UILabel *LWLabel = [[UILabel alloc]initWithFrame:CGRectMake(25, 0, 40, 20)];
+    LWLabel.text = @"礼物";
+    LWLabel.backgroundColor = [UIColor clearColor];
+    LWLabel.textColor = [UIColor lightGrayColor];
+    [LWView addSubview:LWLabel];
+    //横线
+    UIImageView *LTHXImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 29.5, kScreenWidth, 0.5)];
+    LTHXImageView.backgroundColor = [UIColor lightGrayColor];
+    [_inputView addSubview:LTHXImageView];
+    //发送
+    UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    sendButton.frame = CGRectMake(260, 38, 45, 30);
+    sendButton.tag = 100000000;
+    [sendButton setBackgroundImage:[UIImage imageNamed:@"fasong"] forState:UIControlStateNormal];
+    [sendButton setBackgroundImage:[UIImage imageNamed:@"fasongdianji"] forState:UIControlStateHighlighted];
+    [sendButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [_inputView addSubview:sendButton];
     
-    
+/************************************************************************************************/
 
     //观众榜
     audienceScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(kScreenWidth*3, 0, kScreenWidth, _scrollView.frame.size.height)];
@@ -1009,6 +1056,8 @@
 -(void)textFieldDidBeginEditing:(UITextField *)textField
 {
     _inputView.hidden = NO;
+    chatBView.frame = CGRectMake(5, 38, 250, 30);
+    [_inputView addSubview:chatBView];
 }
 
 #pragma mark - request
@@ -1085,6 +1134,31 @@
         default:
             break;
     }
+}
+
+#pragma mark - 
+- (void) keyboardWasShown:(NSNotification *) notif
+{
+    NSDictionary *info = [notif userInfo];
+    NSValue *value = [info objectForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGSize keyboardSize = [value CGRectValue].size;
+    
+    NSLog(@"keyBoard:%f", keyboardSize.height);  //216
+    _inputView.frame = CGRectMake(0, kScreenHeight-216-75, kScreenWidth, 75);
+    ///keyboardWasShown = YES;
+}
+- (void) keyboardWasHidden:(NSNotification *) notif
+{
+    NSDictionary *info = [notif userInfo];
+    
+    NSValue *value = [info objectForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGSize keyboardSize = [value CGRectValue].size;
+    NSLog(@"keyboardWasHidden keyBoard:%f", keyboardSize.height);
+    _inputView.frame = CGRectMake(0, kScreenHeight, kScreenWidth, 75);
+    chatBView.frame = CGRectMake(5, 5, 260, 35);
+    [chatView addSubview:chatBView];
+    // keyboardWasShown = NO;
+    
 }
 
 @end

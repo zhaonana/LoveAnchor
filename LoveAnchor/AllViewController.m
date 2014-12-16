@@ -219,7 +219,6 @@
         thirdCell.selectionStyle = UITableViewCellSelectionStyleNone;
         thirdCell.delegate = self;
         [thirdCell setCellData:modelArray];
-        
         return thirdCell;
     }
 }

@@ -40,6 +40,8 @@
     UIButton     *privateButton;
     //观众
     UIButton     *audienceButton;
+    //关注
+    UIButton     *attentionButton;
     //抢沙发
     UIView       *_sofaView;
     //聊天输入框
@@ -73,31 +75,34 @@
 }
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
+@property (nonatomic, strong) LoginModel              *model;
 @property (nonatomic, strong) NSURL                   *videoURL;
+//关注ids
+@property (nonatomic, strong) NSMutableArray     *attentionArray;
 //综合
-@property (nonatomic, strong) UITableView             *synthesizeTableView;
+@property (nonatomic, strong) UITableView        *synthesizeTableView;
 //公聊
-@property (nonatomic, strong) UITableView             *publicTableView;
+@property (nonatomic, strong) UITableView        *publicTableView;
 //私聊
-@property (nonatomic, strong) UITableView             *privateTableView;
+@property (nonatomic, strong) UITableView        *privateTableView;
 //综合
-@property (nonatomic, strong) NSMutableArray          *dataArray;
+@property (nonatomic, strong) NSMutableArray     *dataArray;
 //公聊
-@property (nonatomic, strong) NSMutableArray          *publicDataArray;
+@property (nonatomic, strong) NSMutableArray     *publicDataArray;
 //私聊
-@property (nonatomic, strong) NSMutableArray          *privateArray;
+@property (nonatomic, strong) NSMutableArray     *privateArray;
 //本场观众榜
-@property (nonatomic, strong) UITableView             *homeCourseTableView;
+@property (nonatomic, strong) UITableView        *homeCourseTableView;
 //月榜
-@property (nonatomic, strong) UITableView             *monthTableView;
+@property (nonatomic, strong) UITableView        *monthTableView;
 //总榜
-@property (nonatomic, strong) UITableView             *alwaysTableView;
+@property (nonatomic, strong) UITableView        *alwaysTableView;
 //本场观众榜
-@property (nonatomic, strong) NSMutableArray          *homeCourseArray;
+@property (nonatomic, strong) NSMutableArray     *homeCourseArray;
 //月榜
-@property (nonatomic, strong) NSMutableArray          *monthArray;
+@property (nonatomic, strong) NSMutableArray     *monthArray;
 //总榜
-@property (nonatomic, strong) NSMutableArray          *alwaysArray;
+@property (nonatomic, strong) NSMutableArray     *alwaysArray;
 
 @end
 
@@ -107,20 +112,21 @@
 {
     [super viewDidLoad];
     
-    LoginModel *model = [CommonUtil getUserModel];
+    _model = [CommonUtil getUserModel];
     _dataArray = [[NSMutableArray alloc] init];
     _publicDataArray = [[NSMutableArray alloc] init];
     _privateArray = [[NSMutableArray alloc] init];
     _homeCourseArray = [[NSMutableArray alloc] init];
     _monthArray = [[NSMutableArray alloc] init];
     _alwaysArray = [[NSMutableArray alloc] init];
+    _attentionArray = [[NSMutableArray alloc] init];
     
     _socketIO = [[SocketIO alloc] initWithDelegate:self];
     
     //socket
-    if (model) {
+    if (_model) {
         NSDictionary *dic = @{@"room_id": self.allModel._id,
-                              @"access_token": model.access_token};
+                              @"access_token": _model.access_token};
         [_socketIO connectToHost:BaseHost onPort:80 withParams:dic];
     }
     
@@ -139,7 +145,7 @@
     [self requestWithParam:@"room_user_live" tag:500];
     [self requestWithParam:@"room_user_month" tag:501];
     [self requestWithParam:@"room_user_total" tag:502];
-
+    [self requestWithFollowing:@"following_list" tag:602];
 
     NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
     self.videoURL = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
@@ -233,10 +239,11 @@
     [returnButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_navView addSubview:returnButton];
     
-    UIButton *attentionButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    attentionButton = [UIButton buttonWithType:UIButtonTypeCustom];
     attentionButton.frame = CGRectMake(275, 0, 20, 35);
     attentionButton.tag = 101;
     [attentionButton setImage:[UIImage imageNamed:@"shoucang"] forState:UIControlStateNormal];
+    [attentionButton setImage:[UIImage imageNamed:@"shoucangdianji"] forState:UIControlStateSelected];
     [attentionButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_navView addSubview:attentionButton];
     
@@ -558,8 +565,12 @@
         [mMPayer reset];
         [mMPayer unSetupPlayer];
         [self dismissViewControllerAnimated:YES completion:nil];
-    } else if (button.tag == 101) {
-        
+    } else if (button.tag == 101) { //关注
+        if (button.selected) {
+            [self requestWithFollowing:@"del_following" tag:601];
+        } else {
+            [self requestWithFollowing:@"add_following" tag:600];
+        }
     } else if (button.tag == 102) {
         if (_classifyView.hidden) {
             _classifyView.hidden = NO;
@@ -1075,6 +1086,18 @@
     [request startAsynchronous];
 }
 
+- (void)requestWithFollowing:(NSString *)param tag:(NSInteger)tag
+{
+    if (_model.access_token.length) {
+        NSString *urlStr = [NSString stringWithFormat:@"%@user/%@/%@/%@",BaseURL,param,_model.access_token,self.allModel._id];
+        ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+        [request setTimeOutSeconds:100];
+        request.delegate = self;
+        request.tag = tag;
+        [request startAsynchronous];
+    }
+}
+
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
@@ -1124,9 +1147,57 @@
             }
         }
             break;
+        case 600: { //添加关注
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSNumber *code = [result objectForKey:@"code"];
+                if (code.intValue == 1) {
+                    attentionButton.selected = YES;
+                }
+            }
+        }
+            break;
+        case 601: { //取消关注
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSNumber *code = [result objectForKey:@"code"];
+                if (code.intValue == 1) {
+                    attentionButton.selected = NO;
+                }
+            }
+        }
+            break;
+        case 602: { //关注列表
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSNumber *code = [result objectForKey:@"code"];
+                if (code.intValue == 1) {
+                    NSDictionary *dataDic = [result objectForKey:@"data"];
+                    NSArray *roomsArr = [dataDic objectForKey:@"rooms"];
+                    for (NSDictionary *dic in roomsArr) {
+                        NSNumber *roomid = [dic objectForKey:@"_id"];
+                        [_attentionArray addObject:roomid];
+                    }
+                    if ([self isAttentionWithRoomid:self.allModel._id]) {
+                        attentionButton.selected = YES;
+                    } else {
+                        attentionButton.selected = NO;
+                    }
+                }
+            }
+        }
+            break;
         default:
             break;
     }
+}
+
+- (BOOL)isAttentionWithRoomid:(NSNumber *)roomid
+{
+    BOOL isAttention = NO;
+    for (NSNumber *ids in _attentionArray) {
+        if ([roomid isEqual:ids]) {
+            isAttention = YES;
+        }
+    }
+    return isAttention;
 }
 
 #pragma mark - 

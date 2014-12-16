@@ -72,7 +72,7 @@
         secondCellRow.delegate = self;
         [secondCellRow setCellData:modelArray];
         return secondCellRow;
-    }else {
+    } else {
         ThirdRowTableViewCell *thirdCellRow = [tableView dequeueReusableCellWithIdentifier:@"thirdCellRow"];
         if (thirdCellRow == nil) {
             thirdCellRow = [[ThirdRowTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"thirdCellRow"];
@@ -139,9 +139,8 @@
     [request startAsynchronous];
 }
 
--(void)requestFinished:(ASIHTTPRequest *)request
+- (void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"关注 == %@",request.responseString);
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
     if ([result isKindOfClass:[NSDictionary class]]) {
         

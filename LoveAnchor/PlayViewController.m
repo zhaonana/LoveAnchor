@@ -211,15 +211,19 @@
     _navView.hidden = YES;
     [self.view addSubview:_navView];
     
-    UILabel *navLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 0, 200, 35)];
+    CGSize size = [CommonUtil getRectWithText:self.allModel.nick_name height:35.0 width:CGFLOAT_MAX font:15.0].size;
+    UILabel *navLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, 0, size.width, 35)];
     navLabel.text = [NSString stringWithFormat:@"%@",self.allModel.nick_name];
     navLabel.textColor = textFontColor;
     navLabel.font = [UIFont systemFontOfSize:15];
     navLabel.textAlignment = NSTextAlignmentLeft;
     [_navView addSubview:navLabel];
     
-    UIImageView *gradeView = [[UIImageView alloc]initWithFrame:CGRectMake(190, 5, 25, 25)];
-    gradeView.image = [UIImage imageNamed:@"sanxin"];
+    UIImageView *gradeView = [[UIImageView alloc]initWithFrame:CGRectMake(size.width + 38, 5, 25, 25)];
+    NSNumber *coin = [self.allModel.finance objectForKey:@"bean_count_total"];
+    NSInteger level = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:NO].level;
+    NSString *imageName = [NSString stringWithFormat:@"%dzhubo",level];
+    gradeView.image = [UIImage imageNamed:imageName];
     [_navView addSubview:gradeView];
     
     UIButton *returnButton = [UIButton buttonWithType:UIButtonTypeCustom];

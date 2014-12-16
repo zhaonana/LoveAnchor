@@ -303,6 +303,12 @@
     return levelModel;
 }
 
++ (CGRect)getRectWithText:(NSString *)text height:(float)height width:(float)width font:(float)font
+{
+    CGRect rect = [text boundingRectWithSize:CGSizeMake(width, height) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:font]} context:nil];
+    return rect;
+}
+
 + (BOOL)isLogin
 {
     NSData *myEncodedObject = [[NSUserDefaults standardUserDefaults] objectForKey:@"books"];

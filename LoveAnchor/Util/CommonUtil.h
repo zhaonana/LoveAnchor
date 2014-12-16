@@ -29,6 +29,15 @@
  */
 + (LevelInfoModel *)getLevelInfoWithCoin:(NSInteger)coin isRich:(BOOL)isRich;
 /**
+ *  根据文字大小计算
+ *
+ *  @param height   文字高度
+ *  @param width 文字宽度
+ *
+ *  @return label大小
+ */
++ (CGRect)getRectWithText:(NSString *)text height:(float)height width:(float)width font:(float)font;
+/**
  *  判断是否已经登录
  *
  *  @return 是否登录

@@ -129,9 +129,16 @@
 #pragma mark - 点击事件
 - (void)buttonClick:(UIButton *)button
 {
-    if (button.tag == 100) {
-        [self dismissViewControllerAnimated:YES completion:nil];
-    } else if (button.tag == 101) {
+    switch (button.tag) {
+        case 100:
+            [self dismissViewControllerAnimated:YES completion:nil];
+            break;
+        case 101: { 
+            
+        }
+            break;
+        default:
+            break;
     }
 }
 

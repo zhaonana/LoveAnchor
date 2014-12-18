@@ -34,6 +34,12 @@
     model = [CommonUtil getUserModel];
     self.view.backgroundColor = [UIColor whiteColor];
     [self showUI];
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
     [self request];
 }
 
@@ -41,11 +47,13 @@
 
 - (void)showUI
 {
-    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 64, kScreenWidth, kScreenHeight-49-64) style:UITableViewStylePlain];
+    _tableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight-49-64)style:UITableViewStylePlain];
+    _tableView.showsVerticalScrollIndicator = NO;
     _tableView.delegate = self;
     _tableView.dataSource = self;
-    _tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    _tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
+    _tableView.backgroundColor = [UIColor clearColor];
     [self.view addSubview:_tableView];
 }
 
@@ -55,32 +63,23 @@
 {
     NSArray *modelArray = [_dataArray objectAtIndex:indexPath.row];
     if (indexPath.row == 0) {
-        FirstRowTableViewCell *firstCellRow = [tableView dequeueReusableCellWithIdentifier:@"firstCellRow"];
-        if (firstCellRow == nil) {
-            firstCellRow = [[FirstRowTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"firstCellRow"];
-        }
-        firstCellRow.selectionStyle = UITableViewCellSelectionStyleNone;
-        firstCellRow.delegate = self;
-        [firstCellRow setCellData:modelArray];
-        return firstCellRow;
+        FirstRowTableViewCell *firstCell = [[FirstRowTableViewCell alloc] init];
+        firstCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        firstCell.delegate = self;
+        [firstCell setCellData:modelArray];
+        return firstCell;
     } else if (indexPath.row == 1) {
-        SecondRowTableViewCell *secondCellRow = [tableView dequeueReusableCellWithIdentifier:@"secondCellRow"];
-        if (secondCellRow == nil) {
-            secondCellRow = [[SecondRowTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"scondCellRow"];
-        }
-        secondCellRow.selectionStyle = UITableViewCellSelectionStyleNone;
-        secondCellRow.delegate = self;
-        [secondCellRow setCellData:modelArray];
-        return secondCellRow;
-    }else {
-        ThirdRowTableViewCell *thirdCellRow = [tableView dequeueReusableCellWithIdentifier:@"thirdCellRow"];
-        if (thirdCellRow == nil) {
-            thirdCellRow = [[ThirdRowTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:@"thirdCellRow"];
-        }
-        thirdCellRow.selectionStyle = UITableViewCellSelectionStyleNone;
-        thirdCellRow.selectionStyle = UITableViewCellSelectionStyleNone;
-        thirdCellRow.delegate = self;
-        return thirdCellRow;
+        SecondRowTableViewCell *secondCell = [[SecondRowTableViewCell alloc]init];
+        secondCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        secondCell.delegate = self;
+        [secondCell setCellData:modelArray];
+        return secondCell;
+    } else {
+        ThirdRowTableViewCell *thirdCell = [[ThirdRowTableViewCell alloc] init];
+        thirdCell.selectionStyle = UITableViewCellSelectionStyleNone;
+        thirdCell.delegate = self;
+        [thirdCell setCellData:modelArray];
+        return thirdCell;
     }
 }
 
@@ -139,39 +138,44 @@
     [request startAsynchronous];
 }
 
--(void)requestFinished:(ASIHTTPRequest *)request
+- (void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"关注 == %@",request.responseString);
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
     if ([result isKindOfClass:[NSDictionary class]]) {
+        NSArray *allDtJson = [[result objectForKey:@"data"] objectForKey:@"rooms"];
+        NSMutableArray *allDtJson_mutable = [NSMutableArray array];
         
-        NSDictionary *dict = [result objectForKey:@"data"];
-        if (dict.allKeys.count) {
-            NSArray *array = [dict objectForKey:@"rooms"];
-            NSMutableArray *allDtJson_mutable = [NSMutableArray array];
-            
-            for (NSDictionary *dict in array) {
-                AllModel *modelData = [[AllModel alloc]init];
-                [modelData setValuesForKeysWithDictionary:dict];
-                [allDtJson_mutable addObject:modelData];
-            }
+        for (NSDictionary *dict in allDtJson) {
+            AllModel *allModel = [[AllModel alloc]init];
+            [allModel setValuesForKeysWithDictionary:dict];
+            [allDtJson_mutable addObject:allModel];
+        }
+        
+        [_dataArray removeAllObjects];
+        
+        NSUInteger count = [allDtJson_mutable count];
+        if (count > 0) {
             NSArray *firstRowData = @[[allDtJson_mutable objectAtIndex:0]];
             [_dataArray addObject:firstRowData];
             
-            NSArray *secondRowData = @[[allDtJson_mutable objectAtIndex:1],[allDtJson_mutable objectAtIndex:2]];
-            [_dataArray addObject:secondRowData];
-            
-            NSUInteger count = [allDtJson_mutable count];
-            NSMutableArray *thirdRowData = [NSMutableArray array];
-            for (int i = 0; i < count-3; i++) {
-                if (i%3 == 0 && i != 0) {
-                    [_dataArray addObject:thirdRowData];
-                    thirdRowData = [NSMutableArray array];
+            if (count > 2) {
+                NSArray *secondRowData = @[[allDtJson_mutable objectAtIndex:1],[allDtJson_mutable objectAtIndex:2]];
+                [_dataArray addObject:secondRowData];
+                
+                if (count > 3) {
+                    NSMutableArray *thirdRowData = [NSMutableArray array];
+                    for (int i = 0; i < count-3; i++) {
+                        if (i%3 == 0 && i != 0) {
+                            [_dataArray addObject:thirdRowData];
+                            thirdRowData = [NSMutableArray array];
+                        }
+                        [thirdRowData addObject:allDtJson_mutable[i+3]];
+                        if (thirdRowData.count) {
+                            [_dataArray addObject:thirdRowData];
+                        }
+                    }
                 }
-                [thirdRowData addObject:allDtJson_mutable[i+3]];
             }
-            [_dataArray addObject:thirdRowData];
-            NSLog(@"_dataArray = %lu",(unsigned long)_dataArray.count);
         }
     }
     [_tableView reloadData];

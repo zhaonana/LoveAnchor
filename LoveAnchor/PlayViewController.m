@@ -210,46 +210,81 @@
     _navView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.8];
     _navView.hidden = YES;
     [self.view addSubview:_navView];
-    
+    //主播名字
     UILabel *navLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 0, 200, 35)];
     navLabel.text = [NSString stringWithFormat:@"%@",self.allModel.nick_name];
     navLabel.textColor = textFontColor;
     navLabel.font = [UIFont systemFontOfSize:15];
     navLabel.textAlignment = NSTextAlignmentLeft;
     [_navView addSubview:navLabel];
-    
+    //主播等级
     UIImageView *gradeView = [[UIImageView alloc]initWithFrame:CGRectMake(190, 5, 25, 25)];
     gradeView.image = [UIImage imageNamed:@"sanxin"];
     [_navView addSubview:gradeView];
-    
+    //返回上一页
     UIButton *returnButton = [UIButton buttonWithType:UIButtonTypeCustom];
     returnButton.frame = CGRectMake(0, 0, 30, 35);
     returnButton.tag = 100;
     [returnButton setImage:[UIImage imageNamed:@"guanbi"] forState:UIControlStateNormal];
     [returnButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_navView addSubview:returnButton];
-    
+    //收藏
     UIButton *attentionButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    attentionButton.frame = CGRectMake(275, 0, 20, 35);
+    attentionButton.frame = CGRectMake(260, 0, 20, 35);
     attentionButton.tag = 101;
     [attentionButton setImage:[UIImage imageNamed:@"shoucang"] forState:UIControlStateNormal];
     [attentionButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_navView addSubview:attentionButton];
-    
+    //主播详情按钮
     UIButton *classifyButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    classifyButton.frame = CGRectMake(300, 0, 15, 35);
+    classifyButton.frame = CGRectMake(285, 0, 30, 35);
     classifyButton.tag = 102;
     [classifyButton setImage:[UIImage imageNamed:@"zhuboxiangqing"] forState:UIControlStateNormal];
     [classifyButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_navView addSubview:classifyButton];
 
     //主播详情
-    _classifyView = [[UIView alloc]initWithFrame:CGRectMake(225, 34, 94, 110)];
-    _classifyView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.8];
+    _classifyView = [[UIView alloc]initWithFrame:CGRectMake(kScreenWidth-100, 55, 100, 55)];
+    _classifyView.backgroundColor = [UIColor colorWithWhite:1 alpha:0.3];
     _classifyView.userInteractionEnabled = YES;
     _classifyView.hidden = YES;
-    [_liveView addSubview:_classifyView];
-
+    [self.view addSubview:_classifyView];
+    //主播档案
+    UIImageView *recordView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 1, _classifyView.frame.size.width, _classifyView.frame.size.height/2)];
+    recordView.backgroundColor = [UIColor clearColor];
+    recordView.userInteractionEnabled = YES;
+    [_classifyView addSubview:recordView];
+    //档案图标
+    UIImageView *recordImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 4, 20, 20)];
+    recordImageView.image = [UIImage imageNamed:@"zhubodangan"];
+    [recordView addSubview:recordImageView];
+    //档案字
+    UILabel *recordLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 0, 55, recordView.frame.size.height)];
+    recordLabel.text = @"主播档案";
+    recordLabel.textColor = [UIColor whiteColor];
+    recordLabel.font = [UIFont systemFontOfSize:13];
+    [recordView addSubview:recordLabel];
+    
+    //横线
+    UIImageView *XQImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, _classifyView.frame.size.height/2, _classifyView.frame.size.width, 0.5)];
+    XQImageView.backgroundColor = [UIColor whiteColor];
+    [_classifyView addSubview:XQImageView];
+    
+    //分享
+    UIView *shareView = [[UIView alloc]initWithFrame:CGRectMake(0, _classifyView.frame.size.height/2, _classifyView.frame.size.width, _classifyView.frame.size.height/2)];
+    shareView.backgroundColor = [UIColor clearColor];
+    [_classifyView addSubview:shareView];
+    //分享图标
+    UIImageView *shareImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 4, 20, 20)];
+    shareImageView.image = [UIImage imageNamed:@"fenxiang"];
+    [shareView addSubview:shareImageView];
+    //分享字
+    UILabel *shareLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 0, 65, recordView.frame.size.height)];
+    shareLabel.text = @"分享给朋友";
+    shareLabel.textColor = [UIColor whiteColor];
+    shareLabel.font = [UIFont systemFontOfSize:13];
+    [shareView addSubview:shareLabel];
+    
     //关闭视频
     bearButton = [UIButton buttonWithType:UIButtonTypeCustom];
     bearButton.frame = CGRectMake(280, 200, 35, 35);
@@ -258,7 +293,7 @@
     [bearButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_liveView addSubview:bearButton];
     
-    //---------------------------------------------------------------------------
+    //-----------------------------------------------------------------------------------//
     //下半部的背景VIew
     View = [[UIView alloc]initWithFrame:CGRectMake(0, 260, kScreenWidth, kScreenHeight-260)];
     View.backgroundColor = [UIColor clearColor];
@@ -388,6 +423,92 @@
     [manageButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [chatView addSubview:manageButton];
 /************************************************************************************************/
+    //礼物背景
+    UIView *gifView = [[UIView alloc]initWithFrame:CGRectMake(0, 260, kScreenWidth, kScreenHeight-260)];
+    gifView.backgroundColor = [UIColor whiteColor];
+    gifView.userInteractionEnabled = YES;
+    [self.view addSubview:gifView];
+    //横线
+    UIImageView *gifHXImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 25, kScreenWidth, 0.5)];
+    gifHXImageView.backgroundColor = [UIColor lightGrayColor];
+    [gifView addSubview:gifHXImageView];
+    //充值到赠送背景
+    UIView *grayView = [[UIView alloc]initWithFrame:CGRectMake(0, gifView.frame.size.height-90, kScreenWidth, 90)];
+    grayView.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1];
+    [gifView addSubview:grayView];
+    //20横线
+    UIImageView *ESHXImageVIew = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, kScreenWidth, 0.5)];
+    ESHXImageVIew.backgroundColor = [UIColor lightGrayColor];
+    [grayView addSubview:ESHXImageVIew];
+    //55横线
+    UIImageView *WWHXImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 55, kScreenWidth, 0.5)];
+    WWHXImageView.backgroundColor = [UIColor lightGrayColor];
+    [grayView addSubview:WWHXImageView];
+    //余额
+    UILabel *balanceLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 150, 20)];
+    balanceLabel.backgroundColor = [UIColor clearColor];
+    balanceLabel.text = [NSString stringWithFormat:@"余额：%d金币",1245];
+    balanceLabel.textColor = [UIColor grayColor];
+    balanceLabel.font = [UIFont systemFontOfSize:14];
+    [grayView addSubview:balanceLabel];
+    //充值
+    UIButton *topUpButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    topUpButton.frame = CGRectMake(250, 0, 60, 20);
+    topUpButton.tag = 110;
+    [topUpButton setTitle:@"立刻充值" forState:UIControlStateNormal];
+    [topUpButton setTitleColor:textFontColor forState:UIControlStateNormal];
+    topUpButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    [topUpButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [grayView addSubview:topUpButton];
+    //送给
+    UILabel *donateLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, 30, 15)];
+    donateLabel.text = @"送给";
+    donateLabel.font = [UIFont systemFontOfSize:15];
+    donateLabel.backgroundColor = [UIColor clearColor];
+    donateLabel.textColor = textFontColor;
+    [grayView addSubview:donateLabel];
+    //名字
+    UIImageView *nameImageView = [[UIImageView alloc]initWithFrame:CGRectMake(45, 27, 125, 22)];
+    nameImageView.image = [UIImage imageNamed:@"xiala"];
+    [grayView addSubview:nameImageView];
+    //名字的字
+    UILabel *nameLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 100, 22)];
+    nameLabel.text = @"起的隆冬强";
+    nameLabel.textColor = textFontColor;
+    nameLabel.font = [UIFont systemFontOfSize:14];
+    nameLabel.backgroundColor = [UIColor clearColor];
+    [nameImageView addSubview:nameLabel];
+    //数量
+    UIImageView *nuberImageView = [[UIImageView alloc]initWithFrame:CGRectMake(180, 27, 125, 22)];
+    nuberImageView.image = [UIImage imageNamed:@"xiala"];
+    [grayView addSubview:nuberImageView];
+    //数量的字
+    UILabel *nuberLabel = [[UILabel alloc]initWithFrame:CGRectMake(5, 0, 100, 22)];
+    nuberLabel.text = @"1";
+    nuberLabel.textColor = textFontColor;
+    nuberLabel.textAlignment = NSTextAlignmentCenter;
+    nuberLabel.font = [UIFont systemFontOfSize:14];
+    nuberLabel.backgroundColor = [UIColor clearColor];
+    [nuberImageView addSubview:nuberLabel];
+    
+    //礼物跑到
+    UILabel *trackLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 64, 60, 15)];
+    trackLabel.text = @"礼物跑道";
+    trackLabel.textColor = textFontColor;
+    trackLabel.font = [UIFont systemFontOfSize:14];
+    trackLabel.backgroundColor = [UIColor clearColor];
+    [grayView addSubview:trackLabel];
+    
+    //赠送
+    UIButton *ZXButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    ZXButton.frame = CGRectMake(180, 60, 125, 25);
+    ZXButton.tag = 111;
+    [ZXButton setTitle:@"赠送" forState:UIControlStateNormal];
+    [ZXButton setBackgroundColor:textFontColor];
+    [ZXButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [grayView addSubview:ZXButton];
+    
+/************************************************************************************************/
     //textfield输入状态
     _inputView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight, kScreenWidth, 75)];
     _inputView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
@@ -494,7 +615,7 @@
     [homeCourseButton setTitle:@"本场观众榜" forState:UIControlStateNormal];
     [homeCourseButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [homeCourseButton setBackgroundColor:[UIColor colorWithRed:228/255.0 green:105./255.0 blue:80/255.0 alpha:1]];
-    [homeCourseButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [homeCourseButton addTarget:self action:@selector(buttonSender:) forControlEvents:UIControlEventTouchUpInside];
     [announcementView addSubview:homeCourseButton];
     //月榜
     monthButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -503,7 +624,7 @@
     [monthButton setTitle:@"月榜" forState:UIControlStateNormal];
     [monthButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [monthButton setBackgroundColor:[UIColor colorWithRed:245/255.0 green:146/255.0 blue:123/255.0 alpha:1]];
-    [monthButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [monthButton addTarget:self action:@selector(buttonSender:) forControlEvents:UIControlEventTouchUpInside];
     [announcementView addSubview:monthButton];
     //总榜
     alwaysButton = [UIButton buttonWithType:UIButtonTypeCustom];
@@ -512,7 +633,7 @@
     [alwaysButton setTitle:@"总榜" forState:UIControlStateNormal];
     [alwaysButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [alwaysButton setBackgroundColor:[UIColor colorWithRed:253/255.0 green:193/255.0 blue:176/255.0 alpha:1]];
-    [alwaysButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [alwaysButton addTarget:self action:@selector(buttonSender:) forControlEvents:UIControlEventTouchUpInside];
     [announcementView addSubview:alwaysButton];
     
     //抢沙发
@@ -592,10 +713,23 @@
         [UIView animateWithDuration:0 animations:^{
             _scrollView.contentOffset = CGPointMake(kScreenWidth*button.tag, 0);
             [self changed];
-            
         }];
     }
 
+}
+- (void)buttonSender:(UIButton *)button
+{
+    if (button.selected) {
+        return;
+    }
+    homeCourseButton.selected = NO;
+    monthButton.selected = NO;
+    alwaysButton.selected = NO;
+    button.selected = YES;
+    [UIView animateWithDuration:0 animations:^{
+        audienceScrollView.contentOffset = CGPointMake(kScreenWidth*(button.tag-105), 0);
+        [self announcementchanged];
+    }];
 }
 
 #pragma mark - 点击播放界面方法

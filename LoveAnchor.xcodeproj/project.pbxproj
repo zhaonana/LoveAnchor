@@ -3119,7 +3119,7 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b5cf6459-9761-4684-91d2-abc3b8306feb";
+				PROVISIONING_PROFILE = "a815a140-ca38-4ea6-b8f3-170aa08fe425";
 				SDKROOT = iphoneos7.1;
 				WRAPPER_EXTENSION = app;
 			};
@@ -3152,7 +3152,7 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "b5cf6459-9761-4684-91d2-abc3b8306feb";
+				PROVISIONING_PROFILE = "a815a140-ca38-4ea6-b8f3-170aa08fe425";
 				SDKROOT = iphoneos7.1;
 				WRAPPER_EXTENSION = app;
 			};

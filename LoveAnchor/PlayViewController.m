@@ -72,6 +72,10 @@
     UIView       *_inputView;
     //聊天框
     UIView       *chatBView;
+    //礼物背景
+    UIView       *gifView;
+    //黑色背景
+    UIView       *blackView;
 }
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
@@ -179,6 +183,7 @@
     
     //点击视频播放区域手势
     UITapGestureRecognizer *tapdesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(liveClick:)];
+    _liveView.tag = 1000;
     [_liveView addGestureRecognizer:tapdesture];
     
     //视频背景
@@ -228,7 +233,7 @@
     UIImageView *gradeView = [[UIImageView alloc]initWithFrame:CGRectMake(size.width + 38, 5, 25, 25)];
     NSNumber *coin = [self.allModel.finance objectForKey:@"bean_count_total"];
     NSInteger level = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:NO].level;
-    NSString *imageName = [NSString stringWithFormat:@"%dzhubo",level];
+    NSString *imageName = [NSString stringWithFormat:@"%d",level];
     gradeView.image = [UIImage imageNamed:imageName];
     [_navView addSubview:gradeView];
     //返回上一页
@@ -240,7 +245,7 @@
     [_navView addSubview:returnButton];
     //收藏
     attentionButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    attentionButton.frame = CGRectMake(275, 0, 20, 35);
+    attentionButton.frame = CGRectMake(260, 0, 20, 35);
     attentionButton.tag = 101;
     [attentionButton setImage:[UIImage imageNamed:@"shoucang"] forState:UIControlStateNormal];
     [attentionButton setImage:[UIImage imageNamed:@"shoucangdianji"] forState:UIControlStateSelected];
@@ -405,6 +410,7 @@
     chatView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight-45, kScreenWidth, 45)];
     chatView.backgroundColor = [UIColor clearColor];
     chatView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
+    chatView.userInteractionEnabled = YES;
     [self.view addSubview:chatView];
     //聊天的白框
     chatBView = [[UIView alloc]initWithFrame:CGRectMake(5, 5, 260, 35)];
@@ -425,7 +431,13 @@
     //礼物按钮
     UIImageView *giftImageView = [[UIImageView alloc]initWithFrame:CGRectMake(270, 12.5, 20, 20)];
     giftImageView.image = [UIImage imageNamed:@"liwu"];
+    giftImageView.userInteractionEnabled = YES;
+    tap = NO;
     [chatView addSubview:giftImageView];
+    
+    UITapGestureRecognizer *gifTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gifClick:)];
+    [giftImageView addGestureRecognizer:gifTap];
+    
     //信息档案
     UIButton *manageButton = [UIButton buttonWithType:UIButtonTypeCustom];
     manageButton.frame = CGRectMake(295, 12.5, 15, 20);
@@ -434,10 +446,19 @@
     [manageButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [chatView addSubview:manageButton];
 /************************************************************************************************/
+    blackView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 260)];
+    blackView.alpha = 0.5;
+    blackView.hidden = YES;
+    blackView.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:blackView];
+    UITapGestureRecognizer *blackTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(blackClick:)];
+    [blackView addGestureRecognizer:blackTap];
+    
     //礼物背景
-    UIView *gifView = [[UIView alloc]initWithFrame:CGRectMake(0, 260, kScreenWidth, kScreenHeight-260)];
+    gifView = [[UIView alloc]initWithFrame:CGRectMake(0, 260, kScreenWidth, kScreenHeight-260)];
     gifView.backgroundColor = [UIColor whiteColor];
     gifView.userInteractionEnabled = YES;
+    gifView.hidden = YES;
     [self.view addSubview:gifView];
     //横线
     UIImageView *gifHXImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 25, kScreenWidth, 0.5)];
@@ -750,6 +771,7 @@
 #pragma mark - 点击播放界面方法
 - (void)liveClick:(UITapGestureRecognizer *)sender
 {
+    NSLog(@"-----------%ld",sender.view.tag);
     if (tap) {
         NSLog(@"123");
         _navView.hidden = YES;
@@ -765,6 +787,27 @@
         _sofaView.hidden = NO;
         _yumaoView.frame = CGRectMake(5, 73, 33, 32);
         tap = YES;
+    }
+}
+- (void)gifClick:(UITapGestureRecognizer *)sender
+{
+    if (tap) {
+        gifView.hidden = YES;
+        blackView.hidden = YES;
+    } else {
+        gifView.hidden = NO;
+        blackView.hidden = NO;
+    }
+}
+- (void)blackClick:(UITapGestureRecognizer *)sender
+{
+    if (tap) {
+        gifView.hidden = NO;
+        blackView.hidden = NO;
+
+    }else {
+        gifView.hidden = YES;
+        blackView.hidden = YES;
     }
 }
 /**********************************************************************************************************/

@@ -3363,8 +3363,13 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+<<<<<<< HEAD
+				PROVISIONING_PROFILE = "a815a140-ca38-4ea6-b8f3-170aa08fe425";
+				SDKROOT = iphoneos7.1;
+=======
 				PROVISIONING_PROFILE = "f8eb4d6b-c9d9-46f3-9f45-52986ebfa920";
 				SDKROOT = iphoneos;
+>>>>>>> de511dfcca4cf4405b11673ae3a08b4027fc17a1
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3396,8 +3401,13 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+<<<<<<< HEAD
+				PROVISIONING_PROFILE = "a815a140-ca38-4ea6-b8f3-170aa08fe425";
+				SDKROOT = iphoneos7.1;
+=======
 				PROVISIONING_PROFILE = "f8eb4d6b-c9d9-46f3-9f45-52986ebfa920";
 				SDKROOT = iphoneos;
+>>>>>>> de511dfcca4cf4405b11673ae3a08b4027fc17a1
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

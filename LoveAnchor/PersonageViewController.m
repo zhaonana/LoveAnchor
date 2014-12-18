@@ -8,6 +8,7 @@
 
 #import "PersonageViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "UIImageView+BoundsAdditions.h"
 
 @interface PersonageViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,HZAreaPickerDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
@@ -148,8 +149,7 @@
     headImgView = [[UIImageView alloc] initWithFrame:CGRectMake(120, 32.5, 80, 80)];
     [headImgView setImage:[UIImage imageNamed:@"morentouxiang"]];
     headImgView.userInteractionEnabled = YES;
-    headImgView.layer.masksToBounds = YES;
-    [headImgView.layer setCornerRadius:headImgView.frame.size.width/2.0];
+    [headImgView makeBoundImage];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(headClick:)];
     [headImgView addGestureRecognizer:tap];
     [headImageView addSubview:headImgView];
@@ -212,7 +212,6 @@
         View.hidden = YES;
         QXButton.frame = CGRectMake(20, kScreenHeight, _sexView.frame.size.width, 30);
     } else {
-        NSLog(@"你麻痹");
         _sexView.hidden = YES;
         View.hidden = YES;
         QXButton.frame = CGRectMake(20, kScreenHeight, _sexView.frame.size.width, 30);
@@ -371,7 +370,6 @@
             [formatter setDateFormat:@"yyyy-MM-dd"];
             [formatter setTimeZone:[NSTimeZone localTimeZone]];
             NSString *stringFromDate = [formatter stringFromDate:date];
-            NSLog(@"stringFromDate-----------%@",stringFromDate);
             timeLabel.text = [NSString stringWithFormat:@"到期时间：%@",stringFromDate];
         }
         [cell addSubview:timeLabel];
@@ -469,7 +467,7 @@
         label10.textColor = textFontColor;
         [cell addSubview:label10];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-    }else if (indexPath.section == 4 && indexPath.row == 0) {
+    } else if (indexPath.section == 4 && indexPath.row == 0) {
         UILabel *label13 = [[UILabel alloc]initWithFrame:CGRectMake(228, 0, 60, 42)];
         label13.font = [UIFont systemFontOfSize:14];
         if (mySeat.pic_url.length) {
@@ -486,7 +484,7 @@
         [carImageView setImageWithURL:url];
         [cell addSubview:carImageView];
         
-    }else if (indexPath.section == 4 && indexPath.row == 1) {
+    } else if (indexPath.section == 4 && indexPath.row == 1) {
         for (int i = 0; i<HZIDArray.count; i++) {
             UIImageView *HzImageView = [[UIImageView alloc]initWithFrame:CGRectMake(55+20*i, 13.5, 15, 15)];
             [HzImageView setImageWithURL:[NSURL URLWithString:HZImageArray[i]]];

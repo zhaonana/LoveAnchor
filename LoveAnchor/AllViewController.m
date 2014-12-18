@@ -240,17 +240,7 @@
 }
 
 #pragma mark ThirdRowTableViewCellDelegate
-- (void)thirdClick:(AllModel *)allModel {
-    [self addRequestWithRoomId:allModel._id];
-
-    if (!self.home.rightisVisible && !self.home.leftisVisible) {
-        PlayViewController *play = [[PlayViewController alloc]init];
-        play.allModel = allModel;
-        [self presentViewController:play animated:YES completion:nil];
-    }
-}
-
--(void)firstClick:(AllModel *)allModel
+- (void)thirdClick:(RankingModel *)allModel
 {
     [self addRequestWithRoomId:allModel._id];
 
@@ -261,7 +251,18 @@
     }
 }
 
--(void)secondClick:(AllModel *)allModel
+-(void)firstClick:(RankingModel *)allModel
+{
+    [self addRequestWithRoomId:allModel._id];
+
+    if (!self.home.rightisVisible && !self.home.leftisVisible) {
+        PlayViewController *play = [[PlayViewController alloc]init];
+        play.allModel = allModel;
+        [self presentViewController:play animated:YES completion:nil];
+    }
+}
+
+-(void)secondClick:(RankingModel *)allModel
 {
     [self addRequestWithRoomId:allModel._id];
 

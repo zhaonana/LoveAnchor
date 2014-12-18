@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "UserInfoModel.h"
 
 @interface TwoCell : UITableViewCell
 
-@property (nonatomic,strong)UILabel *label1;
-@property (nonatomic,strong)UILabel *label2;
-@property (nonatomic,strong)UIImageView *NImageView;
+@property (nonatomic,strong)UILabel *titleLab;
+@property (nonatomic,strong)UILabel *contentLab;
+
 @end

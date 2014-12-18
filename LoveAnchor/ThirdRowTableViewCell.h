@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RankingModel.h"
 
 @protocol ThirdRowTableViewCellDelegate <NSObject>
 
-- (void)thirdClick:(AllModel *)allModel;
+- (void)thirdClick:(RankingModel *)allModel;
 
 @end
 

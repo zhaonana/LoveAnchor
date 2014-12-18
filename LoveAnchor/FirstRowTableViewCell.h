@@ -7,10 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RankingModel.h"
 
 @protocol FirstRowTableViewCellDelegate <NSObject>
 
-- (void)firstClick:(AllModel *)allModel;
+- (void)firstClick:(RankingModel *)allModel;
 
 @end
 

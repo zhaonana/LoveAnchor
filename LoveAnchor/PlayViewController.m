@@ -460,6 +460,8 @@
     gifView.userInteractionEnabled = YES;
     gifView.hidden = YES;
     [self.view addSubview:gifView];
+    gifView.hidden = YES;
+    
     //横线
     UIImageView *gifHXImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 25, kScreenWidth, 0.5)];
     gifHXImageView.backgroundColor = [UIColor lightGrayColor];

@@ -7,6 +7,7 @@
 //
 
 #import "RankingTableViewCell.h"
+#import "UIImageView+BoundsAdditions.h"
 
 @implementation RankingTableViewCell
 
@@ -15,9 +16,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.headImageView = [[UIImageView alloc]initWithFrame:CGRectMake(45, 5, 45, 45)];
-        self.headImageView.layer.borderColor = [UIColor clearColor].CGColor;
-        self.headImageView.layer.borderWidth = 5.0;
-        self.headImageView.layer.cornerRadius = 25.0;
+        [self.headImageView makeBoundImage];
         
         self.headImageView.backgroundColor = [UIColor clearColor];
         [self.contentView addSubview:self.headImageView];

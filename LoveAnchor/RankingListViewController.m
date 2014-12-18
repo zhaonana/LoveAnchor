@@ -31,32 +31,28 @@
     NSDictionary *_dict;
 }
 
-
+@property (nonatomic, strong) LoginModel *model;
 
 @end
 
 @implementation RankingListViewController
-
-- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
-{
-    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
-    if (self) {
-        _dataArray = [NSMutableArray array];
-        page = 0;
-        page2 = 10;
-    }
-    return self;
-}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self.navigationController.navigationBar setTranslucent:NO];
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    _dataArray = [NSMutableArray array];
+    _model = [CommonUtil getUserModel];
+    page = 0;
+    page2 = 10;
+    
     [self initSet];
     [self showUI];
     [self requestWithTag:10 andTag2:0];
 }
+
 - (void)initSet {
     NSArray *arr1 = [NSArray arrayWithObjects:MINGXINGRIBANG,MINGXINGZHOUBANG,MINGXINGYUEBANG,MINGXINGCHAOBANG, nil];
     NSArray *arr2 = [NSArray arrayWithObjects:FUHAORIBANG,FUHAOZHOUBANG,FUHAOYUEBANG,FUHAOCHAOBANG, nil];
@@ -143,38 +139,57 @@
     [request startAsynchronous];
 }
 
+- (void)addRequestWithRoomId:(NSNumber *)roomId
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@viewlog/add/%@/%@",BaseURL,_model.access_token,roomId];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    request.delegate = self;
+    request.tag = 100;
+    [request setTimeOutSeconds:100];
+    [request startAsynchronous];
+}
+
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    [_dataArray removeAllObjects];
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
-    if ([result isKindOfClass:[NSDictionary class]]) {
-        NSArray *allData = [result objectForKey:@"data"];
-        NSMutableArray *allData_mutable = [NSMutableArray array];
-    for (NSDictionary *dict in allData) {
-        RankingModel *rankModel = [[RankingModel alloc] init];
-        [rankModel getRankModelWithDictionary:dict];
-        switch (request.tag) {
-            case 10:
-                rankModel.rankType = starType;
-                break;
-            case 11:
-                rankModel.rankType = richType;
-                break;
-            case 12:
-                rankModel.rankType = popularityType;
-                break;
-            default:
-                break;
+    if (request.tag == 100) {
+        if ([result isKindOfClass:[NSDictionary class]]) {
+            NSNumber *code = [result objectForKey:@"code"];
+            if (code.intValue == 1) {
+                
+            }
         }
-        [allData_mutable addObject:rankModel];
-    }
-        NSUInteger count = [allData_mutable count];
-        for (int i = 0; i < count; i++) {
-            NSArray *firstData = @[[allData_mutable objectAtIndex:i]];
-            [_dataArray addObject:firstData];
+    } else {
+        [_dataArray removeAllObjects];
+        if ([result isKindOfClass:[NSDictionary class]]) {
+            NSArray *allData = [result objectForKey:@"data"];
+            NSMutableArray *allData_mutable = [NSMutableArray array];
+            for (NSDictionary *dict in allData) {
+                RankingModel *rankModel = [[RankingModel alloc] init];
+                [rankModel getRankModelWithDictionary:dict];
+                switch (request.tag) {
+                    case 10:
+                        rankModel.rankType = starType;
+                        break;
+                    case 11:
+                        rankModel.rankType = richType;
+                        break;
+                    case 12:
+                        rankModel.rankType = popularityType;
+                        break;
+                    default:
+                        break;
+                }
+                [allData_mutable addObject:rankModel];
+            }
+            NSUInteger count = [allData_mutable count];
+            for (int i = 0; i < count; i++) {
+                NSArray *firstData = @[[allData_mutable objectAtIndex:i]];
+                [_dataArray addObject:firstData];
+            }
         }
+        [_tableView reloadData];
     }
-    [_tableView reloadData];
 }
 
 
@@ -293,10 +308,27 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DatumViewController *datum = [[DatumViewController alloc] init];
-    NSArray *modeArr = [_dataArray objectAtIndex:indexPath.row];
-    datum.userId = [modeArr[0] _id];
-    [self presentViewController:datum animated:YES completion:nil];
+    RankingModel *rankModel = [_dataArray objectAtIndex:indexPath.row][0];
+    switch (rankModel.rankType) {
+        case starType:
+        case popularityType: {
+            [self addRequestWithRoomId:rankModel._id];
+            
+            PlayViewController *play = [[PlayViewController alloc]init];
+            play.allModel = rankModel;
+            [self presentViewController:play animated:YES completion:nil];
+        }
+            break;
+        case richType: {
+            DatumViewController *datum = [[DatumViewController alloc] init];
+            NSArray *modeArr = [_dataArray objectAtIndex:indexPath.row];
+            datum.userId = [modeArr[0] _id];
+            [self presentViewController:datum animated:YES completion:nil];
+        }
+            break;
+        default:
+            break;
+    }    
 }
 
 @end

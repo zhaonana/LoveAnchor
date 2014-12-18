@@ -126,6 +126,18 @@
             twoCell.titleLab.text = [_titleArray objectAtIndex:indexPath.row];
             [twoCell.contentLab setHidden:YES];
             [twoCell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            for (int i = 0; i <_badgeArray.count; i++) {
+                UIImageView *HzImageView = [[UIImageView alloc] initWithFrame:CGRectMake(55+20*i, 10, 15, 15)];
+                NSString *greyPic = [_badgeArray[i] grey_pic];
+                [HzImageView setImageWithURL:[NSURL URLWithString:greyPic]];
+                for (NSString *ids in _userModel.medals.allKeys) {
+                    if (ids.intValue == [_badgeArray[i] ID].intValue) {
+                        NSString *picUrl = [_badgeArray[i] pic_url];
+                        [HzImageView setImageWithURL:[NSURL URLWithString:picUrl]];
+                    }
+                }
+                [twoCell addSubview:HzImageView];
+            }
             return twoCell;
         }
             break;
@@ -231,7 +243,6 @@
                         [badgeModel getBadgeModelWithDictionary:dic];
                         [_badgeArray addObject:badgeModel];
                     }
-                    
                     [_tableView reloadData];
                 }
             }

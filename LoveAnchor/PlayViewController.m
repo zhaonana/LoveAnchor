@@ -240,7 +240,7 @@
     [_navView addSubview:returnButton];
     //收藏
     attentionButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    attentionButton.frame = CGRectMake(275, 0, 20, 35);
+    attentionButton.frame = CGRectMake(260, 0, 20, 35);
     attentionButton.tag = 101;
     [attentionButton setImage:[UIImage imageNamed:@"shoucang"] forState:UIControlStateNormal];
     [attentionButton setImage:[UIImage imageNamed:@"shoucangdianji"] forState:UIControlStateSelected];
@@ -439,6 +439,8 @@
     gifView.backgroundColor = [UIColor whiteColor];
     gifView.userInteractionEnabled = YES;
     [self.view addSubview:gifView];
+    gifView.hidden = YES;
+    
     //横线
     UIImageView *gifHXImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 25, kScreenWidth, 0.5)];
     gifHXImageView.backgroundColor = [UIColor lightGrayColor];

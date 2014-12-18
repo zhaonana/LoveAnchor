@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "AllModel.h"
+#import "RankingModel.h"
 #import "Vitamio.h"
 
 @interface PlayViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
-@property (nonatomic,strong) AllModel *allModel;
+@property (nonatomic,strong) RankingModel *allModel;
 
 @end

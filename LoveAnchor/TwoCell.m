@@ -10,9 +10,9 @@
 
 @implementation TwoCell
 
-- (id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+- (id)init
 {
-    self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
+    self = [super init];
     if (self) {
         [self showUI];
     }
@@ -21,20 +21,13 @@
 
 - (void)showUI
 {
-    self.label1 = [[UILabel alloc]initWithFrame:CGRectMake(8, 10, 50, 15)];
-    self.label1.font = [UIFont systemFontOfSize:12];
-    [self.contentView addSubview:self.label1];
+    _titleLab = [[UILabel alloc]initWithFrame:CGRectMake(8, 10, 50, 15)];
+    _titleLab.font = [UIFont systemFontOfSize:12];
+    [self.contentView addSubview:_titleLab];
     
-    self.label2 = [[UILabel alloc]initWithFrame:CGRectMake(75, 10, 150, 15)];
-    self.label2.font = [UIFont systemFontOfSize:12];
-    [self.contentView addSubview:self.label2];
-    
-    self.NImageView = [[UIImageView alloc]init];
-    [self.contentView addSubview:self.NImageView];
-}
-
-- (void)awakeFromNib
-{
+    _contentLab = [[UILabel alloc]initWithFrame:CGRectMake(75, 10, 240, 15)];
+    _contentLab.font = [UIFont systemFontOfSize:12];
+    [self.contentView addSubview:_contentLab];
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

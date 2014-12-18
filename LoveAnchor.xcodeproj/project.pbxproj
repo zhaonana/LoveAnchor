@@ -329,6 +329,8 @@
 		39BB5D441A3FD8C500BA7B20 /* f_static_087.png in Resources */ = {isa = PBXBuildFile; fileRef = 39BB5CEA1A3FD8C500BA7B20 /* f_static_087.png */; };
 		39BB5D451A3FD8C500BA7B20 /* f_static_088.png in Resources */ = {isa = PBXBuildFile; fileRef = 39BB5CEB1A3FD8C500BA7B20 /* f_static_088.png */; };
 		39BB5D461A3FD8C500BA7B20 /* f_static_089.png in Resources */ = {isa = PBXBuildFile; fileRef = 39BB5CEC1A3FD8C500BA7B20 /* f_static_089.png */; };
+		39BB5D491A40479E00BA7B20 /* UserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 39BB5D481A40479E00BA7B20 /* UserInfoModel.m */; };
+		39BB5D4F1A42823200BA7B20 /* UIImageView+BoundsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 39BB5D4E1A42823200BA7B20 /* UIImageView+BoundsAdditions.m */; };
 		F703DB371A174D5200C53D4C /* SeatManageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F703DB361A174D5200C53D4C /* SeatManageViewController.m */; };
 		F71890F11A12195B005ECCA9 /* huangV1.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890ED1A12195B005ECCA9 /* huangV1.png */; };
 		F71890F21A12195B005ECCA9 /* huangV1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890EE1A12195B005ECCA9 /* huangV1@2x.png */; };
@@ -1006,6 +1008,10 @@
 		39BB5CEA1A3FD8C500BA7B20 /* f_static_087.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = f_static_087.png; sourceTree = "<group>"; };
 		39BB5CEB1A3FD8C500BA7B20 /* f_static_088.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = f_static_088.png; sourceTree = "<group>"; };
 		39BB5CEC1A3FD8C500BA7B20 /* f_static_089.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = f_static_089.png; sourceTree = "<group>"; };
+		39BB5D471A40479E00BA7B20 /* UserInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoModel.h; sourceTree = "<group>"; };
+		39BB5D481A40479E00BA7B20 /* UserInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoModel.m; sourceTree = "<group>"; };
+		39BB5D4D1A42823200BA7B20 /* UIImageView+BoundsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+BoundsAdditions.h"; sourceTree = "<group>"; };
+		39BB5D4E1A42823200BA7B20 /* UIImageView+BoundsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+BoundsAdditions.m"; sourceTree = "<group>"; };
 		F703DB351A174D5200C53D4C /* SeatManageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeatManageViewController.h; sourceTree = "<group>"; };
 		F703DB361A174D5200C53D4C /* SeatManageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeatManageViewController.m; sourceTree = "<group>"; };
 		F71890ED1A12195B005ECCA9 /* huangV1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = huangV1.png; sourceTree = "<group>"; };
@@ -1790,6 +1796,8 @@
 				39BB5C591A3AF2D400BA7B20 /* CommonUtil.m */,
 				39BB5C5A1A3AF2D400BA7B20 /* NSString+TrimmingAdditions.h */,
 				39BB5C5B1A3AF2D400BA7B20 /* NSString+TrimmingAdditions.m */,
+				39BB5D4D1A42823200BA7B20 /* UIImageView+BoundsAdditions.h */,
+				39BB5D4E1A42823200BA7B20 /* UIImageView+BoundsAdditions.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2361,6 +2369,8 @@
 				39B663CD1A257EF30033D28C /* LevelInfoModel.m */,
 				392265781A35B00F00767721 /* ChatModel.h */,
 				392265791A35B00F00767721 /* ChatModel.m */,
+				39BB5D471A40479E00BA7B20 /* UserInfoModel.h */,
+				39BB5D481A40479E00BA7B20 /* UserInfoModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -3117,7 +3127,9 @@
 				F7456F0919986A9600CF28E8 /* DynamicViewController.m in Sources */,
 				F7B5B89B19EFC0C80006ACCB /* OneTableViewCell.m in Sources */,
 				F7C7CCAD19AD8FE7003FCC03 /* ASIDownloadCache.m in Sources */,
+				39BB5D491A40479E00BA7B20 /* UserInfoModel.m in Sources */,
 				39BB5C701A3AF2EA00BA7B20 /* MJRefreshBaseView.m in Sources */,
+				39BB5D4F1A42823200BA7B20 /* UIImageView+BoundsAdditions.m in Sources */,
 				F7456E2D1998609100CF28E8 /* AppDelegate.m in Sources */,
 				F703DB371A174D5200C53D4C /* SeatManageViewController.m in Sources */,
 				3922656D1A359DEC00767721 /* SocketIOTransportWebsocket.m in Sources */,

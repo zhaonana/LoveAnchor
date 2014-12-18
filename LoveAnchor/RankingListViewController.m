@@ -293,7 +293,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    DatumViewController *datum = [[DatumViewController alloc]init];
+    DatumViewController *datum = [[DatumViewController alloc] init];
+    NSArray *modeArr = [_dataArray objectAtIndex:indexPath.row];
+    datum.userId = [modeArr[0] _id];
     [self presentViewController:datum animated:YES completion:nil];
 }
 

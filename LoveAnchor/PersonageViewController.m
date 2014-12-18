@@ -8,6 +8,7 @@
 
 #import "PersonageViewController.h"
 #import <AssetsLibrary/AssetsLibrary.h>
+#import "UIImageView+BoundsAdditions.h"
 
 @interface PersonageViewController ()<UITableViewDataSource,UITableViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate,HZAreaPickerDelegate,UIActionSheetDelegate,UIImagePickerControllerDelegate,UINavigationControllerDelegate>
 {
@@ -148,8 +149,7 @@
     headImgView = [[UIImageView alloc] initWithFrame:CGRectMake(120, 32.5, 80, 80)];
     [headImgView setImage:[UIImage imageNamed:@"morentouxiang"]];
     headImgView.userInteractionEnabled = YES;
-    headImgView.layer.masksToBounds = YES;
-    [headImgView.layer setCornerRadius:headImgView.frame.size.width/2.0];
+    [headImgView makeBoundImage];
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(headClick:)];
     [headImgView addGestureRecognizer:tap];
     [headImageView addSubview:headImgView];

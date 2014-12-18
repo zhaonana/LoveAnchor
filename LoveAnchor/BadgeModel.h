@@ -10,9 +10,10 @@
 
 @interface BadgeModel : NSObject
 
-@property (nonatomic,strong)NSString *ID;
-@property (nonatomic,strong)NSString *grey_pic;
-@property (nonatomic,strong)NSString *pic_url;
+@property (nonatomic,strong) NSNumber *ID;
+@property (nonatomic,strong) NSString *grey_pic;
+@property (nonatomic,strong) NSString *pic_url;
 
+- (BadgeModel *)getBadgeModelWithDictionary:(NSDictionary *)dic;
 
 @end

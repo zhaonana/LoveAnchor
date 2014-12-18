@@ -10,4 +10,6 @@
 
 @interface DatumViewController : UIViewController<UITableViewDataSource,UITableViewDelegate>
 
+@property (nonatomic, strong) NSNumber *userId;
+
 @end

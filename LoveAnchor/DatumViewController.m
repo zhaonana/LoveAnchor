@@ -20,6 +20,7 @@
 @property (nonatomic, strong) UITableView    *tableView;
 @property (nonatomic, strong) NSMutableArray *badgeArray;
 @property (nonatomic, strong) NSArray        *titleArray;
+@property (nonatomic, strong) NSMutableArray *carArray;
 
 @end
 
@@ -42,6 +43,7 @@
     _model = [CommonUtil getUserModel];
     _attentionArray = [[NSMutableArray alloc] init];
     _badgeArray = [[NSMutableArray alloc] init];
+    _carArray = [[NSMutableArray alloc] init];
     
     [self shouUI];
 }
@@ -127,7 +129,7 @@
             [twoCell.contentLab setHidden:YES];
             [twoCell setSelectionStyle:UITableViewCellSelectionStyleNone];
             for (int i = 0; i <_badgeArray.count; i++) {
-                UIImageView *HzImageView = [[UIImageView alloc] initWithFrame:CGRectMake(55+20*i, 10, 15, 15)];
+                UIImageView *HzImageView = [[UIImageView alloc] initWithFrame:CGRectMake(75 + 20 * i, 10, 15, 15)];
                 NSString *greyPic = [_badgeArray[i] grey_pic];
                 [HzImageView setImageWithURL:[NSURL URLWithString:greyPic]];
                 for (NSString *ids in _userModel.medals.allKeys) {
@@ -159,6 +161,20 @@
             twoCell.titleLab.text = [_titleArray objectAtIndex:indexPath.row];
             [twoCell.contentLab setHidden:YES];
             [twoCell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            NSMutableArray *urlArr = [NSMutableArray array];
+            for (int i = 0; i <_carArray.count; i++) {
+                for (NSString *ids in _userModel.car.allKeys) {
+                    if (ids.intValue == [_carArray[i] ID].intValue) {
+                        NSString *picUrl = [_carArray[i] pic_url];
+                        [urlArr addObject:picUrl];
+                    }
+                }
+            }
+            for (int i = 0; i < urlArr.count; i++) {
+                UIImageView *HzImageView = [[UIImageView alloc] initWithFrame:CGRectMake(75 + 20 * i, 10, 15, 15)];
+                [HzImageView setImageWithURL:[NSURL URLWithString:urlArr[i]]];
+                [twoCell addSubview:HzImageView];
+            }
             return twoCell;
         }
             break;
@@ -216,6 +232,16 @@
     }
 }
 
+- (void)requestCarInfo
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@show/cars_list",BaseURL];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    [request setTimeOutSeconds:100];
+    request.tag = 700;
+    request.delegate = self;
+    [request startAsynchronous];
+}
+
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
@@ -242,6 +268,21 @@
                         BadgeModel *badgeModel = [[BadgeModel alloc] init];
                         [badgeModel getBadgeModelWithDictionary:dic];
                         [_badgeArray addObject:badgeModel];
+                    }
+                    [self requestCarInfo];  //座驾信息
+                }
+            }
+        }
+            break;
+        case 700: { //座驾信息
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSNumber *code = [result objectForKey:@"code"];
+                if (code.intValue == 1) {
+                    NSArray *carArray = [result objectForKey:@"data"];
+                    for (NSDictionary *dic in carArray) {
+                        BadgeModel *badgeModel = [[BadgeModel alloc] init];
+                        [badgeModel getBadgeModelWithDictionary:dic];
+                        [_carArray addObject:badgeModel];
                     }
                     [_tableView reloadData];
                 }

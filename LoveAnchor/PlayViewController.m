@@ -28,6 +28,7 @@
     UIImageView  *_upgradeView;
     //羽毛
     UIImageView  *_yumaoView;
+    UILabel      *_quantityLabel;
     //主播详情
     UIView       *_classifyView;
     //button背景
@@ -150,6 +151,7 @@
     [self requestWithParam:@"room_user_month" tag:501];
     [self requestWithParam:@"room_user_total" tag:502];
     [self requestWithFollowing:@"following_list" tag:602];
+    [self requestWithFeather];
 
     NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
     self.videoURL = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
@@ -202,19 +204,21 @@
     _upgradeView.hidden = YES;
     [_liveView addSubview:_upgradeView];
     
-    UILabel *shengjiLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 8, 80, 16)];
-    shengjiLabel.text = [NSString stringWithFormat:@"差%d经验升级",25541];
+    UILabel *shengjiLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 8, 90, 16)];
+    NSNumber *coin = [self.allModel.finance objectForKey:@"bean_count_total"];
+    NSInteger nextCoin = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:YES].nextCoin;
+    shengjiLabel.text = [NSString stringWithFormat:@"差%d经验升级",nextCoin];
     shengjiLabel.font = [UIFont systemFontOfSize:10];
     [_upgradeView addSubview:shengjiLabel];
+    
     //羽毛
     _yumaoView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 10, 33, 32)];
     _yumaoView.image = [UIImage imageNamed:@"yumao"];
     [_liveView addSubview:_yumaoView];
     
-    UILabel *quantityLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 20, 18, 7)];
-    quantityLabel.text = @"12222";
-    quantityLabel.font = [UIFont systemFontOfSize:6];
-    [_yumaoView addSubview:quantityLabel];
+    _quantityLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 20, 18, 7)];
+    _quantityLabel.font = [UIFont systemFontOfSize:6];
+    [_yumaoView addSubview:_quantityLabel];
     
     //导航
     _navView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, kScreenWidth, 35)];
@@ -231,8 +235,8 @@
     [_navView addSubview:navLabel];
     //主播等级
     UIImageView *gradeView = [[UIImageView alloc]initWithFrame:CGRectMake(size.width + 38, 5, 25, 25)];
-    NSNumber *coin = [self.allModel.finance objectForKey:@"bean_count_total"];
-    NSInteger level = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:NO].level;
+    NSNumber *coinNum = [self.allModel.finance objectForKey:@"bean_count_total"];
+    NSInteger level = [CommonUtil getLevelInfoWithCoin:coinNum.intValue isRich:NO].level;
     NSString *imageName = [NSString stringWithFormat:@"%dzhubo",level];
     gradeView.image = [UIImage imageNamed:imageName];
     [_navView addSubview:gradeView];
@@ -1299,6 +1303,16 @@
     }
 }
 
+- (void)requestWithFeather
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@public/room_star/%@",BaseURL,self.allModel._id];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    [request setTimeOutSeconds:100];
+    request.delegate = self;
+    request.tag = 700;
+    [request startAsynchronous];
+}
+
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
@@ -1381,6 +1395,19 @@
                     } else {
                         attentionButton.selected = NO;
                     }
+                }
+            }
+        }
+            break;
+        case 700: { //主播羽毛
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSNumber *code = [result objectForKey:@"code"];
+                if (code.intValue == 1) {
+                    NSDictionary *dataDic = [result objectForKey:@"data"];
+                    NSDictionary *userDic = [dataDic objectForKey:@"user"];
+                    NSDictionary *financeDic = [userDic objectForKey:@"finance"];
+                    NSNumber *featherNum = [financeDic objectForKey:@"feather_receive_total"];
+                    _quantityLabel.text = featherNum.stringValue;
                 }
             }
         }

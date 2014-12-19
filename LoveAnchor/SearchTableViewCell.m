@@ -7,6 +7,7 @@
 //
 
 #import "SearchTableViewCell.h"
+#import "UIImageView+BoundsAdditions.h"
 
 @implementation SearchTableViewCell
 
@@ -16,6 +17,7 @@
     if (self) {
         self.headImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 5, 45, 45)];
         self.headImageView.backgroundColor = [UIColor clearColor];
+        [self.headImageView makeBoundImage];
         [self.contentView addSubview:self.headImageView];
         
         self.nickNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(65, 30, 200, 18)];

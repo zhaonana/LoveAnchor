@@ -233,7 +233,7 @@
     UIImageView *gradeView = [[UIImageView alloc]initWithFrame:CGRectMake(size.width + 38, 5, 25, 25)];
     NSNumber *coin = [self.allModel.finance objectForKey:@"bean_count_total"];
     NSInteger level = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:NO].level;
-    NSString *imageName = [NSString stringWithFormat:@"%d",level];
+    NSString *imageName = [NSString stringWithFormat:@"%dzhubo",level];
     gradeView.image = [UIImage imageNamed:imageName];
     [_navView addSubview:gradeView];
     //返回上一页
@@ -266,10 +266,14 @@
     _classifyView.hidden = YES;
     [self.view addSubview:_classifyView];
     //主播档案
-    UIImageView *recordView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 1, _classifyView.frame.size.width, _classifyView.frame.size.height/2)];
+    UIView *recordView = [[UIView alloc] initWithFrame:CGRectMake(0, 1, _classifyView.frame.size.width, _classifyView.frame.size.height/2)];
     recordView.backgroundColor = [UIColor clearColor];
-    recordView.userInteractionEnabled = YES;
+    recordView.tag = 1200;
     [_classifyView addSubview:recordView];
+    
+    UITapGestureRecognizer *recordTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(classifyTap:)];
+    [recordView addGestureRecognizer:recordTap];
+    
     //档案图标
     UIImageView *recordImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 4, 20, 20)];
     recordImageView.image = [UIImage imageNamed:@"zhubodangan"];
@@ -289,7 +293,12 @@
     //分享
     UIView *shareView = [[UIView alloc]initWithFrame:CGRectMake(0, _classifyView.frame.size.height/2, _classifyView.frame.size.width, _classifyView.frame.size.height/2)];
     shareView.backgroundColor = [UIColor clearColor];
+    shareView.tag = 1300;
     [_classifyView addSubview:shareView];
+    
+    UITapGestureRecognizer *shareTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(classifyTap:)];
+    [shareView addGestureRecognizer:shareTap];
+    
     //分享图标
     UIImageView *shareImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 4, 20, 20)];
     shareImageView.image = [UIImage imageNamed:@"fenxiang"];
@@ -716,11 +725,7 @@
             [self requestWithFollowing:@"add_following" tag:600];
         }
     } else if (button.tag == 102) {
-        if (_classifyView.hidden) {
-            _classifyView.hidden = NO;
-        }else {
-            _classifyView.hidden = YES;
-        }
+        _classifyView.hidden = !_classifyView.hidden;
     } else if (button.tag == 1000) {
         if (button.selected) {
             bearButton.frame = CGRectMake(280, 200, 35, 35);
@@ -773,7 +778,6 @@
 #pragma mark - 点击播放界面方法
 - (void)liveClick:(UITapGestureRecognizer *)sender
 {
-    NSLog(@"-----------%ld",sender.view.tag);
     if (tap) {
         NSLog(@"123");
         _navView.hidden = YES;
@@ -810,6 +814,24 @@
     }else {
         gifView.hidden = YES;
         blackView.hidden = YES;
+    }
+}
+
+- (void)classifyTap:(UITapGestureRecognizer *)sender
+{
+    _classifyView.hidden = !_classifyView.hidden;
+    switch (sender.view.tag) {
+        case 1200: { //主播档案
+            DatumViewController *datum = [[DatumViewController alloc] init];
+            datum.userId = self.allModel._id;
+            [self presentViewController:datum animated:YES completion:nil];
+        }
+            break;
+        case 1300:  //分享
+            
+            break;
+        default:
+            break;
     }
 }
 /**********************************************************************************************************/

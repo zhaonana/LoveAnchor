@@ -99,8 +99,10 @@
     }
 }
 #pragma mark ThirdRowTableViewCellDelegate
-- (void)thirdClick:(AllModel *)allModel {
-    
+- (void)thirdClick:(RankingModel *)allModel
+{
+    [self addRequestWithRoomId:allModel._id];
+
     if (!self.home.rightisVisible && !self.home.leftisVisible) {
         PlayViewController *play = [[PlayViewController alloc]init];
         play.allModel = allModel;
@@ -109,8 +111,10 @@
     
 }
 
--(void)firstClick:(AllModel *)allModel
+-(void)firstClick:(RankingModel *)allModel
 {
+    [self addRequestWithRoomId:allModel._id];
+
     if (!self.home.rightisVisible && !self.home.leftisVisible) {
         PlayViewController *play = [[PlayViewController alloc]init];
         play.allModel = allModel;
@@ -118,8 +122,10 @@
     }
 }
 
--(void)secondClick:(AllModel *)allModel
+-(void)secondClick:(RankingModel *)allModel
 {
+    [self addRequestWithRoomId:allModel._id];
+
     if (!self.home.rightisVisible && !self.home.leftisVisible) {
         PlayViewController *play = [[PlayViewController alloc]init];
         play.allModel = allModel;
@@ -134,6 +140,16 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@user/following_list/%@",BaseURL,model.access_token];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
+    [request setTimeOutSeconds:100];
+    [request startAsynchronous];
+}
+
+- (void)addRequestWithRoomId:(NSNumber *)roomId
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@viewlog/add/%@/%@",BaseURL,model.access_token,roomId];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    request.delegate = self;
+    request.tag = 101;
     [request setTimeOutSeconds:100];
     [request startAsynchronous];
 }

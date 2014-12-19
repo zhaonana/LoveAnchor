@@ -21,6 +21,8 @@
 		3944F0581A27361900429734 /* libffmpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0531A27361900429734 /* libffmpeg.a */; };
 		3944F0591A27361900429734 /* libopenssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0541A27361900429734 /* libopenssl.a */; };
 		3944F05A1A27361900429734 /* libVitamio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0551A27361900429734 /* libVitamio.a */; };
+		39935B6D1A43D3DE008CB5BE /* UserInfoModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 39935B6C1A43D3DE008CB5BE /* UserInfoModel.m */; };
+		39935B701A43D412008CB5BE /* UIImageView+BoundsAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 39935B6F1A43D412008CB5BE /* UIImageView+BoundsAdditions.m */; };
 		39B55D871A2D64940088B6E5 /* QZoneConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39B55D751A2D64940088B6E5 /* QZoneConnection.framework */; };
 		39B55D881A2D64940088B6E5 /* SinaWeiboConnection.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39B55D761A2D64940088B6E5 /* SinaWeiboConnection.framework */; };
 		39B55D891A2D64940088B6E5 /* AGCommon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 39B55D781A2D64940088B6E5 /* AGCommon.framework */; };
@@ -685,6 +687,10 @@
 		3944F0531A27361900429734 /* libffmpeg.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libffmpeg.a; sourceTree = "<group>"; };
 		3944F0541A27361900429734 /* libopenssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libopenssl.a; sourceTree = "<group>"; };
 		3944F0551A27361900429734 /* libVitamio.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libVitamio.a; sourceTree = "<group>"; };
+		39935B6B1A43D3DE008CB5BE /* UserInfoModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserInfoModel.h; sourceTree = "<group>"; };
+		39935B6C1A43D3DE008CB5BE /* UserInfoModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserInfoModel.m; sourceTree = "<group>"; };
+		39935B6E1A43D412008CB5BE /* UIImageView+BoundsAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImageView+BoundsAdditions.h"; sourceTree = "<group>"; };
+		39935B6F1A43D412008CB5BE /* UIImageView+BoundsAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImageView+BoundsAdditions.m"; sourceTree = "<group>"; };
 		39A56EBC1A37EBCA008D0BB8 /* Common.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Common.h; sourceTree = "<group>"; };
 		39B55D751A2D64940088B6E5 /* QZoneConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = QZoneConnection.framework; sourceTree = "<group>"; };
 		39B55D761A2D64940088B6E5 /* SinaWeiboConnection.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = SinaWeiboConnection.framework; sourceTree = "<group>"; };
@@ -1790,6 +1796,8 @@
 				39BB5C591A3AF2D400BA7B20 /* CommonUtil.m */,
 				39BB5C5A1A3AF2D400BA7B20 /* NSString+TrimmingAdditions.h */,
 				39BB5C5B1A3AF2D400BA7B20 /* NSString+TrimmingAdditions.m */,
+				39935B6E1A43D412008CB5BE /* UIImageView+BoundsAdditions.h */,
+				39935B6F1A43D412008CB5BE /* UIImageView+BoundsAdditions.m */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -2361,6 +2369,8 @@
 				39B663CD1A257EF30033D28C /* LevelInfoModel.m */,
 				392265781A35B00F00767721 /* ChatModel.h */,
 				392265791A35B00F00767721 /* ChatModel.m */,
+				39935B6B1A43D3DE008CB5BE /* UserInfoModel.h */,
+				39935B6C1A43D3DE008CB5BE /* UserInfoModel.m */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -3117,7 +3127,9 @@
 				F7456F0919986A9600CF28E8 /* DynamicViewController.m in Sources */,
 				F7B5B89B19EFC0C80006ACCB /* OneTableViewCell.m in Sources */,
 				F7C7CCAD19AD8FE7003FCC03 /* ASIDownloadCache.m in Sources */,
+				39935B6D1A43D3DE008CB5BE /* UserInfoModel.m in Sources */,
 				39BB5C701A3AF2EA00BA7B20 /* MJRefreshBaseView.m in Sources */,
+				39935B701A43D412008CB5BE /* UIImageView+BoundsAdditions.m in Sources */,
 				F7456E2D1998609100CF28E8 /* AppDelegate.m in Sources */,
 				F703DB371A174D5200C53D4C /* SeatManageViewController.m in Sources */,
 				3922656D1A359DEC00767721 /* SocketIOTransportWebsocket.m in Sources */,
@@ -3351,17 +3363,8 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-<<<<<<< HEAD
 				PROVISIONING_PROFILE = "aa9c38ed-ff5d-412a-afe6-9736870c7edb";
-=======
-<<<<<<< HEAD
-				PROVISIONING_PROFILE = "a815a140-ca38-4ea6-b8f3-170aa08fe425";
->>>>>>> 19915fc9779d4a36cd4ddeffb2cf27889df170af
-				SDKROOT = iphoneos7.1;
-=======
-				PROVISIONING_PROFILE = "f8eb4d6b-c9d9-46f3-9f45-52986ebfa920";
 				SDKROOT = iphoneos;
->>>>>>> de511dfcca4cf4405b11673ae3a08b4027fc17a1
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -3393,17 +3396,8 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-<<<<<<< HEAD
 				PROVISIONING_PROFILE = "aa9c38ed-ff5d-412a-afe6-9736870c7edb";
-=======
-<<<<<<< HEAD
-				PROVISIONING_PROFILE = "a815a140-ca38-4ea6-b8f3-170aa08fe425";
->>>>>>> 19915fc9779d4a36cd4ddeffb2cf27889df170af
-				SDKROOT = iphoneos7.1;
-=======
-				PROVISIONING_PROFILE = "f8eb4d6b-c9d9-46f3-9f45-52986ebfa920";
 				SDKROOT = iphoneos;
->>>>>>> de511dfcca4cf4405b11673ae3a08b4027fc17a1
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

@@ -105,7 +105,7 @@
 {
     [super viewDidLoad];
     model = [CommonUtil getUserModel];
-    
+
     [self showUI];
     
 }
@@ -175,7 +175,6 @@
     _tableView.showsVerticalScrollIndicator = NO;
     _tableView.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     [scrollView addSubview:_tableView];
-    
 }
 
 #pragma mark - 点击事件

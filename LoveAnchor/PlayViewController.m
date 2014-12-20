@@ -14,6 +14,7 @@
 #import "ChatModel.h"
 #import "NSString+TrimmingAdditions.h"
 #import "RankCell.h"
+#import "UIImageView+BoundsAdditions.h"
 
 @interface PlayViewController () <VMediaPlayerDelegate, UITextFieldDelegate, SocketIODelegate, ASIHTTPRequestDelegate>
 
@@ -28,6 +29,7 @@
     UIImageView  *_upgradeView;
     //羽毛
     UIImageView  *_yumaoView;
+    UILabel      *_quantityLabel;
     //主播详情
     UIView       *_classifyView;
     //button背景
@@ -44,6 +46,7 @@
     UIButton     *attentionButton;
     //抢沙发
     UIView       *_sofaView;
+    UIView       *_backView;
     //聊天输入框
     UITextField  *_chatTextField;
     VMediaPlayer *mMPayer;
@@ -88,31 +91,33 @@
 @property (nonatomic, strong) LoginModel              *model;
 @property (nonatomic, strong) NSURL                   *videoURL;
 //关注ids
-@property (nonatomic, strong) NSMutableArray     *attentionArray;
+@property (nonatomic, strong) NSMutableArray          *attentionArray;
 //综合
-@property (nonatomic, strong) UITableView        *synthesizeTableView;
+@property (nonatomic, strong) UITableView             *synthesizeTableView;
 //公聊
-@property (nonatomic, strong) UITableView        *publicTableView;
+@property (nonatomic, strong) UITableView             *publicTableView;
 //私聊
-@property (nonatomic, strong) UITableView        *privateTableView;
+@property (nonatomic, strong) UITableView             *privateTableView;
 //综合
-@property (nonatomic, strong) NSMutableArray     *dataArray;
+@property (nonatomic, strong) NSMutableArray          *dataArray;
 //公聊
-@property (nonatomic, strong) NSMutableArray     *publicDataArray;
+@property (nonatomic, strong) NSMutableArray          *publicDataArray;
 //私聊
-@property (nonatomic, strong) NSMutableArray     *privateArray;
+@property (nonatomic, strong) NSMutableArray          *privateArray;
 //本场观众榜
-@property (nonatomic, strong) UITableView        *homeCourseTableView;
+@property (nonatomic, strong) UITableView             *homeCourseTableView;
 //月榜
-@property (nonatomic, strong) UITableView        *monthTableView;
+@property (nonatomic, strong) UITableView             *monthTableView;
 //总榜
-@property (nonatomic, strong) UITableView        *alwaysTableView;
+@property (nonatomic, strong) UITableView             *alwaysTableView;
 //本场观众榜
-@property (nonatomic, strong) NSMutableArray     *homeCourseArray;
+@property (nonatomic, strong) NSMutableArray          *homeCourseArray;
 //月榜
-@property (nonatomic, strong) NSMutableArray     *monthArray;
+@property (nonatomic, strong) NSMutableArray          *monthArray;
 //总榜
-@property (nonatomic, strong) NSMutableArray     *alwaysArray;
+@property (nonatomic, strong) NSMutableArray          *alwaysArray;
+//沙发
+@property (nonatomic, strong) NSMutableArray          *sofaArray;
 
 @end
 
@@ -126,13 +131,14 @@
     titleArray = [NSArray arrayWithObjects:@"改昵称",@"广播",@"点歌",@"设置",@"意见反馈", nil];
     
     _model = [CommonUtil getUserModel];
-    _dataArray = [[NSMutableArray alloc] init];
+    _dataArray       = [[NSMutableArray alloc] init];
     _publicDataArray = [[NSMutableArray alloc] init];
-    _privateArray = [[NSMutableArray alloc] init];
+    _privateArray    = [[NSMutableArray alloc] init];
     _homeCourseArray = [[NSMutableArray alloc] init];
-    _monthArray = [[NSMutableArray alloc] init];
-    _alwaysArray = [[NSMutableArray alloc] init];
-    _attentionArray = [[NSMutableArray alloc] init];
+    _monthArray      = [[NSMutableArray alloc] init];
+    _alwaysArray     = [[NSMutableArray alloc] init];
+    _attentionArray  = [[NSMutableArray alloc] init];
+    _sofaArray       = [[NSMutableArray alloc] init];
     
     _socketIO = [[SocketIO alloc] initWithDelegate:self];
     
@@ -159,6 +165,8 @@
     [self requestWithParam:@"room_user_month" tag:501];
     [self requestWithParam:@"room_user_total" tag:502];
     [self requestWithFollowing:@"following_list" tag:602];
+    [self requestWithInfo:@"room_star"tag:700];
+    [self requestWithInfo:@"room_sofa" tag:800];
 
     NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
     self.videoURL = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
@@ -211,19 +219,21 @@
     _upgradeView.hidden = YES;
     [_liveView addSubview:_upgradeView];
     
-    UILabel *shengjiLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 8, 80, 16)];
-    shengjiLabel.text = [NSString stringWithFormat:@"差%d经验升级",25541];
+    UILabel *shengjiLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 8, 90, 16)];
+    NSNumber *coin = [self.allModel.finance objectForKey:@"bean_count_total"];
+    NSInteger nextCoin = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:YES].nextCoin;
+    shengjiLabel.text = [NSString stringWithFormat:@"差%d经验升级",nextCoin];
     shengjiLabel.font = [UIFont systemFontOfSize:10];
     [_upgradeView addSubview:shengjiLabel];
+    
     //羽毛
     _yumaoView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 10, 33, 32)];
     _yumaoView.image = [UIImage imageNamed:@"yumao"];
     [_liveView addSubview:_yumaoView];
     
-    UILabel *quantityLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 20, 18, 7)];
-    quantityLabel.text = @"12222";
-    quantityLabel.font = [UIFont systemFontOfSize:6];
-    [_yumaoView addSubview:quantityLabel];
+    _quantityLabel = [[UILabel alloc]initWithFrame:CGRectMake(13, 20, 18, 7)];
+    _quantityLabel.font = [UIFont systemFontOfSize:6];
+    [_yumaoView addSubview:_quantityLabel];
     
     //导航
     _navView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, kScreenWidth, 35)];
@@ -240,9 +250,9 @@
     [_navView addSubview:navLabel];
     //主播等级
     UIImageView *gradeView = [[UIImageView alloc]initWithFrame:CGRectMake(size.width + 38, 5, 25, 25)];
-    NSNumber *coin = [self.allModel.finance objectForKey:@"bean_count_total"];
-    NSInteger level = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:NO].level;
-    NSString *imageName = [NSString stringWithFormat:@"%ld",level];
+    NSNumber *coinNum = [self.allModel.finance objectForKey:@"bean_count_total"];
+    NSInteger level = [CommonUtil getLevelInfoWithCoin:coinNum.intValue isRich:NO].level;
+    NSString *imageName = [NSString stringWithFormat:@"%dzhubo",level];
     gradeView.image = [UIImage imageNamed:imageName];
     [_navView addSubview:gradeView];
     //返回上一页
@@ -275,10 +285,14 @@
     _classifyView.hidden = YES;
     [self.view addSubview:_classifyView];
     //主播档案
-    UIImageView *recordView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 1, _classifyView.frame.size.width, _classifyView.frame.size.height/2)];
+    UIView *recordView = [[UIView alloc] initWithFrame:CGRectMake(0, 1, _classifyView.frame.size.width, _classifyView.frame.size.height/2)];
     recordView.backgroundColor = [UIColor clearColor];
-    recordView.userInteractionEnabled = YES;
+    recordView.tag = 1200;
     [_classifyView addSubview:recordView];
+    
+    UITapGestureRecognizer *recordTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(classifyTap:)];
+    [recordView addGestureRecognizer:recordTap];
+    
     //档案图标
     UIImageView *recordImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 4, 20, 20)];
     recordImageView.image = [UIImage imageNamed:@"zhubodangan"];
@@ -298,7 +312,12 @@
     //分享
     UIView *shareView = [[UIView alloc]initWithFrame:CGRectMake(0, _classifyView.frame.size.height/2, _classifyView.frame.size.width, _classifyView.frame.size.height/2)];
     shareView.backgroundColor = [UIColor clearColor];
+    shareView.tag = 1300;
     [_classifyView addSubview:shareView];
+    
+    UITapGestureRecognizer *shareTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(classifyTap:)];
+    [shareView addGestureRecognizer:shareTap];
+    
     //分享图标
     UIImageView *shareImageView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 4, 20, 20)];
     shareImageView.image = [UIImage imageNamed:@"fenxiang"];
@@ -743,26 +762,32 @@
     _sofaView.alpha = 0.6;
     [self.view addSubview:_sofaView];
     
+    _backView = [[UIView alloc] initWithFrame:CGRectMake(0, kScreenHeight - 130, kScreenWidth, 130)];
+    [_backView setBackgroundColor:[UIColor clearColor]];
+    [_backView setHidden:YES];
+    [self.view addSubview:_backView];
+    
     for (int i = 0; i < 4; i++) {
-        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.frame = CGRectMake(i*80, 0, _sofaView.frame.size.width/4, _sofaView.frame.size.height);
-        [button addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
-        [_sofaView addSubview:button];
-        
-        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 10, 80, 15)];
+        UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(i*80, 10, 80, 15)];
         titleLabel.text = @"虚位以待";
+        titleLabel.tag = 900 + i;
         titleLabel.textColor = [UIColor whiteColor];
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.font = [UIFont systemFontOfSize:12];
-        [button addSubview:titleLabel];
+        [_backView addSubview:titleLabel];
         
-        UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(7.5, 30, 65, 65)];
+        UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(7.5+i*80, 30, 65, 65)];
         imageView.image = [UIImage imageNamed:@"xuweiyidai"];
-        [button addSubview:imageView];
+        [_backView addSubview:imageView];
         
-        UIImageView *QImageView = [[UIImageView alloc]initWithFrame:CGRectMake(21, 100, 38, 18)];
+        UIImageView *headView = [[UIImageView alloc] initWithFrame:CGRectMake(9+i*80, 35, 50, 50)];
+        [headView makeBoundImage];
+        headView.tag = 400 + i;
+        [_backView addSubview:headView];
+        
+        UIImageView *QImageView = [[UIImageView alloc]initWithFrame:CGRectMake(21+i*80, 100, 38, 18)];
         QImageView.image = [UIImage imageNamed:@"qiangzuo"];
-        [button addSubview:QImageView];
+        [_backView addSubview:QImageView];
     }
 
 }
@@ -782,6 +807,7 @@
             [self requestWithFollowing:@"add_following" tag:600];
         }
     } else if (button.tag == 102) {
+<<<<<<< HEAD
         if (_classifyView.hidden) {
             _classifyView.hidden = NO;
         }else {
@@ -796,6 +822,9 @@
             whiteView.frame = CGRectMake(220, View.frame.size.height-169, 100, 125);
             button.selected = YES;
         }
+=======
+        _classifyView.hidden = !_classifyView.hidden;
+>>>>>>> 62b84ff853dbbe2a5c0ea34e10a2507285b89687
     } else if (button.tag == 1000) {
         if (button.selected) {
             bearButton.frame = CGRectMake(280, 200, 35, 35);
@@ -848,20 +877,19 @@
 #pragma mark - 点击播放界面方法
 - (void)liveClick:(UITapGestureRecognizer *)sender
 {
-    NSLog(@"-----------%ld",sender.view.tag);
     if (tap) {
-        NSLog(@"123");
         _navView.hidden = YES;
         _upgradeView.hidden = YES;
         _classifyView.hidden = YES;
         _sofaView.hidden = YES;
+        [_backView setHidden:YES];
         _yumaoView.frame = CGRectMake(5, 10, 33, 32);
         tap = NO;
     } else {
-        NSLog(@"345");
         _navView.hidden = NO;
         _upgradeView.hidden = NO;
         _sofaView.hidden = NO;
+        [_backView setHidden:NO];
         _yumaoView.frame = CGRectMake(5, 73, 33, 32);
         tap = YES;
     }
@@ -887,6 +915,24 @@
         blackView.hidden = YES;
     }
 }
+
+- (void)classifyTap:(UITapGestureRecognizer *)sender
+{
+    _classifyView.hidden = !_classifyView.hidden;
+    switch (sender.view.tag) {
+        case 1200: { //主播档案
+            DatumViewController *datum = [[DatumViewController alloc] init];
+            datum.userId = self.allModel._id;
+            [self presentViewController:datum animated:YES completion:nil];
+        }
+            break;
+        case 1300:  //分享
+            
+            break;
+        default:
+            break;
+    }
+}
 /**********************************************************************************************************/
 
 #pragma mark - scrollView滑动代理
@@ -905,7 +951,6 @@
 {
     CGRect rect = announcementImageView.frame;
     rect.origin.x = audienceScrollView.contentOffset.x/4;
-    NSLog(@"ffffff = %f",rect.origin.x);
     announcementImageView.frame = rect;
     if (rect.origin.x == 0) {
         [homeCourseButton setBackgroundColor:[UIColor colorWithRed:228/255.0 green:105./255.0 blue:80/255.0 alpha:1]];
@@ -935,7 +980,6 @@
 {
     CGRect rect = _backImageView.frame;
     rect.origin.x = _scrollView.contentOffset.x/4;
-    NSLog(@"ffffff = %f",rect.origin.x);
     _backImageView.frame = rect;
     synthesizeButton.selected = NO;
     publicButton.selected = NO;
@@ -1352,6 +1396,16 @@
     }
 }
 
+- (void)requestWithInfo:(NSString *)param tag:(NSInteger)tag
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@public/%@/%@",BaseURL,param,self.allModel._id];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    [request setTimeOutSeconds:100];
+    request.delegate = self;
+    request.tag = tag;
+    [request startAsynchronous];
+}
+
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
@@ -1438,6 +1492,35 @@
             }
         }
             break;
+        case 700: { //主播羽毛
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSNumber *code = [result objectForKey:@"code"];
+                if (code.intValue == 1) {
+                    NSDictionary *dataDic = [result objectForKey:@"data"];
+                    NSDictionary *userDic = [dataDic objectForKey:@"user"];
+                    NSDictionary *financeDic = [userDic objectForKey:@"finance"];
+                    NSNumber *featherNum = [financeDic objectForKey:@"feather_receive_total"];
+                    _quantityLabel.text = featherNum.stringValue;
+                }
+            }
+        }
+            break;
+        case 800: { //沙发
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSNumber *code = [result objectForKey:@"code"];
+                if (code.intValue == 1) {
+                    NSDictionary *dataDic = [result objectForKey:@"data"];
+                    NSArray *userArr = [dataDic objectForKey:@"user"];
+                    for (NSDictionary *dic in userArr) {
+                        RankingModel *rankModel = [[RankingModel alloc] init];
+                        [rankModel getRankModelWithDictionary:dic];
+                        [_sofaArray addObject:rankModel];
+                    }
+                    [self refreshSofaView];
+                }
+            }
+        }
+            break;
         default:
             break;
     }
@@ -1452,6 +1535,21 @@
         }
     }
     return isAttention;
+}
+
+- (void)refreshSofaView
+{
+    for (int i = 0; i < _sofaArray.count; i++) {
+        RankingModel *model = [_sofaArray objectAtIndex:i];
+        if (model.nick_name.length) {
+            UILabel *nickLab = (UILabel *)[_backView viewWithTag:900 + i];
+            [nickLab setText:model.nick_name];
+        }
+        if (model.pic.length) {
+            UIImageView *headImg = (UIImageView *)[_backView viewWithTag:400 + i];
+            [headImg setImageWithURL:[NSURL URLWithString:model.pic]];
+        }
+    }
 }
 
 #pragma mark - 

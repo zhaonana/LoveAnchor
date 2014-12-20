@@ -164,6 +164,7 @@
     if (cell == nil) {
         cell = [[SearchTableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:idenifier];
     }
+    [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     [cell setCellData:modelArray];
     return cell;

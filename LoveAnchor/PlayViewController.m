@@ -76,6 +76,12 @@
     UIView       *gifView;
     //黑色背景
     UIView       *blackView;
+    //图片
+    NSArray      *imageArray;
+    //标题
+    NSArray      *titleArray;
+    //改昵称到意见反馈
+    UIView       *whiteView;
 }
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
@@ -115,6 +121,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    imageArray = [NSArray arrayWithObjects:@"xiugainicheng",@"guangbo",@"diange",@"shezhix",@"yijianfankui", nil];
+    titleArray = [NSArray arrayWithObjects:@"改昵称",@"广播",@"点歌",@"设置",@"意见反馈", nil];
     
     _model = [CommonUtil getUserModel];
     _dataArray = [[NSMutableArray alloc] init];
@@ -233,7 +242,7 @@
     UIImageView *gradeView = [[UIImageView alloc]initWithFrame:CGRectMake(size.width + 38, 5, 25, 25)];
     NSNumber *coin = [self.allModel.finance objectForKey:@"bean_count_total"];
     NSInteger level = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:NO].level;
-    NSString *imageName = [NSString stringWithFormat:@"%d",level];
+    NSString *imageName = [NSString stringWithFormat:@"%ld",level];
     gradeView.image = [UIImage imageNamed:imageName];
     [_navView addSubview:gradeView];
     //返回上一页
@@ -599,8 +608,65 @@
     [sendButton setBackgroundImage:[UIImage imageNamed:@"fasongdianji"] forState:UIControlStateHighlighted];
     [sendButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [_inputView addSubview:sendButton];
+    //改昵称到意见反馈
+    whiteView = [[UIView alloc]initWithFrame:CGRectMake(320, View.frame.size.height-169, 100, 125)];
+    whiteView.backgroundColor = [UIColor clearColor];
+    whiteView.layer.borderColor = [UIColor grayColor].CGColor;
+    whiteView.layer.borderWidth = 0.3;
+    whiteView.layer.cornerRadius = 0;
+    [View addSubview:whiteView];
+    for (int i = 0; i<4; i++) {
+        UIImageView *hImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 24.5+25*i, whiteView.frame.size.width, 0.5)];
+        hImageView.backgroundColor = [UIColor lightGrayColor];
+        [whiteView addSubview:hImageView];
+    }
+    //循环创建
+    for (int j = 0; j < 5; j++) {
+        UIButton *NYButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0+25*j, whiteView.frame.size.width, 24.5)];
+        NYButton.tag = 900+j;
+        [NYButton setImage:[UIImage imageNamed:[imageArray objectAtIndex:j]] forState:UIControlStateNormal];
+        [NYButton setImageEdgeInsets:UIEdgeInsetsMake(10, -40, 10, 0)];
+        [NYButton setTitle:[titleArray objectAtIndex:j] forState:UIControlStateNormal];
+        [NYButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+        NYButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        [NYButton setContentEdgeInsets:UIEdgeInsetsMake(10, 10, 10, 10)];
+        if (j == 0) {
+            [NYButton setImageEdgeInsets:UIEdgeInsetsMake(10, -10, 10, 0)];
+            [NYButton setContentEdgeInsets:UIEdgeInsetsMake(10, -5, 10, 10)];
+        } else if (j == 4) {
+            [NYButton setImageEdgeInsets:UIEdgeInsetsMake(10, -10, 10, 0)];
+            [NYButton setContentEdgeInsets:UIEdgeInsetsMake(10, 5, 10, 10)];
+        } else {
+            [NYButton setImageEdgeInsets:UIEdgeInsetsMake(10, -10, 10, 0)];
+            [NYButton setContentEdgeInsets:UIEdgeInsetsMake(10, -20, 10, 10)];
+        }
+        [NYButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [whiteView addSubview:NYButton];
+    }
+
     
-/************************************************************************************************/
+    //快捷礼物
+    UIImageView *shortcutGifImageView = [[UIImageView alloc]initWithFrame:CGRectMake(285, 190, 30, 30)];
+    shortcutGifImageView.image = [UIImage imageNamed:@"luwu"];
+    [View addSubview:shortcutGifImageView];
+    UILabel *shortLabel = [[UILabel alloc]initWithFrame:CGRectMake(7, 20, 18, 9)];
+    shortLabel.text = @"x10";
+    shortLabel.font = [UIFont systemFontOfSize:10];
+    shortLabel.textColor = [UIColor whiteColor];
+    shortLabel.backgroundColor = [UIColor clearColor];
+    [shortcutGifImageView addSubview:shortLabel];
+    //羽毛
+    UIImageView *featherImageView = [[UIImageView alloc]initWithFrame:CGRectMake(285, 225, 30, 30)];
+    featherImageView.image = [UIImage imageNamed:@"yumao@"];
+    [View addSubview:featherImageView];
+    UILabel *featherLabel = [[UILabel alloc]initWithFrame:CGRectMake(7, 18, 18, 9)];
+    featherLabel.text = @"x10";
+    featherLabel.font = [UIFont systemFontOfSize:10];
+    featherLabel.textColor = [UIColor whiteColor];
+    featherLabel.backgroundColor = [UIColor clearColor];
+    [featherImageView addSubview:featherLabel];
+    
+    /************************************************************************************************/
 
     //观众榜
     audienceScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(kScreenWidth*3, 0, kScreenWidth, _scrollView.frame.size.height)];
@@ -720,6 +786,15 @@
             _classifyView.hidden = NO;
         }else {
             _classifyView.hidden = YES;
+        }
+    } else if (button.tag == 104) {
+        NSLog(@"12346789");
+        if (button.selected) {
+            whiteView.frame = CGRectMake(320, View.frame.size.height-169, 100, 125);
+            button.selected = NO;
+        } else {
+            whiteView.frame = CGRectMake(220, View.frame.size.height-169, 100, 125);
+            button.selected = YES;
         }
     } else if (button.tag == 1000) {
         if (button.selected) {

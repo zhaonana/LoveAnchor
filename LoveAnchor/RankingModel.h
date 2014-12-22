@@ -33,6 +33,8 @@ typedef enum {
 @property (nonatomic, strong) NSNumber     *coin_spend;
 //排名
 @property (nonatomic, strong) NSNumber     *rank;
+//观众
+@property (nonatomic, strong) NSNumber     *visiter_count;
 //排名类型
 @property (nonatomic, assign) RankType     rankType;
 

@@ -59,12 +59,12 @@
 {
     _modelArray = modelArray;
     for (int i = 0; i < [modelArray count]; i++) {
-        AllModel *model = [modelArray objectAtIndex:i];
+        RankingModel *model = [modelArray objectAtIndex:i];
         UIImageView *numberImageView = (UIImageView *)[self.contentView viewWithTag:500+i];
         numberImageView.image = [UIImage imageNamed:@"renshu"];
         
         UIImageView *imageView = (UIImageView *)[self.contentView viewWithTag:10+i];
-        [imageView setImageWithURL:[NSURL URLWithString:model.pic_url]];
+        [imageView setImageWithURL:[NSURL URLWithString:model.pic]];
         
         UILabel *nameLabel = (UILabel *)[self.contentView viewWithTag:100+i];
         nameLabel.text = [NSString stringWithFormat:@"%@",model.nick_name];
@@ -77,13 +77,9 @@
 - (void)thirdTapClick:(UIGestureRecognizer *)sender {
     NSInteger tag = sender.view.tag;
     if (tag - 10 < _modelArray.count) {
-        AllModel *model = _modelArray[tag-10];
+        RankingModel *model = _modelArray[tag-10];
         [self.delegate thirdClick:model];
     }
-}
-
-- (void)awakeFromNib
-{
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

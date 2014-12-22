@@ -140,6 +140,7 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@user/following_list/%@",BaseURL,model.access_token];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
+    request.tag = 100;
     [request setTimeOutSeconds:100];
     [request startAsynchronous];
 }
@@ -157,38 +158,61 @@
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
-    if ([result isKindOfClass:[NSDictionary class]]) {
-        NSArray *allDtJson = [[result objectForKey:@"data"] objectForKey:@"rooms"];
-        NSMutableArray *allDtJson_mutable = [NSMutableArray array];
-        
-        for (NSDictionary *dict in allDtJson) {
-            AllModel *allModel = [[AllModel alloc]init];
-            [allModel setValuesForKeysWithDictionary:dict];
-            [allDtJson_mutable addObject:allModel];
-        }
-        
-        [_dataArray removeAllObjects];
-        
-        NSArray *firstRowData = @[[allDtJson_mutable objectAtIndex:0]];
-        [_dataArray addObject:firstRowData];
-        
-        NSArray *secondRowData = @[[allDtJson_mutable objectAtIndex:1],[allDtJson_mutable objectAtIndex:2]];
-        [_dataArray addObject:secondRowData];
-        
-        NSUInteger count = [allDtJson_mutable count];
-        NSMutableArray *thirdRowData = [NSMutableArray array];
-        for (int i = 0; i < count-3; i++) {
-            if (i%3 == 0 && i != 0) {
-                [_dataArray addObject:thirdRowData];
-                thirdRowData = [NSMutableArray array];
+    switch (request.tag) {
+        case 100: {
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSArray *allDtJson = [[result objectForKey:@"data"] objectForKey:@"rooms"];
+                NSMutableArray *allDtJson_mutable = [NSMutableArray array];
+                
+                for (NSDictionary *dict in allDtJson) {
+                    RankingModel *allModel = [[RankingModel alloc]init];
+                    [allModel setValuesForKeysWithDictionary:dict];
+                    [allDtJson_mutable addObject:allModel];
+                }
+                
+                [_dataArray removeAllObjects];
+                
+                NSUInteger count = [allDtJson_mutable count];
+                if (count > 0) {
+                    NSArray *firstRowData = @[[allDtJson_mutable objectAtIndex:0]];
+                    [_dataArray addObject:firstRowData];
+                    if (count == 2) {
+                        NSArray *secondRowData = @[[allDtJson_mutable objectAtIndex:1]];
+                        [_dataArray addObject:secondRowData];
+                    }
+                    if (count >= 3) {
+                        NSArray *secondRowData = @[[allDtJson_mutable objectAtIndex:1],[allDtJson_mutable objectAtIndex:2]];
+                        [_dataArray addObject:secondRowData];
+                        
+                        NSMutableArray *thirdRowData = [NSMutableArray array];
+                        for (int i = 0; i < count-3; i++) {
+                            if (i%3 == 0 && i != 0) {
+                                [_dataArray addObject:thirdRowData];
+                                thirdRowData = [NSMutableArray array];
+                            }
+                            [thirdRowData addObject:allDtJson_mutable[i+3]];
+                        }
+                        if (thirdRowData.count) {
+                            [_dataArray addObject:thirdRowData];
+                        }
+                    }
+                    [_tableView reloadData];
+                }
             }
-            [thirdRowData addObject:allDtJson_mutable[i+3]];
         }
-        if (thirdRowData.count) {
-            [_dataArray addObject:thirdRowData];
+            break;
+        case 101: {
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSNumber *code = [result objectForKey:@"code"];
+                if (code.intValue == 1) {
+                    
+                }
+            }
         }
+            break;
+        default:
+            break;
     }
-    [_tableView reloadData];
 }
 - (void)didReceiveMemoryWarning
 {

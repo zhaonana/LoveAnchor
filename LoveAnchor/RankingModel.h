@@ -17,6 +17,8 @@ typedef enum {
 @interface RankingModel : NSObject
 //头像
 @property (nonatomic, strong) NSString     *pic;
+//展示图
+@property (nonatomic, strong) NSString     *pic_url;
 //ID
 @property (nonatomic, strong) NSNumber     *_id;
 //昵称

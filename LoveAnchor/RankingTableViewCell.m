@@ -49,7 +49,7 @@
 {
     for (int i = 0; i < [modelArray count]; i++) {
         RankingModel *model = [modelArray objectAtIndex:i];
-        [_headImageView setImageWithURL:[NSURL URLWithString:model.pic]];
+        [_headImageView setImageWithURL:[NSURL URLWithString:model.pic_url]];
         
         _nickNameLabel.text = [NSString stringWithFormat:@"%@",model.nick_name];
         

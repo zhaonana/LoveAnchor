@@ -66,9 +66,9 @@
 
         UIImageView *imageView = (UIImageView *)[self.contentView viewWithTag:10+i];
         [imageView setImageWithURL:[NSURL URLWithString:model.pic_url]];
+
         imageView.clipsToBounds = YES;
         imageView.contentMode = UIViewContentModeScaleAspectFill;
-        
         UILabel *nameLabel = (UILabel *)[self.contentView viewWithTag:100+i];
         nameLabel.text = [NSString stringWithFormat:@"%@",model.nick_name];
         

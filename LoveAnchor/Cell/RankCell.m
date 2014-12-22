@@ -24,8 +24,8 @@
 
 - (void)loadDataWithRankModel:(RankingModel *)rankModel
 {
-    if (rankModel.pic.length) {
-        [_headImgView setImageWithURL:[NSURL URLWithString:rankModel.pic]];
+    if (rankModel.pic_url.length) {
+        [_headImgView setImageWithURL:[NSURL URLWithString:rankModel.pic_url]];
     }
     if (rankModel.nick_name.length) {
         [_nickNameLab setText:rankModel.nick_name];

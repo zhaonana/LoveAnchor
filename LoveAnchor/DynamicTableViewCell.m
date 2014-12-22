@@ -7,6 +7,7 @@
 //
 
 #import "DynamicTableViewCell.h"
+#import "UIImageView+BoundsAdditions.h"
 
 @implementation DynamicTableViewCell
 
@@ -15,9 +16,7 @@
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
     if (self) {
         self.headImageView = [[UIImageView alloc]initWithFrame:CGRectMake(10, 6, 45, 45)];
-        self.headImageView.layer.borderColor = [UIColor clearColor].CGColor;
-        self.headImageView.layer.borderWidth = 5.0;
-        self.headImageView.layer.cornerRadius = 25.0;
+        [self.headImageView makeBoundImage];
         [self.contentView addSubview:self.headImageView];
         
         self.nikeNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 28, 200, 18)];

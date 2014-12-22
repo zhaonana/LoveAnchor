@@ -206,9 +206,11 @@
                 NSMutableArray *allData_mutable = [NSMutableArray array];
                 
                 for (NSDictionary *dict in array) {
-                    DynamicModel *modelData = [[DynamicModel alloc]init];
-                    [modelData setValuesForKeysWithDictionary:dict];
-                    [allData_mutable addObject:modelData];
+                    if ([dict isKindOfClass:[NSDictionary class]]) {
+                        DynamicModel *modelData = [[DynamicModel alloc]init];
+                        [modelData setValuesForKeysWithDictionary:dict];
+                        [allData_mutable addObject:modelData];
+                    }
                 }
                 
                 for (DynamicModel *dynamicModel in allData_mutable) {

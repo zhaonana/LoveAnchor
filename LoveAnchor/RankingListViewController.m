@@ -58,7 +58,7 @@
     NSArray *arr2 = [NSArray arrayWithObjects:FUHAORIBANG,FUHAOZHOUBANG,FUHAOYUEBANG,FUHAOCHAOBANG, nil];
     NSArray *arr3 = [NSArray arrayWithObjects:RENQIRIBANG,RENQIZHOUBANG,RENQIYUEBANG,RENQICHAOBANG, nil];
     
-    _dict = [[NSDictionary alloc]initWithObjects:[NSArray arrayWithObjects:arr1,arr2,arr3, nil] forKeys:[NSArray arrayWithObjects:@"0",@"1",@"2", nil]];
+    _dict = [[NSDictionary alloc] initWithObjects:[NSArray arrayWithObjects:arr1,arr2,arr3, nil] forKeys:[NSArray arrayWithObjects:@"0",@"1",@"2", nil]];
 }
 #pragma mark - 界面
 -(void)showUI

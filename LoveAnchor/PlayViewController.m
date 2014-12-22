@@ -780,7 +780,7 @@
         imageView.image = [UIImage imageNamed:@"xuweiyidai"];
         [_backView addSubview:imageView];
         
-        UIImageView *headView = [[UIImageView alloc] initWithFrame:CGRectMake(9+i*80, 35, 50, 50)];
+        UIImageView *headView = [[UIImageView alloc] initWithFrame:CGRectMake(15+i*80, 38, 50, 50)];
         [headView makeBoundImage];
         headView.tag = 400 + i;
         [_backView addSubview:headView];
@@ -807,14 +807,9 @@
             [self requestWithFollowing:@"add_following" tag:600];
         }
     } else if (button.tag == 102) {
-<<<<<<< HEAD
-        if (_classifyView.hidden) {
-            _classifyView.hidden = NO;
-        }else {
-            _classifyView.hidden = YES;
-        }
+        _classifyView.hidden = !_classifyView.hidden;
+
     } else if (button.tag == 104) {
-        NSLog(@"12346789");
         if (button.selected) {
             whiteView.frame = CGRectMake(320, View.frame.size.height-169, 100, 125);
             button.selected = NO;
@@ -822,9 +817,6 @@
             whiteView.frame = CGRectMake(220, View.frame.size.height-169, 100, 125);
             button.selected = YES;
         }
-=======
-        _classifyView.hidden = !_classifyView.hidden;
->>>>>>> 62b84ff853dbbe2a5c0ea34e10a2507285b89687
     } else if (button.tag == 1000) {
         if (button.selected) {
             bearButton.frame = CGRectMake(280, 200, 35, 35);

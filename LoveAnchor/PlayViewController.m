@@ -249,6 +249,7 @@
     navLabel.textAlignment = NSTextAlignmentLeft;
     [_navView addSubview:navLabel];
     //主播等级
+    
     UIImageView *gradeView = [[UIImageView alloc]initWithFrame:CGRectMake(size.width + 38, 5, 25, 25)];
     NSNumber *coinNum = [self.allModel.finance objectForKey:@"bean_count_total"];
     NSInteger level = [CommonUtil getLevelInfoWithCoin:coinNum.intValue isRich:NO].level;
@@ -807,7 +808,7 @@
             [self requestWithFollowing:@"add_following" tag:600];
         }
     } else if (button.tag == 102) {
-<<<<<<< HEAD
+
         if (_classifyView.hidden) {
             _classifyView.hidden = NO;
         }else {
@@ -822,9 +823,6 @@
             whiteView.frame = CGRectMake(220, View.frame.size.height-169, 100, 125);
             button.selected = YES;
         }
-=======
-        _classifyView.hidden = !_classifyView.hidden;
->>>>>>> 62b84ff853dbbe2a5c0ea34e10a2507285b89687
     } else if (button.tag == 1000) {
         if (button.selected) {
             bearButton.frame = CGRectMake(280, 200, 35, 35);

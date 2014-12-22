@@ -22,7 +22,7 @@
 - (void)showUI
 {
     UIImageView *logoImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 168)];
-    logoImageView.backgroundColor = [UIColor redColor];
+    logoImageView.backgroundColor = [UIColor clearColor];
     logoImageView.userInteractionEnabled = YES;
     logoImageView.tag = 100;
     [self.contentView addSubview:logoImageView];
@@ -57,7 +57,7 @@
 -(void)setCellData:(NSArray *)modelArray
 {
     _modelArray = modelArray;
-    AllModel *model = [modelArray objectAtIndex:0];
+    RankingModel *model = [modelArray objectAtIndex:0];
     UIImageView *numberImageView = (UIImageView *)[self.contentView viewWithTag:500];
     numberImageView.image = [UIImage imageNamed:@"renshu"];
     
@@ -76,13 +76,9 @@
 - (void)firstTapClick:(UIGestureRecognizer *)sender {
     NSInteger tag = sender.view.tag;
     if (tag - 100 < _modelArray.count) {
-        AllModel *model = _modelArray[tag-100];
+        RankingModel *model = _modelArray[tag-100];
         [self.delegate firstClick:model];
     }
-}
-
-- (void)awakeFromNib
-{
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

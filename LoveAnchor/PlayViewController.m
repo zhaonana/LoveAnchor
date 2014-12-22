@@ -222,7 +222,7 @@
     UILabel *shengjiLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 8, 90, 16)];
     NSNumber *coin = [self.allModel.finance objectForKey:@"bean_count_total"];
     NSInteger nextCoin = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:YES].nextCoin;
-    shengjiLabel.text = [NSString stringWithFormat:@"差%d经验升级",nextCoin];
+    shengjiLabel.text = [NSString stringWithFormat:@"差%ld经验升级",nextCoin];
     shengjiLabel.font = [UIFont systemFontOfSize:10];
     [_upgradeView addSubview:shengjiLabel];
     
@@ -253,7 +253,7 @@
     UIImageView *gradeView = [[UIImageView alloc]initWithFrame:CGRectMake(size.width + 38, 5, 25, 25)];
     NSNumber *coinNum = [self.allModel.finance objectForKey:@"bean_count_total"];
     NSInteger level = [CommonUtil getLevelInfoWithCoin:coinNum.intValue isRich:NO].level;
-    NSString *imageName = [NSString stringWithFormat:@"%dzhubo",level];
+    NSString *imageName = [NSString stringWithFormat:@"%ldzhubo",level];
     gradeView.image = [UIImage imageNamed:imageName];
     [_navView addSubview:gradeView];
     //返回上一页
@@ -663,7 +663,11 @@
         [NYButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
         [whiteView addSubview:NYButton];
     }
-
+//    //改昵称背景
+//    UIView *nickView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+//    nickView.alpha = 0.3;
+//    nickView.backgroundColor = [UIColor blackColor];
+//    [self.view addSubview:nickView];
     
     //快捷礼物
     UIImageView *shortcutGifImageView = [[UIImageView alloc]initWithFrame:CGRectMake(285, 190, 30, 30)];
@@ -781,7 +785,7 @@
         imageView.image = [UIImage imageNamed:@"xuweiyidai"];
         [_backView addSubview:imageView];
         
-        UIImageView *headView = [[UIImageView alloc] initWithFrame:CGRectMake(9+i*80, 35, 50, 50)];
+        UIImageView *headView = [[UIImageView alloc] initWithFrame:CGRectMake(15+i*80, 38, 50, 50)];
         [headView makeBoundImage];
         headView.tag = 400 + i;
         [_backView addSubview:headView];
@@ -808,14 +812,8 @@
             [self requestWithFollowing:@"add_following" tag:600];
         }
     } else if (button.tag == 102) {
-
-        if (_classifyView.hidden) {
-            _classifyView.hidden = NO;
-        }else {
-            _classifyView.hidden = YES;
-        }
+        _classifyView.hidden = !_classifyView.hidden;
     } else if (button.tag == 104) {
-        NSLog(@"12346789");
         if (button.selected) {
             whiteView.frame = CGRectMake(320, View.frame.size.height-169, 100, 125);
             button.selected = NO;
@@ -1543,9 +1541,9 @@
             UILabel *nickLab = (UILabel *)[_backView viewWithTag:900 + i];
             [nickLab setText:model.nick_name];
         }
-        if (model.pic.length) {
+        if (model.pic_url.length) {
             UIImageView *headImg = (UIImageView *)[_backView viewWithTag:400 + i];
-            [headImg setImageWithURL:[NSURL URLWithString:model.pic]];
+            [headImg setImageWithURL:[NSURL URLWithString:model.pic_url]];
         }
     }
 }

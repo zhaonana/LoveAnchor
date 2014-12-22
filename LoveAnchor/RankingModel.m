@@ -17,7 +17,7 @@
 
 - (RankingModel *)getRankModelWithDictionary:(NSDictionary *)dic
 {
-    self.pic = [dic objectForKey:@"pic"];
+    self.pic_url = [dic objectForKey:@"pic_url"];
     self._id = [dic objectForKey:@"_id"];
     self.nick_name = [dic objectForKey:@"nick_name"];
     self.finance = [dic objectForKey:@"finance"];
@@ -26,6 +26,8 @@
     self.star = [dic objectForKey:@"star"];
     self.coin_spend = [dic objectForKey:@"coin_spend"];
     self.rank = [dic objectForKey:@"rank"];
+    self.visiter_count = [dic objectForKey:@"visiter_count"];
+    
     return self;
 }
 

@@ -85,6 +85,10 @@
     NSArray      *titleArray;
     //改昵称到意见反馈
     UIView       *whiteView;
+    //修改昵称的背景
+    UIView       *nameView;
+    //改昵称背景
+    UIView       *nickView;
 }
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
@@ -183,6 +187,7 @@
     //视频播放
     _liveView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, kScreenWidth, 240)];
     _liveView.userInteractionEnabled = YES;
+    _liveView.tag = 100;
     tap = NO;
     _liveView.backgroundColor = [UIColor colorWithRed:211.0/255.0 green:195.0/255.0 blue:29.0/255.0 alpha:1.0];
     [self.view addSubview:_liveView];
@@ -200,7 +205,6 @@
     
     //点击视频播放区域手势
     UITapGestureRecognizer *tapdesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(liveClick:)];
-    _liveView.tag = 1000;
     [_liveView addGestureRecognizer:tapdesture];
     
     //视频背景
@@ -288,10 +292,10 @@
     //主播档案
     UIView *recordView = [[UIView alloc] initWithFrame:CGRectMake(0, 1, _classifyView.frame.size.width, _classifyView.frame.size.height/2)];
     recordView.backgroundColor = [UIColor clearColor];
-    recordView.tag = 1200;
+    recordView.tag = 101;
     [_classifyView addSubview:recordView];
     
-    UITapGestureRecognizer *recordTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(classifyTap:)];
+    UITapGestureRecognizer *recordTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(liveClick:)];
     [recordView addGestureRecognizer:recordTap];
     
     //档案图标
@@ -313,10 +317,10 @@
     //分享
     UIView *shareView = [[UIView alloc]initWithFrame:CGRectMake(0, _classifyView.frame.size.height/2, _classifyView.frame.size.width, _classifyView.frame.size.height/2)];
     shareView.backgroundColor = [UIColor clearColor];
-    shareView.tag = 1300;
+    shareView.tag = 102;
     [_classifyView addSubview:shareView];
     
-    UITapGestureRecognizer *shareTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(classifyTap:)];
+    UITapGestureRecognizer *shareTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(liveClick:)];
     [shareView addGestureRecognizer:shareTap];
     
     //分享图标
@@ -461,10 +465,11 @@
     UIImageView *giftImageView = [[UIImageView alloc]initWithFrame:CGRectMake(270, 12.5, 20, 20)];
     giftImageView.image = [UIImage imageNamed:@"liwu"];
     giftImageView.userInteractionEnabled = YES;
+    giftImageView.tag = 103;
     tap = NO;
     [chatView addSubview:giftImageView];
     
-    UITapGestureRecognizer *gifTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(gifClick:)];
+    UITapGestureRecognizer *gifTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(liveClick:)];
     [giftImageView addGestureRecognizer:gifTap];
     
     //信息档案
@@ -479,8 +484,9 @@
     blackView.alpha = 0.5;
     blackView.hidden = YES;
     blackView.backgroundColor = [UIColor blackColor];
+    blackView.tag = 104;
     [self.view addSubview:blackView];
-    UITapGestureRecognizer *blackTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(blackClick:)];
+    UITapGestureRecognizer *blackTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(liveClick:)];
     [blackView addGestureRecognizer:blackTap];
     
     //礼物背景
@@ -630,7 +636,7 @@
     [_inputView addSubview:sendButton];
     //改昵称到意见反馈
     whiteView = [[UIView alloc]initWithFrame:CGRectMake(320, View.frame.size.height-169, 100, 125)];
-    whiteView.backgroundColor = [UIColor clearColor];
+    whiteView.backgroundColor = [UIColor whiteColor];
     whiteView.layer.borderColor = [UIColor grayColor].CGColor;
     whiteView.layer.borderWidth = 0.3;
     whiteView.layer.cornerRadius = 0;
@@ -660,14 +666,71 @@
             [NYButton setImageEdgeInsets:UIEdgeInsetsMake(10, -10, 10, 0)];
             [NYButton setContentEdgeInsets:UIEdgeInsetsMake(10, -20, 10, 10)];
         }
-        [NYButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+        [NYButton addTarget:self action:@selector(buttonTap:) forControlEvents:UIControlEventTouchUpInside];
         [whiteView addSubview:NYButton];
     }
-//    //改昵称背景
-//    UIView *nickView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
-//    nickView.alpha = 0.3;
-//    nickView.backgroundColor = [UIColor blackColor];
-//    [self.view addSubview:nickView];
+    
+    //改昵称背景
+    nickView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+    nickView.alpha = 0.3;
+    nickView.backgroundColor = [UIColor blackColor];
+    nickView.hidden = YES;
+    nickView.tag = 105;
+    [self.view addSubview:nickView];
+    UITapGestureRecognizer *nickTap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(liveClick:)];
+    [nickView addGestureRecognizer:nickTap];
+    
+    //修改昵称的背景
+    nameView = [[UIView alloc]initWithFrame:CGRectMake(10, 250, kScreenWidth-20, 120)];
+    nameView.backgroundColor = [UIColor whiteColor];
+    nameView.hidden = YES;
+    nameView.layer.borderColor = [UIColor clearColor].CGColor;
+    nameView.layer.borderWidth = 0.2;
+    nameView.layer.cornerRadius = 5;
+    [self.view addSubview:nameView];
+    //原昵称
+    UILabel *YNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 10, 60, 15)];
+    YNameLabel.text = @"原昵称：";
+    YNameLabel.font = [UIFont systemFontOfSize:14];
+    YNameLabel.textColor = [UIColor lightGrayColor];
+    YNameLabel.backgroundColor = [UIColor redColor];
+    [nameView addSubview:YNameLabel];
+    
+    UILabel *MGNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(90, 10, 190, 15)];
+    MGNameLabel.text = @"shcsdchaksdhcak";
+    MGNameLabel.font = [UIFont systemFontOfSize:14];
+    MGNameLabel.textColor = [UIColor lightGrayColor];
+    MGNameLabel.textAlignment = NSTextAlignmentRight;
+    MGNameLabel.backgroundColor = [UIColor purpleColor];
+    [nameView addSubview:MGNameLabel];
+    
+    UITextField *GTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 35, 280, 35)];
+    GTextField.borderStyle = UITextBorderStyleBezel;
+    GTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    [nameView addSubview:GTextField];
+    
+    UIImageView *GImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 85, 300, 0.3)];
+    GImageView.backgroundColor = [UIColor lightGrayColor];
+    [nameView addSubview:GImageView];
+    UIImageView *SimageView = [[UIImageView alloc]initWithFrame:CGRectMake(150, 85, 0.3, 35)];
+    SimageView.backgroundColor = [UIColor lightGrayColor];
+    [nameView addSubview:SimageView];
+    //取消button
+    UIButton *QxButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 85, 150, 35)];
+    [QxButton setTitle:@"取消" forState:UIControlStateNormal];
+    [QxButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    [QxButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
+    QxButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    [QxButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [nameView addSubview:QxButton];
+    //确定button
+    UIButton *QdButton = [[UIButton alloc]initWithFrame:CGRectMake(150, 85, 150, 35)];
+    [QdButton setTitle:@"确定修改" forState:UIControlStateNormal];
+    [QdButton setTitleColor:textFontColor forState:UIControlStateNormal];
+    QdButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    [QdButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [nameView addSubview:QdButton];
+
     
     //快捷礼物
     UIImageView *shortcutGifImageView = [[UIImageView alloc]initWithFrame:CGRectMake(285, 190, 30, 30)];
@@ -855,6 +918,41 @@
     }
 
 }
+- (void)buttonTap:(UIButton *)button
+{
+    NSLog(@"%ld",button.tag);
+    switch (button.tag) {
+        case 900:
+        {
+            if (button.selected) {
+                nickView.hidden = YES;
+                nameView.hidden = YES;
+            }else {
+                nickView.hidden = NO;
+                nameView.hidden = NO;
+            }
+        }
+            break;
+        case 901:
+        {
+            BroadcastViewController *broadcast = [[BroadcastViewController alloc]init];
+            UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:broadcast];
+            [self presentViewController:nc animated:YES completion:nil];
+        }
+            break;
+        case 902:
+            
+            break;
+        case 903:
+            
+            break;
+        case 904:
+            
+            break;
+        default:
+            break;
+    }
+}
 - (void)buttonSender:(UIButton *)button
 {
     if (button.selected) {
@@ -873,61 +971,72 @@
 #pragma mark - 点击播放界面方法
 - (void)liveClick:(UITapGestureRecognizer *)sender
 {
-    if (tap) {
-        _navView.hidden = YES;
-        _upgradeView.hidden = YES;
-        _classifyView.hidden = YES;
-        _sofaView.hidden = YES;
-        [_backView setHidden:YES];
-        _yumaoView.frame = CGRectMake(5, 10, 33, 32);
-        tap = NO;
-    } else {
-        _navView.hidden = NO;
-        _upgradeView.hidden = NO;
-        _sofaView.hidden = NO;
-        [_backView setHidden:NO];
-        _yumaoView.frame = CGRectMake(5, 73, 33, 32);
-        tap = YES;
-    }
-}
-- (void)gifClick:(UITapGestureRecognizer *)sender
-{
-    if (tap) {
-        gifView.hidden = YES;
-        blackView.hidden = YES;
-    } else {
-        gifView.hidden = NO;
-        blackView.hidden = NO;
-    }
-}
-- (void)blackClick:(UITapGestureRecognizer *)sender
-{
-    if (tap) {
-        gifView.hidden = NO;
-        blackView.hidden = NO;
-
-    }else {
-        gifView.hidden = YES;
-        blackView.hidden = YES;
-    }
-}
-
-- (void)classifyTap:(UITapGestureRecognizer *)sender
-{
-    _classifyView.hidden = !_classifyView.hidden;
     switch (sender.view.tag) {
-        case 1200: { //主播档案
+        case 100:
+        {
+            if (tap) {
+                _navView.hidden = YES;
+                _upgradeView.hidden = YES;
+                _classifyView.hidden = YES;
+                _sofaView.hidden = YES;
+                [_backView setHidden:YES];
+                _yumaoView.frame = CGRectMake(5, 10, 33, 32);
+                tap = NO;
+            } else {
+                _navView.hidden = NO;
+                _upgradeView.hidden = NO;
+                _sofaView.hidden = NO;
+                [_backView setHidden:NO];
+                _yumaoView.frame = CGRectMake(5, 73, 33, 32);
+                tap = YES;
+            }
+        }
+            break;
+        case 101:
+        {
+            _classifyView.hidden = !_classifyView.hidden;
             DatumViewController *datum = [[DatumViewController alloc] init];
             datum.userId = self.allModel._id;
             [self presentViewController:datum animated:YES completion:nil];
         }
             break;
-        case 1300:  //分享
+        case 102:
             
+            break;
+        case 103:
+        {
+            if (tap) {
+                gifView.hidden = YES;
+                blackView.hidden = YES;
+            } else {
+                gifView.hidden = NO;
+                blackView.hidden = NO;
+            }
+        }
+            break;
+        case 104:
+        {
+            if (tap) {
+                gifView.hidden = NO;
+                blackView.hidden = NO;
+                
+            }else {
+                gifView.hidden = YES;
+                blackView.hidden = YES;
+            }
+
+        }
+            break;
+        case 105:
+        {
+            nickView.hidden = YES;
+            nameView.hidden = YES;
+        }
             break;
         default:
             break;
     }
+    
 }
 /**********************************************************************************************************/
 

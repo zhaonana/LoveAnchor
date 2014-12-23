@@ -63,6 +63,7 @@
     #import "HZAreaPickerView.h"
     #import "CommonUtil.h"
     #import "Common.h"
+    #import "BroadcastViewController.h"
 #endif
 
 

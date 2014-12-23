@@ -941,13 +941,25 @@
         }
             break;
         case 902:
-            
+        {
+            SongViewController *song = [[SongViewController alloc]init];
+            UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:song];
+            [self presentViewController:nc animated:YES completion:nil];
+        }
             break;
         case 903:
-            
+        {
+            SetViewController *set = [[SetViewController alloc]init];
+            UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:set];
+            [self presentViewController:nc animated:YES completion:nil];
+        }
             break;
         case 904:
-            
+        {
+            FeedbackViewController *feed = [[FeedbackViewController alloc]init];
+            UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:feed];
+            [self presentViewController:nc animated:YES completion:nil];
+        }
             break;
         default:
             break;

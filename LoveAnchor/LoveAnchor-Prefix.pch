@@ -64,6 +64,8 @@
     #import "CommonUtil.h"
     #import "Common.h"
     #import "BroadcastViewController.h"
+    #import "SongViewController.h"
+    #import "FeedbackViewController.h"
 #endif
 
 

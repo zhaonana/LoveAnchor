@@ -348,6 +348,7 @@
 		39BC42411A47F56600271572 /* yumao@.png in Resources */ = {isa = PBXBuildFile; fileRef = 39BC42311A47F56600271572 /* yumao@.png */; };
 		39BC42421A47F56600271572 /* yumao@2xdianji.png in Resources */ = {isa = PBXBuildFile; fileRef = 39BC42321A47F56600271572 /* yumao@2xdianji.png */; };
 		F703DB371A174D5200C53D4C /* SeatManageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F703DB361A174D5200C53D4C /* SeatManageViewController.m */; };
+		F70EE5A71A49807600A601C0 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EE5A61A49807600A601C0 /* FeedbackViewController.m */; };
 		F71890F11A12195B005ECCA9 /* huangV1.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890ED1A12195B005ECCA9 /* huangV1.png */; };
 		F71890F21A12195B005ECCA9 /* huangV1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890EE1A12195B005ECCA9 /* huangV1@2x.png */; };
 		F71890F31A12195B005ECCA9 /* ziV1.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890EF1A12195B005ECCA9 /* ziV1.png */; };
@@ -600,6 +601,7 @@
 		F7B70E611A1C9F910064D56E /* DynamicModel.m in Sources */ = {isa = PBXBuildFile; fileRef = F7B70E601A1C9F910064D56E /* DynamicModel.m */; };
 		F7B70E641A1E0F970064D56E /* SliderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7B70E631A1E0F970064D56E /* SliderViewController.m */; };
 		F7BDC7921A482714007F1C09 /* BroadcastViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7BDC7911A482714007F1C09 /* BroadcastViewController.m */; };
+		F7BDC7951A4951FB007F1C09 /* SongViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7BDC7941A4951FB007F1C09 /* SongViewController.m */; };
 		F7BE18E819E52C32009C6C8C /* shangchengbag.png in Resources */ = {isa = PBXBuildFile; fileRef = F7BE18E619E52C32009C6C8C /* shangchengbag.png */; };
 		F7BE18E919E52C32009C6C8C /* shangchengbag@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F7BE18E719E52C32009C6C8C /* shangchengbag@2x.png */; };
 		F7BE18FE19E6B720009C6C8C /* cuowu.png in Resources */ = {isa = PBXBuildFile; fileRef = F7BE18EA19E6B720009C6C8C /* cuowu.png */; };
@@ -1047,6 +1049,8 @@
 		39BC42321A47F56600271572 /* yumao@2xdianji.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "yumao@2xdianji.png"; sourceTree = "<group>"; };
 		F703DB351A174D5200C53D4C /* SeatManageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeatManageViewController.h; sourceTree = "<group>"; };
 		F703DB361A174D5200C53D4C /* SeatManageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeatManageViewController.m; sourceTree = "<group>"; };
+		F70EE5A51A49807600A601C0 /* FeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackViewController.h; sourceTree = "<group>"; };
+		F70EE5A61A49807600A601C0 /* FeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
 		F71890ED1A12195B005ECCA9 /* huangV1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = huangV1.png; sourceTree = "<group>"; };
 		F71890EE1A12195B005ECCA9 /* huangV1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "huangV1@2x.png"; sourceTree = "<group>"; };
 		F71890EF1A12195B005ECCA9 /* ziV1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ziV1.png; sourceTree = "<group>"; };
@@ -1339,6 +1343,8 @@
 		F7B70E631A1E0F970064D56E /* SliderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SliderViewController.m; sourceTree = "<group>"; };
 		F7BDC7901A482714007F1C09 /* BroadcastViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BroadcastViewController.h; sourceTree = "<group>"; };
 		F7BDC7911A482714007F1C09 /* BroadcastViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BroadcastViewController.m; sourceTree = "<group>"; };
+		F7BDC7931A4951FB007F1C09 /* SongViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SongViewController.h; sourceTree = "<group>"; };
+		F7BDC7941A4951FB007F1C09 /* SongViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SongViewController.m; sourceTree = "<group>"; };
 		F7BE18E619E52C32009C6C8C /* shangchengbag.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = shangchengbag.png; sourceTree = "<group>"; };
 		F7BE18E719E52C32009C6C8C /* shangchengbag@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "shangchengbag@2x.png"; sourceTree = "<group>"; };
 		F7BE18EA19E6B720009C6C8C /* cuowu.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = cuowu.png; sourceTree = "<group>"; };
@@ -2356,6 +2362,10 @@
 				F7456F15199871A500CF28E8 /* AttentionViewController.m */,
 				F7BDC7901A482714007F1C09 /* BroadcastViewController.h */,
 				F7BDC7911A482714007F1C09 /* BroadcastViewController.m */,
+				F7BDC7931A4951FB007F1C09 /* SongViewController.h */,
+				F7BDC7941A4951FB007F1C09 /* SongViewController.m */,
+				F70EE5A51A49807600A601C0 /* FeedbackViewController.h */,
+				F70EE5A61A49807600A601C0 /* FeedbackViewController.m */,
 			);
 			name = "直播大厅";
 			sourceTree = "<group>";
@@ -3221,6 +3231,7 @@
 				F76D698E19AF22A1004F89C1 /* AllModel.m in Sources */,
 				F79E7D7E1A0B84C200DDBFC5 /* ConversionViewController.m in Sources */,
 				F7C7CCE619ADC0E2003FCC03 /* TopUpViewController.m in Sources */,
+				F7BDC7951A4951FB007F1C09 /* SongViewController.m in Sources */,
 				3922656E1A359DEC00767721 /* SocketIOTransportXHR.m in Sources */,
 				F7C7CCB119AD8FE7003FCC03 /* ASINetworkQueue.m in Sources */,
 				39BB5C761A3AF2EA00BA7B20 /* UIView+MJExtension.m in Sources */,
@@ -3252,6 +3263,7 @@
 				F759245219C196B0004DC4D6 /* SearchModel.m in Sources */,
 				F7493F0819AC494E005739CD /* DynamicTableViewCell.m in Sources */,
 				F7B70E641A1E0F970064D56E /* SliderViewController.m in Sources */,
+				F70EE5A71A49807600A601C0 /* FeedbackViewController.m in Sources */,
 				F7C7CCCE19AD9007003FCC03 /* SDWebImagePrefetcher.m in Sources */,
 				F79E7D7A1A0B6DE900DDBFC5 /* HZLocation.m in Sources */,
 				F7BEBDA319E8E67100D7CCE3 /* StoreViewController.m in Sources */,

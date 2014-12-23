@@ -15,7 +15,7 @@ typedef enum {
 } RankType;
 
 @interface RankingModel : NSObject
-@property (nonatomic, strong) NSString     *pic;
+
 //头像
 @property (nonatomic, strong) NSString     *pic;
 //主播

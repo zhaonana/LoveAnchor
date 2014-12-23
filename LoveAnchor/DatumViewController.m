@@ -128,7 +128,11 @@
             twoCell.titleLab.text = [_titleArray objectAtIndex:indexPath.row];
             [twoCell.contentLab setHidden:YES];
             [twoCell setSelectionStyle:UITableViewCellSelectionStyleNone];
-            for (int i = 0; i <_badgeArray.count; i++) {
+            NSInteger count = _badgeArray.count;
+            if (count > 12) {
+                count = 12;
+            }
+            for (int i = 0; i <count; i++) {
                 UIImageView *HzImageView = [[UIImageView alloc] initWithFrame:CGRectMake(75 + 20 * i, 10, 15, 15)];
                 NSString *greyPic = [_badgeArray[i] grey_pic];
                 [HzImageView setImageWithURL:[NSURL URLWithString:greyPic]];

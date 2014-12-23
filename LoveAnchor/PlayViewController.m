@@ -1650,9 +1650,9 @@
             UILabel *nickLab = (UILabel *)[_backView viewWithTag:900 + i];
             [nickLab setText:model.nick_name];
         }
-        if (model.pic_url.length) {
+        if (model.pic.length) {
             UIImageView *headImg = (UIImageView *)[_backView viewWithTag:400 + i];
-            [headImg setImageWithURL:[NSURL URLWithString:model.pic_url]];
+            [headImg setImageWithURL:[NSURL URLWithString:model.pic]];
         }
     }
 }

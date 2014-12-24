@@ -24,7 +24,8 @@
     //导航
     UIView       *_navView;
     //视频部分
-    UIImageView  *_liveView;
+    UIView       *_liveView;
+    UIImageView  *_liveImgView;
     //升级
     UIImageView  *_upgradeView;
     //羽毛
@@ -177,20 +178,29 @@
     
     [mMPayer setDataSource:self.videoURL];
     [mMPayer prepareAsync];
-    [self.activityView setHidden:NO];
-    [self.activityView startAnimating];
+    if (self.allModel.live.intValue == 1) {
+        [self.activityView setHidden:NO];
+        [_liveImgView setHidden:NO];
+        [self.activityView startAnimating];
+    } else {
+        [self.activityView setHidden:YES];
+    }
 }
 
 #pragma mark - shouUI
 - (void)shouwUI
 {
     //视频播放
-    _liveView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, kScreenWidth, 240)];
+    _liveView = [[UIView alloc]initWithFrame:CGRectMake(0, 20, kScreenWidth, 240)];
     _liveView.userInteractionEnabled = YES;
     _liveView.tag = 100;
     tap = NO;
-    _liveView.backgroundColor = [UIColor colorWithRed:211.0/255.0 green:195.0/255.0 blue:29.0/255.0 alpha:1.0];
+    _liveView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:_liveView];
+    
+    _liveImgView = [[UIImageView alloc] initWithFrame:CGRectMake((kScreenWidth-148)/2, (240-77)/2, 148, 77)];
+    [_liveImgView setImage:[UIImage imageNamed:@"aizhubo"]];
+    [_liveView addSubview:_liveImgView];
     
     _activityView = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:
                      UIActivityIndicatorViewStyleWhiteLarge];
@@ -1323,6 +1333,7 @@
         [mMPayer setDataSource:self.videoURL];
         [mMPayer prepareAsync];
         [self.activityView setHidden:NO];
+        [_liveImgView setHidden:NO];
     }
 }
 
@@ -1339,6 +1350,7 @@
 - (void)mediaPlayer:(VMediaPlayer *)player didPrepared:(id)arg
 {
     [self.activityView setHidden:YES];
+    [_liveImgView setHidden:YES];
     [player start];
 }
 
@@ -1350,6 +1362,7 @@
 - (void)mediaPlayer:(VMediaPlayer *)player error:(id)arg
 {
     [self.activityView setHidden:YES];
+    [_liveImgView setHidden:YES];
 }
 
 # pragma mark - socket.IO-objc delegate methods

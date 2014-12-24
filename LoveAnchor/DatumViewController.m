@@ -174,8 +174,12 @@
                     }
                 }
             }
+            NSInteger count = urlArr.count;
+            if (count > 6) {
+                count = 6;
+            }
             for (int i = 0; i < urlArr.count; i++) {
-                UIImageView *HzImageView = [[UIImageView alloc] initWithFrame:CGRectMake(75 + 20 * i, 10, 15, 15)];
+                UIImageView *HzImageView = [[UIImageView alloc] initWithFrame:CGRectMake(70 + 45 * i, 6, 40, 25)];
                 [HzImageView setImageWithURL:[NSURL URLWithString:urlArr[i]]];
                 [twoCell addSubview:HzImageView];
             }

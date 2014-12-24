@@ -8,17 +8,14 @@
 
 #import "SearchViewController.h"
 
-
-@interface SearchViewController ()
-{
+@interface SearchViewController () {
     UISearchBar *_searchBar;
     NSMutableArray *_dataArray;
     UITableView *_tableView;
-    
     int segPage;
     int btnPage;
-    
     NSDictionary *_dic;
+    LoginModel *_model;
 }
 @end
 
@@ -44,6 +41,7 @@
     [self showUI];
     [self requestWithTag:0 andTag1:0];
     [self initSet];
+    _model = [CommonUtil getUserModel];
     
 }
 - (void)initSet
@@ -133,6 +131,16 @@
     [request setTimeOutSeconds:[_dataArray count]];
 }
 
+- (void)addRequestWithRoomId:(NSNumber *)roomId
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@viewlog/add/%@/%@",BaseURL,_model.access_token,roomId];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    request.delegate = self;
+    request.tag = 101;
+    [request setTimeOutSeconds:100];
+    [request startAsynchronous];
+}
+
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     [_dataArray removeAllObjects];
@@ -142,8 +150,8 @@
         NSMutableArray *allData_mutable = [NSMutableArray array];
         
         for (NSDictionary *dict in allData) {
-            SearchModel *model = [[SearchModel alloc]init];
-            [model setValuesForKeysWithDictionary:dict];
+            RankingModel *model = [[RankingModel alloc]init];
+            [model getRankModelWithDictionary:dict];
             [allData_mutable addObject:model];
         }
         for (int i = 0; i < [allData_mutable count]; i++) {
@@ -183,6 +191,26 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [_searchBar resignFirstResponder];
+    RankingModel *rankModel = [_dataArray objectAtIndex:indexPath.row][0];
+    switch (rankModel.live.intValue) {
+        case 0: {
+            DatumViewController *datum = [[DatumViewController alloc] init];
+            NSArray *modeArr = [_dataArray objectAtIndex:indexPath.row];
+            datum.userId = [modeArr[0] _id];
+            [self presentViewController:datum animated:YES completion:nil];
+        }
+            break;
+        case 1: {
+            [self addRequestWithRoomId:rankModel._id];
+            
+            PlayViewController *play = [[PlayViewController alloc]init];
+            play.allModel = rankModel;
+            [self presentViewController:play animated:YES completion:nil];
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 #pragma mark - UISearchBarDelegate methods

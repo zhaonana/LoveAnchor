@@ -339,4 +339,10 @@
     [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
++ (void)loginAlertViewShow:(UIViewController *)controller
+{
+    UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"此功能需要您登录后再使用" delegate:controller cancelButtonTitle:@"稍后再说" otherButtonTitles:@"现在登录", nil];
+    [alertView show];
+}
+
 @end

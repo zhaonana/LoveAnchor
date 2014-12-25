@@ -440,7 +440,8 @@
         [alertView show];
         }
     }else if (button.tag == 101) {
-        LoginViewController *login = [[LoginViewController alloc]init];
+        LoginViewController *login = [[LoginViewController alloc] init];
+        login.controllerType = registerType;
         UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:login];
         [self presentViewController:nc animated:YES completion:nil];
     } else {

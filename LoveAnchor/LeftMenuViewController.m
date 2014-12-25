@@ -95,7 +95,8 @@
         UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:per];
         [self presentViewController:nc animated:YES completion:nil];
     } else {
-        LoginViewController *login = [[LoginViewController alloc]init];
+        LoginViewController *login = [[LoginViewController alloc] init];
+        login.controllerType = leftmenuType;
         [login setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
         UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:login];
         [self presentViewController:nc animated:YES completion:nil];

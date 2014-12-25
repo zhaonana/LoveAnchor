@@ -8,6 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
-@interface LoginViewController : UIViewController<UITextFieldDelegate>
+typedef enum {
+    registerType,   //注册
+    leftmenuType,   //左菜单
+    rankingType,    //排行榜
+} PresentControllerType;
+
+@interface LoginViewController : UIViewController <UITextFieldDelegate>
+
+@property (nonatomic, assign) PresentControllerType controllerType;
 
 @end

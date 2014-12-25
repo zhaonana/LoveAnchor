@@ -33,6 +33,7 @@
     //羽毛
     UIImageView  *_yumaoView;
     UILabel      *_quantityLabel;
+    UILabel      *_featherLabel;
     //主播详情
     UIView       *_classifyView;
     //button背景
@@ -186,6 +187,7 @@
     [self requestWithFollowing:@"following_list" tag:602];
     [self requestWithInfo:@"room_star"tag:700];
     [self requestWithInfo:@"room_sofa" tag:800];
+    [self requestWithFeather:@"user/info" tag:900];
 }
 
 #pragma mark - shouUI
@@ -755,14 +757,20 @@
     [shortcutGifImageView addSubview:shortLabel];
     //羽毛
     UIImageView *featherImageView = [[UIImageView alloc]initWithFrame:CGRectMake(285, 225, 30, 30)];
+    featherImageView.tag = 1000;
     featherImageView.image = [UIImage imageNamed:@"yumao@"];
     [View addSubview:featherImageView];
-    UILabel *featherLabel = [[UILabel alloc]initWithFrame:CGRectMake(7, 18, 18, 9)];
-    featherLabel.text = @"x10";
-    featherLabel.font = [UIFont systemFontOfSize:10];
-    featherLabel.textColor = [UIColor whiteColor];
-    featherLabel.backgroundColor = [UIColor clearColor];
-    [featherImageView addSubview:featherLabel];
+    
+    UITapGestureRecognizer *featherTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(liveClick:)];
+    [featherImageView addGestureRecognizer:featherTap];
+    
+    _featherLabel = [[UILabel alloc]initWithFrame:CGRectMake(7, 18, 28, 9)];
+    _featherLabel.textAlignment = NSTextAlignmentCenter;
+    _featherLabel.text = @"x0";
+    _featherLabel.font = [UIFont systemFontOfSize:10];
+    _featherLabel.textColor = [UIColor whiteColor];
+    _featherLabel.backgroundColor = [UIColor clearColor];
+    [featherImageView addSubview:_featherLabel];
     
     /************************************************************************************************/
 
@@ -955,8 +963,7 @@
 - (void)buttonTap:(UIButton *)button
 {
     switch (button.tag) {
-        case 900:
-        {
+        case 900: {
             if (button.selected) {
                 nickView.hidden = YES;
                 nameView.hidden = YES;
@@ -966,29 +973,25 @@
             }
         }
             break;
-        case 901:
-        {
+        case 901: {
             BroadcastViewController *broadcast = [[BroadcastViewController alloc]init];
             UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:broadcast];
             [self presentViewController:nc animated:YES completion:nil];
         }
             break;
-        case 902:
-        {
+        case 902: {
             SongViewController *song = [[SongViewController alloc]init];
             UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:song];
             [self presentViewController:nc animated:YES completion:nil];
         }
             break;
-        case 903:
-        {
+        case 903: {
             SetViewController *set = [[SetViewController alloc]init];
             UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:set];
             [self presentViewController:nc animated:YES completion:nil];
         }
             break;
-        case 904:
-        {
+        case 904: {
             FeedbackViewController *feed = [[FeedbackViewController alloc]init];
             UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:feed];
             [self presentViewController:nc animated:YES completion:nil];
@@ -1075,6 +1078,10 @@
         case 105: {
             nickView.hidden = YES;
             nameView.hidden = YES;
+        }
+            break;
+        case 1000: {    //增加羽毛
+            [self requestWithFeather:@"feather/amass" tag:1000];
         }
             break;
         default:
@@ -1573,123 +1580,111 @@
     [request startAsynchronous];
 }
 
+- (void)requestWithFeather:(NSString *)param tag:(NSInteger)tag
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@%@/%@",BaseURL,param,_model.access_token];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    [request setTimeOutSeconds:100];
+    request.delegate = self;
+    request.tag = tag;
+    [request startAsynchronous];
+}
+
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
-    switch (request.tag) {
-        case 500: { //本场观众
-            if ([result isKindOfClass:[NSDictionary class]]) {
-                NSNumber *code = [result objectForKey:@"code"];
-                if (code.intValue == 1) {
-                    NSArray *dataArr = [result objectForKey:@"data"];
-                    for (NSDictionary *dic in dataArr) {
-                        RankingModel *rankModel = [[RankingModel alloc] init];
-                        [rankModel getRankModelWithDictionary:dic];
-                        [_homeCourseArray addObject:rankModel];
-                    }
-                    [_homeCourseTableView reloadData];
+    if ([result isKindOfClass:[NSDictionary class]]) {
+        NSNumber *code = [result objectForKey:@"code"];
+        if (code.intValue == 1) {
+            switch (request.tag) {
+            case 500: { //本场观众
+                NSArray *dataArr = [result objectForKey:@"data"];
+                for (NSDictionary *dic in dataArr) {
+                    RankingModel *rankModel = [[RankingModel alloc] init];
+                    [rankModel getRankModelWithDictionary:dic];
+                    [_homeCourseArray addObject:rankModel];
                 }
+                [_homeCourseTableView reloadData];
             }
-        }
-            break;
-        case 501: { //月榜
-            if ([result isKindOfClass:[NSDictionary class]]) {
-                NSNumber *code = [result objectForKey:@"code"];
-                if (code.intValue == 1) {
+                break;
+            case 501: { //月榜
+                if ([result isKindOfClass:[NSDictionary class]]) {
                     NSArray *dataArr = [result objectForKey:@"data"];
                     for (NSDictionary *dic in dataArr) {
                         RankingModel *rankModel = [[RankingModel alloc] init];
                         [rankModel getRankModelWithDictionary:dic];
                         [_monthArray addObject:rankModel];
                     }
+                    [_monthTableView reloadData];
                 }
-                [_monthTableView reloadData];
             }
-        }
-            break;
-        case 502: { //总榜
-            if ([result isKindOfClass:[NSDictionary class]]) {
-                NSNumber *code = [result objectForKey:@"code"];
-                if (code.intValue == 1) {
+                break;
+            case 502: { //总榜
+                if ([result isKindOfClass:[NSDictionary class]]) {
                     NSArray *dataArr = [result objectForKey:@"data"];
                     for (NSDictionary *dic in dataArr) {
                         RankingModel *rankModel = [[RankingModel alloc] init];
                         [rankModel getRankModelWithDictionary:dic];
                         [_alwaysArray addObject:rankModel];
                     }
+                    [_alwaysTableView reloadData];
                 }
-                [_alwaysTableView reloadData];
             }
-        }
-            break;
-        case 600: { //添加关注
-            if ([result isKindOfClass:[NSDictionary class]]) {
-                NSNumber *code = [result objectForKey:@"code"];
-                if (code.intValue == 1) {
+                break;
+            case 600: { //添加关注
+                attentionButton.selected = YES;
+            }
+                break;
+            case 601: { //取消关注
+                attentionButton.selected = NO;
+            }
+                break;
+            case 602: { //关注列表
+                NSDictionary *dataDic = [result objectForKey:@"data"];
+                NSArray *roomsArr = [dataDic objectForKey:@"rooms"];
+                for (NSDictionary *dic in roomsArr) {
+                    NSNumber *roomid = [dic objectForKey:@"_id"];
+                    [_attentionArray addObject:roomid];
+                }
+                if ([self isAttentionWithRoomid:self.allModel._id]) {
                     attentionButton.selected = YES;
-                }
-            }
-        }
-            break;
-        case 601: { //取消关注
-            if ([result isKindOfClass:[NSDictionary class]]) {
-                NSNumber *code = [result objectForKey:@"code"];
-                if (code.intValue == 1) {
+                } else {
                     attentionButton.selected = NO;
                 }
             }
-        }
-            break;
-        case 602: { //关注列表
-            if ([result isKindOfClass:[NSDictionary class]]) {
-                NSNumber *code = [result objectForKey:@"code"];
-                if (code.intValue == 1) {
-                    NSDictionary *dataDic = [result objectForKey:@"data"];
-                    NSArray *roomsArr = [dataDic objectForKey:@"rooms"];
-                    for (NSDictionary *dic in roomsArr) {
-                        NSNumber *roomid = [dic objectForKey:@"_id"];
-                        [_attentionArray addObject:roomid];
-                    }
-                    if ([self isAttentionWithRoomid:self.allModel._id]) {
-                        attentionButton.selected = YES;
-                    } else {
-                        attentionButton.selected = NO;
-                    }
+                break;
+            case 700: { //主播羽毛
+                NSDictionary *dataDic = [result objectForKey:@"data"];
+                NSDictionary *userDic = [dataDic objectForKey:@"user"];
+                NSDictionary *financeDic = [userDic objectForKey:@"finance"];
+                NSNumber *featherNum = [financeDic objectForKey:@"feather_receive_total"];
+                _quantityLabel.text = featherNum.stringValue;
+            }
+                break;
+            case 800: { //沙发
+                NSDictionary *dataDic = [result objectForKey:@"data"];
+                NSArray *userArr = [dataDic objectForKey:@"user"];
+                for (NSDictionary *dic in userArr) {
+                    RankingModel *rankModel = [[RankingModel alloc] init];
+                    [rankModel getRankModelWithDictionary:dic];
+                    [_sofaArray addObject:rankModel];
+                }
+                [self refreshSofaView];
+            }
+                break;
+            case 900: { //自己羽毛数量
+                NSDictionary *dataDic = [result objectForKey:@"data"];
+                NSDictionary *financeDic = [dataDic objectForKey:@"finance"];
+                NSNumber *feather_count = [financeDic objectForKey:@"feather_count"];
+                if (feather_count) {
+                    _featherLabel.text = [NSString stringWithFormat:@"x%@",feather_count];
                 }
             }
-        }
-            break;
-        case 700: { //主播羽毛
-            if ([result isKindOfClass:[NSDictionary class]]) {
-                NSNumber *code = [result objectForKey:@"code"];
-                if (code.intValue == 1) {
-                    NSDictionary *dataDic = [result objectForKey:@"data"];
-                    NSDictionary *userDic = [dataDic objectForKey:@"user"];
-                    NSDictionary *financeDic = [userDic objectForKey:@"finance"];
-                    NSNumber *featherNum = [financeDic objectForKey:@"feather_receive_total"];
-                    _quantityLabel.text = featherNum.stringValue;
-                }
+                break;
+            default:
+                break;
             }
         }
-            break;
-        case 800: { //沙发
-            if ([result isKindOfClass:[NSDictionary class]]) {
-                NSNumber *code = [result objectForKey:@"code"];
-                if (code.intValue == 1) {
-                    NSDictionary *dataDic = [result objectForKey:@"data"];
-                    NSArray *userArr = [dataDic objectForKey:@"user"];
-                    for (NSDictionary *dic in userArr) {
-                        RankingModel *rankModel = [[RankingModel alloc] init];
-                        [rankModel getRankModelWithDictionary:dic];
-                        [_sofaArray addObject:rankModel];
-                    }
-                    [self refreshSofaView];
-                }
-            }
-        }
-            break;
-        default:
-            break;
     }
 }
 

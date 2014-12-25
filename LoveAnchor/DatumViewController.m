@@ -10,6 +10,8 @@
 #import "UserInfoModel.h"
 #import "UIImageView+BoundsAdditions.h"
 
+#define REFRESH_PLAYVIEW_NOTIFITION @"refreshPlayViewNotifition"
+
 @interface DatumViewController () <ASIHTTPRequestDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) UserInfoModel  *userModel;
@@ -98,6 +100,7 @@
 {
     switch (button.tag) {
         case 100:
+            [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_PLAYVIEW_NOTIFITION object:nil];
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
         case 101: {

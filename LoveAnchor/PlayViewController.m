@@ -16,6 +16,8 @@
 #import "RankCell.h"
 #import "UIImageView+BoundsAdditions.h"
 
+#define REFRESH_PLAYVIEW_NOTIFITION @"refreshPlayViewNotifition"
+
 @interface PlayViewController () <VMediaPlayerDelegate, UITextFieldDelegate, SocketIODelegate, ASIHTTPRequestDelegate>
 
 {
@@ -135,7 +137,6 @@
     imageArray = [NSArray arrayWithObjects:@"xiugainicheng",@"guangbo",@"diange",@"shezhix",@"yijianfankui", nil];
     titleArray = [NSArray arrayWithObjects:@"改昵称",@"广播",@"点歌",@"设置",@"意见反馈", nil];
     
-    _model = [CommonUtil getUserModel];
     _dataArray       = [[NSMutableArray alloc] init];
     _publicDataArray = [[NSMutableArray alloc] init];
     _privateArray    = [[NSMutableArray alloc] init];
@@ -145,14 +146,12 @@
     _attentionArray  = [[NSMutableArray alloc] init];
     _sofaArray       = [[NSMutableArray alloc] init];
     
-    _socketIO = [[SocketIO alloc] initWithDelegate:self];
-    
+    _model = [CommonUtil getUserModel];
     //socket
-    if (_model) {
-        NSDictionary *dic = @{@"room_id": self.allModel._id,
-                              @"access_token": _model.access_token};
-        [_socketIO connectToHost:BaseHost onPort:80 withParams:dic];
-    }
+    _socketIO = [[SocketIO alloc] initWithDelegate:self];
+    NSDictionary *dic = @{@"room_id": self.allModel._id,
+                          @"access_token": _model ? _model.access_token : @""};
+    [_socketIO connectToHost:BaseHost onPort:80 withParams:dic];
     
     self.view.backgroundColor = [UIColor whiteColor];
     [self shouwUI];
@@ -160,19 +159,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
     
     [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(keyboardWasHidden:) name:UIKeyboardDidHideNotification object:nil];
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-    
-    [self requestWithParam:@"room_user_live" tag:500];
-    [self requestWithParam:@"room_user_month" tag:501];
-    [self requestWithParam:@"room_user_total" tag:502];
-    [self requestWithFollowing:@"following_list" tag:602];
-    [self requestWithInfo:@"room_star"tag:700];
-    [self requestWithInfo:@"room_sofa" tag:800];
-
+    //mmPlayer
     NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
     self.videoURL = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
@@ -185,6 +172,20 @@
     } else {
         [self.activityView setHidden:YES];
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    _model = [CommonUtil getUserModel];
+
+    [self requestWithParam:@"room_user_live" tag:500];
+    [self requestWithParam:@"room_user_month" tag:501];
+    [self requestWithParam:@"room_user_total" tag:502];
+    [self requestWithFollowing:@"following_list" tag:602];
+    [self requestWithInfo:@"room_star"tag:700];
+    [self requestWithInfo:@"room_sofa" tag:800];
 }
 
 #pragma mark - shouUI
@@ -870,6 +871,25 @@
 
 }
 /**********************************************************************************************************/
+#pragma mark - UIAlertViewDelegate methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 0:
+            break;
+        case 1: {
+            LoginViewController *loginViewController = [[LoginViewController alloc] init];
+            loginViewController.controllerType = playType;
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+            [self presentViewController:navigationController animated:YES completion:^{
+                
+            }];
+        }
+            break;
+        default:
+            break;
+    }
+}
 
 #pragma mark - 点击事件
 - (void)buttonClick:(UIButton *)button
@@ -879,10 +899,14 @@
         [mMPayer unSetupPlayer];
         [self dismissViewControllerAnimated:YES completion:nil];
     } else if (button.tag == 101) { //关注
-        if (button.selected) {
-            [self requestWithFollowing:@"del_following" tag:601];
+        if ([CommonUtil isLogin]) {
+            if (button.selected) {
+                [self requestWithFollowing:@"del_following" tag:601];
+            } else {
+                [self requestWithFollowing:@"add_following" tag:600];
+            }
         } else {
-            [self requestWithFollowing:@"add_following" tag:600];
+            [CommonUtil loginAlertViewShow:self];
         }
     } else if (button.tag == 102) {
         _classifyView.hidden = !_classifyView.hidden;
@@ -930,7 +954,6 @@
 }
 - (void)buttonTap:(UIButton *)button
 {
-    NSLog(@"%ld",button.tag);
     switch (button.tag) {
         case 900:
         {
@@ -994,8 +1017,7 @@
 - (void)liveClick:(UITapGestureRecognizer *)sender
 {
     switch (sender.view.tag) {
-        case 100:
-        {
+        case 100: {
             if (tap) {
                 _navView.hidden = YES;
                 _upgradeView.hidden = YES;
@@ -1014,8 +1036,11 @@
             }
         }
             break;
-        case 101:
-        {
+        case 101: {
+            if ([mMPayer isPlaying]) {
+                [mMPayer reset];
+                [mMPayer setVideoShown:NO];
+            }
             _classifyView.hidden = !_classifyView.hidden;
             DatumViewController *datum = [[DatumViewController alloc] init];
             datum.userId = self.allModel._id;
@@ -1025,8 +1050,7 @@
         case 102:
             
             break;
-        case 103:
-        {
+        case 103: {
             if (tap) {
                 gifView.hidden = YES;
                 blackView.hidden = YES;
@@ -1036,8 +1060,7 @@
             }
         }
             break;
-        case 104:
-        {
+        case 104: {
             if (tap) {
                 gifView.hidden = NO;
                 blackView.hidden = NO;
@@ -1049,8 +1072,7 @@
 
         }
             break;
-        case 105:
-        {
+        case 105: {
             nickView.hidden = YES;
             nameView.hidden = YES;
         }
@@ -1324,6 +1346,10 @@
             selector:@selector(applicationDidEnterBackground:)
                 name:UIApplicationWillResignActiveNotification
               object:[UIApplication sharedApplication]];
+    [def addObserver:self
+            selector:@selector(refreshPlayView:)
+                name:REFRESH_PLAYVIEW_NOTIFITION
+              object:nil];
 }
 
 - (void)applicationDidEnterForeground:(NSNotification *)notification
@@ -1342,6 +1368,17 @@
     if ([mMPayer isPlaying]) {
         [mMPayer reset];
         [mMPayer setVideoShown:NO];
+    }
+}
+
+- (void)refreshPlayView:(NSNotification *)notifition
+{
+    [mMPayer setVideoShown:YES];
+    if (![mMPayer isPlaying]) {
+        [mMPayer setDataSource:self.videoURL];
+        [mMPayer prepareAsync];
+        [self.activityView setHidden:NO];
+        [_liveImgView setHidden:NO];
     }
 }
 

@@ -83,7 +83,32 @@
 
 - (void)segmentedControlSelected:(id)sender
 {
-    self.selectedViewControllerIndex = _segmentedControl.selectedSegmentIndex;
+    if ([CommonUtil isLogin]) {
+        self.selectedViewControllerIndex = _segmentedControl.selectedSegmentIndex;
+    } else {
+        [CommonUtil loginAlertViewShow:self];
+        _segmentedControl.selectedSegmentIndex = 0;
+    }
+}
+
+#pragma mark - UIAlertViewDelegate methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 0:
+            break;
+        case 1: {
+            LoginViewController *loginViewController = [[LoginViewController alloc] init];
+            loginViewController.controllerType = livehallType;
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+            [self presentViewController:navigationController animated:YES completion:^{
+                
+            }];
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 - (void)setSelectedViewControllerIndex:(NSInteger)index

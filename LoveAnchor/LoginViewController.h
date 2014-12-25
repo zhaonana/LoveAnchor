@@ -11,6 +11,9 @@
 typedef enum {
     registerType,   //注册
     leftmenuType,   //左菜单
+    livehallType,   //直播大厅
+    dynamicType,    //历史观看
+    playType,       //直播间
     rankingType,    //排行榜
 } PresentControllerType;
 

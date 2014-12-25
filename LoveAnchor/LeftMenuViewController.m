@@ -8,6 +8,8 @@
 
 #import "LeftMenuViewController.h"
 
+#define REFRESH_LEFTMENU_NOTIFITION @"refreshLeftMenuNotifition"
+
 @interface LeftMenuViewController () {
     UILabel *nameLabel;
     UILabel *numberLabel;
@@ -71,13 +73,12 @@
     label11.font = [UIFont systemFontOfSize:12.0f];
     label11.textColor = [UIColor whiteColor];
     [imageView addSubview:label11];
-
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshLeftMenuView:) name:REFRESH_LEFTMENU_NOTIFITION object:nil];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)refreshLeftMenuView:(NSNotification *)notifition
 {
-    [super viewWillAppear:animated];
-    
     model = [CommonUtil getUserModel];
     if ([CommonUtil isLogin]) {
         nameLabel.text = model.userName;
@@ -85,6 +86,13 @@
     } else {
         nameLabel.text = @"未登录";
     }
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self refreshLeftMenuView:nil];
 }
 
 - (void)buttonClick

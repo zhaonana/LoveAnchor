@@ -10,6 +10,8 @@
 #import <ShareSDK/ShareSDK.h>
 #import <CommonCrypto/CommonDigest.h>
 
+#define REFRESH_LEFTMENU_NOTIFITION @"refreshLeftMenuNotifition"
+
 @interface LoginViewController ()<ASIHTTPRequestDelegate>
 {
     UITextField *_nameTextField;
@@ -443,6 +445,7 @@
 {
     //存储用户信息
     [CommonUtil saveUserModel:loginModel];
+    [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_LEFTMENU_NOTIFITION object:nil];
     switch (self.controllerType) {
         case registerType:
         case leftmenuType: {
@@ -453,7 +456,10 @@
             [self presentViewController:nc animated:YES completion:nil];
         }
             break;
-        case rankingType: {
+        case livehallType:
+        case dynamicType:
+        case rankingType:
+        case playType: {
             [self dismissViewControllerAnimated:YES completion:^{
                 
             }];

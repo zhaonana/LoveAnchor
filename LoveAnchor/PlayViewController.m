@@ -98,6 +98,8 @@
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
 @property (nonatomic, strong) LoginModel              *model;
 @property (nonatomic, strong) NSURL                   *videoURL;
+//抢座
+@property (nonatomic, assign) NSInteger               grabTag;
 //关注ids
 @property (nonatomic, strong) NSMutableArray          *attentionArray;
 //综合
@@ -743,35 +745,6 @@
     QdButton.titleLabel.font = [UIFont systemFontOfSize:14];
     [QdButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [nameView addSubview:QdButton];
-
-    
-    //快捷礼物
-    UIImageView *shortcutGifImageView = [[UIImageView alloc]initWithFrame:CGRectMake(285, 190, 30, 30)];
-    shortcutGifImageView.image = [UIImage imageNamed:@"luwu"];
-    [View addSubview:shortcutGifImageView];
-    UILabel *shortLabel = [[UILabel alloc]initWithFrame:CGRectMake(7, 20, 18, 9)];
-    shortLabel.text = @"x10";
-    shortLabel.font = [UIFont systemFontOfSize:10];
-    shortLabel.textColor = [UIColor whiteColor];
-    shortLabel.backgroundColor = [UIColor clearColor];
-    [shortcutGifImageView addSubview:shortLabel];
-    //羽毛
-    UIImageView *featherImageView = [[UIImageView alloc]initWithFrame:CGRectMake(285, 225, 30, 30)];
-    featherImageView.tag = 1000;
-    featherImageView.image = [UIImage imageNamed:@"yumao@"];
-    [View addSubview:featherImageView];
-    
-    UITapGestureRecognizer *featherTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(liveClick:)];
-    [featherImageView addGestureRecognizer:featherTap];
-    
-    _featherLabel = [[UILabel alloc]initWithFrame:CGRectMake(7, 18, 28, 9)];
-    _featherLabel.textAlignment = NSTextAlignmentCenter;
-    _featherLabel.text = @"x0";
-    _featherLabel.font = [UIFont systemFontOfSize:10];
-    _featherLabel.textColor = [UIColor whiteColor];
-    _featherLabel.backgroundColor = [UIColor clearColor];
-    [featherImageView addSubview:_featherLabel];
-    
     /************************************************************************************************/
 
     //观众榜
@@ -841,6 +814,34 @@
     [alwaysButton setBackgroundColor:[UIColor colorWithRed:253/255.0 green:193/255.0 blue:176/255.0 alpha:1]];
     [alwaysButton addTarget:self action:@selector(buttonSender:) forControlEvents:UIControlEventTouchUpInside];
     [announcementView addSubview:alwaysButton];
+
+    //快捷礼物
+    UIImageView *shortcutGifImageView = [[UIImageView alloc]initWithFrame:CGRectMake(285, 450, 30, 30)];
+    shortcutGifImageView.image = [UIImage imageNamed:@"luwu"];
+    [self.view addSubview:shortcutGifImageView];
+    UILabel *shortLabel = [[UILabel alloc]initWithFrame:CGRectMake(7, 20, 18, 9)];
+    shortLabel.text = @"x10";
+    shortLabel.font = [UIFont systemFontOfSize:10];
+    shortLabel.textColor = [UIColor whiteColor];
+    shortLabel.backgroundColor = [UIColor clearColor];
+    [shortcutGifImageView addSubview:shortLabel];
+    //羽毛
+    UIImageView *featherImageView = [[UIImageView alloc]initWithFrame:CGRectMake(285, 485, 30, 30)];
+    featherImageView.userInteractionEnabled = YES;
+    featherImageView.tag = 1000;
+    featherImageView.image = [UIImage imageNamed:@"yumao@"];
+    [self.view addSubview:featherImageView];
+    
+    UITapGestureRecognizer *featherTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(liveClick:)];
+    [featherImageView addGestureRecognizer:featherTap];
+    
+    _featherLabel = [[UILabel alloc]initWithFrame:CGRectMake(7, 18, 28, 9)];
+    _featherLabel.textAlignment = NSTextAlignmentCenter;
+    _featherLabel.text = @"x0";
+    _featherLabel.font = [UIFont systemFontOfSize:10];
+    _featherLabel.textColor = [UIColor whiteColor];
+    _featherLabel.backgroundColor = [UIColor clearColor];
+    [featherImageView addSubview:_featherLabel];
     
     //抢沙发
     _sofaView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight- 130, kScreenWidth, 130)];
@@ -873,28 +874,44 @@
         [_backView addSubview:headView];
         
         UIImageView *QImageView = [[UIImageView alloc]initWithFrame:CGRectMake(21+i*80, 100, 38, 18)];
+        QImageView.tag = 1 + i;
+        QImageView.userInteractionEnabled = YES;
         QImageView.image = [UIImage imageNamed:@"qiangzuo"];
         [_backView addSubview:QImageView];
+        
+        UITapGestureRecognizer *grabTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(liveClick:)];
+        [QImageView addGestureRecognizer:grabTap];
     }
-
 }
 /**********************************************************************************************************/
 #pragma mark - UIAlertViewDelegate methods
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    switch (buttonIndex) {
-        case 0:
+    switch (alertView.tag) {
+        case 120:
             break;
-        case 1: {
-            LoginViewController *loginViewController = [[LoginViewController alloc] init];
-            loginViewController.controllerType = playType;
-            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
-            [self presentViewController:navigationController animated:YES completion:^{
-                
-            }];
+        default: {
+            switch (buttonIndex) {
+                case 0:
+                    [self requestWithGrab:1];
+                    break;
+                case 1: {
+                    if ([mMPayer isPlaying]) {
+                        [mMPayer reset];
+                        [mMPayer setVideoShown:NO];
+                    }
+                    LoginViewController *loginViewController = [[LoginViewController alloc] init];
+                    loginViewController.controllerType = playType;
+                    UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+                    [self presentViewController:navigationController animated:YES completion:^{
+                        
+                    }];
+                }
+                    break;
+                default:
+                    break;
+            }
         }
-            break;
-        default:
             break;
     }
 }
@@ -1081,7 +1098,20 @@
         }
             break;
         case 1000: {    //增加羽毛
-            [self requestWithFeather:@"feather/amass" tag:1000];
+            if ([CommonUtil isLogin]) {
+                [self requestWithFeather:@"feather/amass" tag:1000];
+            } else {
+                [CommonUtil loginAlertViewShow:self];
+            }
+        }
+            break;
+        case 1:
+        case 2:
+        case 3:
+        case 4: {
+            _grabTag = sender.view.tag;
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"抢座" delegate:self cancelButtonTitle:@"100元" otherButtonTitles:nil];
+            [alert show];
         }
             break;
         default:
@@ -1590,6 +1620,16 @@
     [request startAsynchronous];
 }
 
+- (void)requestWithGrab:(NSInteger)num
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@live/grab_sofa%d/%@/%@/%d",BaseURL,_grabTag,_model.access_token,self.allModel._id,num];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    [request setTimeOutSeconds:100];
+    request.delegate = self;
+    request.tag = _grabTag;
+    [request startAsynchronous];
+}
+
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
@@ -1597,94 +1637,139 @@
         NSNumber *code = [result objectForKey:@"code"];
         if (code.intValue == 1) {
             switch (request.tag) {
-            case 500: { //本场观众
-                NSArray *dataArr = [result objectForKey:@"data"];
-                for (NSDictionary *dic in dataArr) {
-                    RankingModel *rankModel = [[RankingModel alloc] init];
-                    [rankModel getRankModelWithDictionary:dic];
-                    [_homeCourseArray addObject:rankModel];
-                }
-                [_homeCourseTableView reloadData];
-            }
-                break;
-            case 501: { //月榜
-                if ([result isKindOfClass:[NSDictionary class]]) {
+                case 500: { //本场观众
                     NSArray *dataArr = [result objectForKey:@"data"];
                     for (NSDictionary *dic in dataArr) {
                         RankingModel *rankModel = [[RankingModel alloc] init];
                         [rankModel getRankModelWithDictionary:dic];
-                        [_monthArray addObject:rankModel];
+                        [_homeCourseArray addObject:rankModel];
                     }
-                    [_monthTableView reloadData];
+                    [_homeCourseTableView reloadData];
                 }
-            }
-                break;
-            case 502: { //总榜
-                if ([result isKindOfClass:[NSDictionary class]]) {
-                    NSArray *dataArr = [result objectForKey:@"data"];
-                    for (NSDictionary *dic in dataArr) {
-                        RankingModel *rankModel = [[RankingModel alloc] init];
-                        [rankModel getRankModelWithDictionary:dic];
-                        [_alwaysArray addObject:rankModel];
+                    break;
+                case 501: { //月榜
+                    if ([result isKindOfClass:[NSDictionary class]]) {
+                        NSArray *dataArr = [result objectForKey:@"data"];
+                        for (NSDictionary *dic in dataArr) {
+                            RankingModel *rankModel = [[RankingModel alloc] init];
+                            [rankModel getRankModelWithDictionary:dic];
+                            [_monthArray addObject:rankModel];
+                        }
+                        [_monthTableView reloadData];
                     }
-                    [_alwaysTableView reloadData];
                 }
-            }
-                break;
-            case 600: { //添加关注
-                attentionButton.selected = YES;
-            }
-                break;
-            case 601: { //取消关注
-                attentionButton.selected = NO;
-            }
-                break;
-            case 602: { //关注列表
-                NSDictionary *dataDic = [result objectForKey:@"data"];
-                NSArray *roomsArr = [dataDic objectForKey:@"rooms"];
-                for (NSDictionary *dic in roomsArr) {
-                    NSNumber *roomid = [dic objectForKey:@"_id"];
-                    [_attentionArray addObject:roomid];
+                    break;
+                case 502: { //总榜
+                    if ([result isKindOfClass:[NSDictionary class]]) {
+                        NSArray *dataArr = [result objectForKey:@"data"];
+                        for (NSDictionary *dic in dataArr) {
+                            RankingModel *rankModel = [[RankingModel alloc] init];
+                            [rankModel getRankModelWithDictionary:dic];
+                            [_alwaysArray addObject:rankModel];
+                        }
+                        [_alwaysTableView reloadData];
+                    }
                 }
-                if ([self isAttentionWithRoomid:self.allModel._id]) {
+                    break;
+                case 600: { //添加关注
                     attentionButton.selected = YES;
-                } else {
+                }
+                    break;
+                case 601: { //取消关注
                     attentionButton.selected = NO;
                 }
-            }
-                break;
-            case 700: { //主播羽毛
-                NSDictionary *dataDic = [result objectForKey:@"data"];
-                NSDictionary *userDic = [dataDic objectForKey:@"user"];
-                NSDictionary *financeDic = [userDic objectForKey:@"finance"];
-                NSNumber *featherNum = [financeDic objectForKey:@"feather_receive_total"];
-                _quantityLabel.text = featherNum.stringValue;
-            }
-                break;
-            case 800: { //沙发
-                NSDictionary *dataDic = [result objectForKey:@"data"];
-                NSArray *userArr = [dataDic objectForKey:@"user"];
-                for (NSDictionary *dic in userArr) {
-                    RankingModel *rankModel = [[RankingModel alloc] init];
-                    [rankModel getRankModelWithDictionary:dic];
-                    [_sofaArray addObject:rankModel];
+                    break;
+                case 602: { //关注列表
+                    NSDictionary *dataDic = [result objectForKey:@"data"];
+                    NSArray *roomsArr = [dataDic objectForKey:@"rooms"];
+                    for (NSDictionary *dic in roomsArr) {
+                        NSNumber *roomid = [dic objectForKey:@"_id"];
+                        [_attentionArray addObject:roomid];
+                    }
+                    if ([self isAttentionWithRoomid:self.allModel._id]) {
+                        attentionButton.selected = YES;
+                    } else {
+                        attentionButton.selected = NO;
+                    }
                 }
-                [self refreshSofaView];
-            }
-                break;
-            case 900: { //自己羽毛数量
-                NSDictionary *dataDic = [result objectForKey:@"data"];
-                NSDictionary *financeDic = [dataDic objectForKey:@"finance"];
-                NSNumber *feather_count = [financeDic objectForKey:@"feather_count"];
-                if (feather_count) {
-                    _featherLabel.text = [NSString stringWithFormat:@"x%@",feather_count];
+                    break;
+                case 700: { //主播羽毛
+                    NSDictionary *dataDic = [result objectForKey:@"data"];
+                    NSDictionary *userDic = [dataDic objectForKey:@"user"];
+                    NSDictionary *financeDic = [userDic objectForKey:@"finance"];
+                    NSNumber *featherNum = [financeDic objectForKey:@"feather_receive_total"];
+                    _quantityLabel.text = featherNum.stringValue;
                 }
-            }
-                break;
+                    break;
+                case 800: { //沙发
+                    NSDictionary *dataDic = [result objectForKey:@"data"];
+                    NSArray *userArr = [dataDic objectForKey:@"user"];
+                    for (NSDictionary *dic in userArr) {
+                        RankingModel *rankModel = [[RankingModel alloc] init];
+                        [rankModel getRankModelWithDictionary:dic];
+                        [_sofaArray addObject:rankModel];
+                    }
+                    [self refreshSofaView];
+                }
+                    break;
+                case 900: { //自己羽毛数量
+                    NSDictionary *dataDic = [result objectForKey:@"data"];
+                    NSDictionary *financeDic = [dataDic objectForKey:@"finance"];
+                    NSNumber *feather_count = [financeDic objectForKey:@"feather_count"];
+                    if (feather_count) {
+                        _featherLabel.text = [NSString stringWithFormat:@"x%@",feather_count];
+                    }
+                }
+                    break;
+                case 1000: { //增加羽毛数
+
+                }
+                    break;
+                case 1:
+                case 2:
+                case 3:
+                case 4: {
+                    
+                }
+                    break;
             default:
                 break;
             }
+        } else {
+            switch (code.intValue) {
+                case 30412: {
+                    [self showGrabErrorAlert:@"余额不足，请充值" requestTag:_grabTag];
+                }
+                    break;
+                case 30420: {
+                    [self showGrabErrorAlert:@"沙发已经被捷足先登了，来！再战一次！" requestTag:_grabTag];
+                }
+                    break;
+                case 30415: {
+                    [self showGrabErrorAlert:@"房间已经关闭直播" requestTag:_grabTag];
+                }
+                    break;
+                default:
+                    break;
+            }
         }
+    }
+}
+
+- (void)showGrabErrorAlert:(NSString *)message requestTag:(NSInteger)tag
+{
+    switch (tag) {
+        case 1:
+        case 2:
+        case 3:
+        case 4: {
+            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:message delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
+            alertView.tag = 120;
+            [alertView show];
+        }
+            break;
+        default:
+            break;
     }
 }
 

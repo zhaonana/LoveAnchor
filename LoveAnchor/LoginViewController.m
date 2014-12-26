@@ -11,6 +11,7 @@
 #import <CommonCrypto/CommonDigest.h>
 
 #define REFRESH_LEFTMENU_NOTIFITION @"refreshLeftMenuNotifition"
+#define REFRESH_PLAYVIEW_NOTIFITION @"refreshPlayViewNotifition"
 
 @interface LoginViewController ()<ASIHTTPRequestDelegate>
 {
@@ -458,8 +459,14 @@
             break;
         case livehallType:
         case dynamicType:
-        case rankingType:
+        case rankingType: {
+            [self dismissViewControllerAnimated:YES completion:^{
+                
+            }];
+        }
+            break;
         case playType: {
+            [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_PLAYVIEW_NOTIFITION object:nil];
             [self dismissViewControllerAnimated:YES completion:^{
                 
             }];

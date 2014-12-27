@@ -191,7 +191,15 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+    if (indexPath.row == 1) {
+        ModifyPassWordViewController *pass = [[ModifyPassWordViewController alloc]init];
+        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:pass];
+        [self presentViewController:nc animated:YES completion:nil];
+    } else if (indexPath.row == 10) {
+        LoveViewController *love = [[LoveViewController alloc] init];
+        UINavigationController *nv = [[UINavigationController alloc]initWithRootViewController:love];
+        [self presentViewController:nv animated:YES completion:nil];
+    }
 }
 
 - (void)didReceiveMemoryWarning

@@ -349,6 +349,11 @@
 		39BC42421A47F56600271572 /* yumao@2xdianji.png in Resources */ = {isa = PBXBuildFile; fileRef = 39BC42321A47F56600271572 /* yumao@2xdianji.png */; };
 		F703DB371A174D5200C53D4C /* SeatManageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F703DB361A174D5200C53D4C /* SeatManageViewController.m */; };
 		F70EE5A71A49807600A601C0 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EE5A61A49807600A601C0 /* FeedbackViewController.m */; };
+		F70EE5AD1A4C1D6B00A601C0 /* ModifyPassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EE5AC1A4C1D6B00A601C0 /* ModifyPassWordViewController.m */; };
+		F70EE5B11A4D3A7A00A601C0 /* LoveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EE5AF1A4D3A7A00A601C0 /* LoveViewController.m */; };
+		F70EE5B21A4D3A7A00A601C0 /* LoveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F70EE5B01A4D3A7A00A601C0 /* LoveViewController.xib */; };
+		F70EE5B51A4D429000A601C0 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F70EE5B31A4D429000A601C0 /* logo.png */; };
+		F70EE5B61A4D429000A601C0 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F70EE5B41A4D429000A601C0 /* logo@2x.png */; };
 		F71890F11A12195B005ECCA9 /* huangV1.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890ED1A12195B005ECCA9 /* huangV1.png */; };
 		F71890F21A12195B005ECCA9 /* huangV1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890EE1A12195B005ECCA9 /* huangV1@2x.png */; };
 		F71890F31A12195B005ECCA9 /* ziV1.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890EF1A12195B005ECCA9 /* ziV1.png */; };
@@ -1051,6 +1056,13 @@
 		F703DB361A174D5200C53D4C /* SeatManageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeatManageViewController.m; sourceTree = "<group>"; };
 		F70EE5A51A49807600A601C0 /* FeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackViewController.h; sourceTree = "<group>"; };
 		F70EE5A61A49807600A601C0 /* FeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
+		F70EE5AB1A4C1D6B00A601C0 /* ModifyPassWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyPassWordViewController.h; sourceTree = "<group>"; };
+		F70EE5AC1A4C1D6B00A601C0 /* ModifyPassWordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ModifyPassWordViewController.m; sourceTree = "<group>"; };
+		F70EE5AE1A4D3A7A00A601C0 /* LoveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LoveViewController.h; sourceTree = "<group>"; };
+		F70EE5AF1A4D3A7A00A601C0 /* LoveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LoveViewController.m; sourceTree = "<group>"; };
+		F70EE5B01A4D3A7A00A601C0 /* LoveViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoveViewController.xib; sourceTree = "<group>"; };
+		F70EE5B31A4D429000A601C0 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
+		F70EE5B41A4D429000A601C0 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
 		F71890ED1A12195B005ECCA9 /* huangV1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = huangV1.png; sourceTree = "<group>"; };
 		F71890EE1A12195B005ECCA9 /* huangV1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "huangV1@2x.png"; sourceTree = "<group>"; };
 		F71890EF1A12195B005ECCA9 /* ziV1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ziV1.png; sourceTree = "<group>"; };
@@ -2103,6 +2115,8 @@
 				39B662D31A24A3BC0033D28C /* anchoricon */,
 				39B662661A2499DE0033D28C /* usericon */,
 				F785D6791A033223002B32E9 /* touxiangquan.png */,
+				F70EE5B31A4D429000A601C0 /* logo.png */,
+				F70EE5B41A4D429000A601C0 /* logo@2x.png */,
 				F756ED5C1A3EE5DC00B170A7 /* shangla.png */,
 				F756ED5D1A3EE5DC00B170A7 /* shangla@2x.png */,
 				F756ED5E1A3EE5DC00B170A7 /* xiala.png */,
@@ -2568,6 +2582,11 @@
 				F7B5B89719EFC0AE0006ACCB /* TwoTableViewCell.m */,
 				F7B5B89919EFC0C80006ACCB /* OneTableViewCell.h */,
 				F7B5B89A19EFC0C80006ACCB /* OneTableViewCell.m */,
+				F70EE5AE1A4D3A7A00A601C0 /* LoveViewController.h */,
+				F70EE5AF1A4D3A7A00A601C0 /* LoveViewController.m */,
+				F70EE5B01A4D3A7A00A601C0 /* LoveViewController.xib */,
+				F70EE5AB1A4C1D6B00A601C0 /* ModifyPassWordViewController.h */,
+				F70EE5AC1A4C1D6B00A601C0 /* ModifyPassWordViewController.m */,
 			);
 			name = "左菜单";
 			sourceTree = "<group>";
@@ -2684,6 +2703,7 @@
 				F75D702719F246B9004C144B /* fanhui.png in Resources */,
 				39B663711A24A3BD0033D28C /* 25zhubo@2x.png in Resources */,
 				39B663C31A24A3BD0033D28C /* 7zhubo@x.png in Resources */,
+				F70EE5B51A4D429000A601C0 /* logo.png in Resources */,
 				39B663AC1A24A3BD0033D28C /* 52zhubo.png in Resources */,
 				39B663501A24A3BD0033D28C /* 10zhubo.png in Resources */,
 				F7456EE11998692300CF28E8 /* sousuoxuanzhong@2x.png in Resources */,
@@ -2705,6 +2725,7 @@
 				F7456ED21998692300CF28E8 /* qingchu.png in Resources */,
 				F77133601A243F6F00568D39 /* shanchu.png in Resources */,
 				F7456EDD1998692300CF28E8 /* shuzidise@2x.png in Resources */,
+				F70EE5B21A4D3A7A00A601C0 /* LoveViewController.xib in Resources */,
 				39B663851A24A3BD0033D28C /* 34zhubo@2x.png in Resources */,
 				F78FA84A19CBFAD900445235 /* jubao@2x.png in Resources */,
 				39BB5D141A3FD8C500BA7B20 /* f_static_039.png in Resources */,
@@ -2816,6 +2837,7 @@
 				F7456EB01998692300CF28E8 /* dingbuxuanzhong.png in Resources */,
 				F7BE190619E6B720009C6C8C /* weibo.png in Resources */,
 				39B6637E1A24A3BD0033D28C /* 31zhubo.png in Resources */,
+				F70EE5B61A4D429000A601C0 /* logo@2x.png in Resources */,
 				F7456EC71998692300CF28E8 /* lishiguankanxuanzhong@2x.png in Resources */,
 				39B663531A24A3BD0033D28C /* 11zhubo@2x.png in Resources */,
 				F75D702A19F246B9004C144B /* huizhang@2x.png in Resources */,
@@ -3225,6 +3247,7 @@
 				39B663CE1A257EF30033D28C /* LevelInfoModel.m in Sources */,
 				F7456F16199871A500CF28E8 /* AttentionViewController.m in Sources */,
 				F7B5B89819EFC0AE0006ACCB /* TwoTableViewCell.m in Sources */,
+				F70EE5AD1A4C1D6B00A601C0 /* ModifyPassWordViewController.m in Sources */,
 				F7C7CCD019AD9007003FCC03 /* UIImageView+WebCache.m in Sources */,
 				F7BE191419E7941A009C6C8C /* RegisterViewController.m in Sources */,
 				3922656F1A359DEC00767721 /* base64.c in Sources */,
@@ -3277,6 +3300,7 @@
 				392265711A359DEC00767721 /* SRWebSocket.m in Sources */,
 				3922657F1A35B8AE00767721 /* ChatCell.m in Sources */,
 				F7B0C9A619B9B53600CE7B23 /* PersonageViewController.m in Sources */,
+				F70EE5B11A4D3A7A00A601C0 /* LoveViewController.m in Sources */,
 				3922657A1A35B00F00767721 /* ChatModel.m in Sources */,
 				F7C7CCAB19AD8FE7003FCC03 /* ASIDataCompressor.m in Sources */,
 				39BB5C731A3AF2EA00BA7B20 /* MJRefreshHeaderView.m in Sources */,

@@ -10,7 +10,9 @@
 #import "UserInfoModel.h"
 #import "UIImageView+BoundsAdditions.h"
 
-@interface DatumViewController () <ASIHTTPRequestDelegate>
+#define REFRESH_PLAYVIEW_NOTIFITION @"refreshPlayViewNotifition"
+
+@interface DatumViewController () <ASIHTTPRequestDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) UserInfoModel  *userModel;
 @property (nonatomic, strong) UILabel        *titleLabel;
@@ -40,7 +42,6 @@
 {
     [super viewDidLoad];
     
-    _model = [CommonUtil getUserModel];
     _attentionArray = [[NSMutableArray alloc] init];
     _badgeArray = [[NSMutableArray alloc] init];
     _carArray = [[NSMutableArray alloc] init];
@@ -52,6 +53,7 @@
 {
     [super viewWillAppear:animated];
     
+    _model = [CommonUtil getUserModel];
     [self requestWithParam:@"user_info" tag:500];   //个人信息
     [self requestWithFollowing:@"following_list" tag:602];  //关注列表
 }
@@ -98,21 +100,47 @@
 {
     switch (button.tag) {
         case 100:
+            [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_PLAYVIEW_NOTIFITION object:nil];
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
-        case 101:
-            if (button.selected) {
-                [self requestWithFollowing:@"del_following" tag:601];
+        case 101: {
+            if ([CommonUtil isLogin]) {
+                if (button.selected) {
+                    [self requestWithFollowing:@"del_following" tag:601];
+                } else {
+                    [self requestWithFollowing:@"add_following" tag:600];
+                }
             } else {
-                [self requestWithFollowing:@"add_following" tag:600];
+                [CommonUtil loginAlertViewShow:self];
             }
+        }
             break;
         default:
             break;
     }
 }
 
-#pragma mark - uitableViewDelegate
+#pragma mark - UIAlertViewDelegate methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 0:
+            break;
+        case 1: {
+            LoginViewController *loginViewController = [[LoginViewController alloc] init];
+            loginViewController.controllerType = rankingType;
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+            [self presentViewController:navigationController animated:YES completion:^{
+                
+            }];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+#pragma mark - UITableViewDelegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.row) {
@@ -174,8 +202,12 @@
                     }
                 }
             }
+            NSInteger count = urlArr.count;
+            if (count > 6) {
+                count = 6;
+            }
             for (int i = 0; i < urlArr.count; i++) {
-                UIImageView *HzImageView = [[UIImageView alloc] initWithFrame:CGRectMake(75 + 20 * i, 10, 15, 15)];
+                UIImageView *HzImageView = [[UIImageView alloc] initWithFrame:CGRectMake(70 + 45 * i, 6, 40, 25)];
                 [HzImageView setImageWithURL:[NSURL URLWithString:urlArr[i]]];
                 [twoCell addSubview:HzImageView];
             }

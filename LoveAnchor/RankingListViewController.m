@@ -309,9 +309,15 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RankingModel *rankModel = [_dataArray objectAtIndex:indexPath.row][0];
-    switch (rankModel.rankType) {
-        case starType:
-        case popularityType: {
+    switch (rankModel.live.intValue) {
+        case 0: {
+            DatumViewController *datum = [[DatumViewController alloc] init];
+            NSArray *modeArr = [_dataArray objectAtIndex:indexPath.row];
+            datum.userId = [modeArr[0] _id];
+            [self presentViewController:datum animated:YES completion:nil];
+        }
+            break;
+        case 1: {
             [self addRequestWithRoomId:rankModel._id];
             
             PlayViewController *play = [[PlayViewController alloc]init];
@@ -319,16 +325,9 @@
             [self presentViewController:play animated:YES completion:nil];
         }
             break;
-        case richType: {
-            DatumViewController *datum = [[DatumViewController alloc] init];
-            NSArray *modeArr = [_dataArray objectAtIndex:indexPath.row];
-            datum.userId = [modeArr[0] _id];
-            [self presentViewController:datum animated:YES completion:nil];
-        }
-            break;
         default:
             break;
-    }    
+    }
 }
 
 @end

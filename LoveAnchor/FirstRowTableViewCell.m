@@ -62,7 +62,7 @@
     numberImageView.image = [UIImage imageNamed:@"renshu"];
     
     UIImageView *imageView = (UIImageView *)[self.contentView viewWithTag:100];
-    [imageView setImageWithURL:[NSURL URLWithString:model.pic_url]];
+    [imageView setImageWithURL:[NSURL URLWithString:model.pic_url] placeholderImage:[UIImage imageNamed:@"aizhubo1"]];
     imageView.clipsToBounds = YES;
     imageView.contentMode = UIViewContentModeScaleAspectFill;
     

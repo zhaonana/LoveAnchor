@@ -10,6 +10,9 @@
 #import <ShareSDK/ShareSDK.h>
 #import <CommonCrypto/CommonDigest.h>
 
+#define REFRESH_LEFTMENU_NOTIFITION @"refreshLeftMenuNotifition"
+#define REFRESH_PLAYVIEW_NOTIFITION @"refreshPlayViewNotifition"
+
 @interface LoginViewController ()<ASIHTTPRequestDelegate>
 {
     UITextField *_nameTextField;
@@ -347,101 +350,130 @@
 #pragma mark - 获取成功返回
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    if (request.tag == 0) {
-        id getRsult = [NSJSONSerialization JSONObjectWithData:request.responseData
-                                                      options:NSJSONReadingMutableContainers
-                                                        error:nil];
-        if ([getRsult isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *getJson = [getRsult objectForKey:@"data"];
-            _imageURL = [getJson objectForKey:@"auth_url"];
-            [_imageView setImageWithURL:[NSURL URLWithString:_imageURL]];
-            _getAuth_key = [getJson objectForKey:@"auth_key"];
-            NSLog(@"%@",_getAuth_key);
+    id result = [NSJSONSerialization JSONObjectWithData:request.responseData
+                                                  options:NSJSONReadingMutableContainers
+                                                    error:nil];
+    switch (request.tag) {
+        case 0: {
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *getJson = [result objectForKey:@"data"];
+                _imageURL = [getJson objectForKey:@"auth_url"];
+                [_imageView setImageWithURL:[NSURL URLWithString:_imageURL]];
+                _getAuth_key = [getJson objectForKey:@"auth_key"];
+            }
         }
-    } else if (request.tag == 1) {
-        id verifyResult = [NSJSONSerialization JSONObjectWithData:request.responseData
-                                                          options:NSJSONReadingMutableContainers
-                                                            error:nil];
-        if ([verifyResult isKindOfClass:[NSDictionary class]]) {
-            int verifyJson = [[verifyResult objectForKey:@"code"] intValue];
-            if (verifyJson == 1) {
-                [self LoginRequest];
-            } else {
-                [self updateTheVerificationCode];
-                UIAlertView *alert = [[UIAlertView alloc]init];
-                alert.title = @"提示";
-                alert.message = @"验证码输入错误";
-                [alert addButtonWithTitle:@"确定"];
-                [alert show];
+            break;
+        case 1: {
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                int verifyJson = [[result objectForKey:@"code"] intValue];
+                if (verifyJson == 1) {
+                    [self LoginRequest];
+                } else {
+                    [self updateTheVerificationCode];
+                    UIAlertView *alert = [[UIAlertView alloc]init];
+                    alert.title = @"提示";
+                    alert.message = @"验证码输入错误";
+                    [alert addButtonWithTitle:@"确定"];
+                    [alert show];
+                }
             }
+        }
+            break;
+        case 2: {
+            NSData *data = [request responseData];
+            UIImage *image = [[UIImage alloc] initWithData:data];
+            _imageView.image = image;
+        }
+            break;
+        case 3: {
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *loginJson = [result objectForKey:@"data"];
+                int code = [[result objectForKey:@"code"] intValue];
+                if (code == 1) {
+                    LoginModel *loginModel = [[LoginModel alloc] init];
+                    loginModel.access_token = [loginJson objectForKey:@"access_token"];
+                    loginModel.passWord = [loginJson objectForKey:@"password"];
+                    loginModel.userName = [loginJson objectForKey:@"username"];
+                    
+                    [self loginSuccessedWithLoginModel:loginModel];
+                } else if (code == 30312) {
+                    UIAlertView *alert = [[UIAlertView alloc]init];
+                    alert.title = @"提示";
+                    alert.message = @"用户名不存在";
+                    [alert addButtonWithTitle:@"确定"];
+                    [alert show];
+                } else if (code == 30302) {
+                    UIAlertView *alert = [[UIAlertView alloc]init];
+                    alert.title = @"提示";
+                    alert.message = @"用户名或密码不正确";
+                    [alert addButtonWithTitle:@"确定"];
+                    [alert show];
+                }
             }
-    } else if (request.tag ==2) {
-        NSData *data = [request responseData];
-        UIImage *image = [[UIImage alloc]initWithData:data];
-        _imageView.image = image;
-    } else if (request.tag == 3) {
-        id loginResult = [NSJSONSerialization JSONObjectWithData:request.responseData
-                                                         options:NSJSONReadingMutableContainers
-                                                           error:nil];
-        if ([loginResult isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *loginJson = [loginResult objectForKey:@"data"];
-            int code = [[loginResult objectForKey:@"code"] intValue];
-            if (code == 1) {
-                //存储用户信息
-                LoginModel *loginModel = [[LoginModel alloc] init];
-                loginModel.access_token = [loginJson objectForKey:@"access_token"];
-                loginModel.passWord = [loginJson objectForKey:@"password"];
-                loginModel.userName = [loginJson objectForKey:@"username"];
-                [CommonUtil saveUserModel:loginModel];
+        }
+            break;
+        case 4: {
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSNumber *code = [result objectForKey:@"code"];
+                if (code.intValue == 1) {
+                    NSDictionary *otherDic = [result objectForKey:@"data"];
+                    _access_token = [otherDic objectForKey:@"access_token"];
+                    [self allRequestWithToken:_access_token];
+                }
+            }
+        }
+            break;
+        case 5: {
+            if ([result isKindOfClass:[NSDictionary class]]) {
+                NSNumber *code = [result objectForKey:@"code"];
+                if (code.intValue == 1) {
+                    NSDictionary *dict = [result objectForKey:@"data"];
+                    LoginModel *loginModel = [[LoginModel alloc] init];
+                    loginModel.userName = [dict objectForKey:@"nick_name"];
+                    loginModel.access_token = _access_token;
+                    
+                    [self loginSuccessedWithLoginModel:loginModel];
+                }
+            }
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)loginSuccessedWithLoginModel:(LoginModel *)loginModel
+{
+    //存储用户信息
+    [CommonUtil saveUserModel:loginModel];
+    [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_LEFTMENU_NOTIFITION object:nil];
+    switch (self.controllerType) {
+        case registerType:
+        case leftmenuType: {
+            PersonageViewController *personage = [[PersonageViewController alloc] init];
+            personage.firstLogin = YES;
+            [personage setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:personage];
+            [self presentViewController:nc animated:YES completion:nil];
+        }
+            break;
+        case livehallType:
+        case dynamicType:
+        case rankingType: {
+            [self dismissViewControllerAnimated:YES completion:^{
                 
-                PersonageViewController *personage = [[PersonageViewController alloc]init];
-                personage.firstLogin = YES;
-                [personage setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-                UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:personage];
-                [self presentViewController:nc animated:YES completion:nil];
-            } else if (code == 30312) {
-                UIAlertView *alert = [[UIAlertView alloc]init];
-                alert.title = @"提示";
-                alert.message = @"用户名不存在";
-                [alert addButtonWithTitle:@"确定"];
-                [alert show];
-            } else if (code == 30302) {
-                UIAlertView *alert = [[UIAlertView alloc]init];
-                alert.title = @"提示";
-                alert.message = @"用户名或密码不正确";
-                [alert addButtonWithTitle:@"确定"];
-                [alert show];
-            }
+            }];
         }
-    } else if (request.tag == 4) {
-        id otherRequest = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
-        if ([otherRequest isKindOfClass:[NSDictionary class]]) {
-            NSNumber *code = [otherRequest objectForKey:@"code"];
-            if (code.intValue == 1) {
-                NSDictionary *otherDic = [otherRequest objectForKey:@"data"];
-                _access_token = [otherDic objectForKey:@"access_token"];
-                [self allRequestWithToken:_access_token];
-            }
-        }
-    } else if (request.tag == 5) {
-        id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
-        if ([result isKindOfClass:[NSDictionary class]]) {
-            NSNumber *code = [result objectForKey:@"code"];
-            if (code.intValue == 1) {
-                NSDictionary *dict = [result objectForKey:@"data"];
-                //存储用户信息
-                LoginModel *loginModel = [[LoginModel alloc] init];
-                loginModel.userName = [dict objectForKey:@"nick_name"];
-                loginModel.access_token = _access_token;
-                [CommonUtil saveUserModel:loginModel];
+            break;
+        case playType: {
+            [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_PLAYVIEW_NOTIFITION object:nil];
+            [self dismissViewControllerAnimated:YES completion:^{
                 
-                PersonageViewController *personage = [[PersonageViewController alloc]init];
-                personage.firstLogin = YES;
-                [personage setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-                UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:personage];
-                [self presentViewController:nc animated:YES completion:nil];
-            }
+            }];
         }
+            break;
+        default:
+            break;
     }
 }
 

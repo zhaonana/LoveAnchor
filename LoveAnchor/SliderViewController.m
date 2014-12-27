@@ -13,7 +13,7 @@ typedef NS_ENUM(NSInteger, RMoveDirection) {
     RMoveDirectionRight
 };
 
-@interface SliderViewController ()<UIGestureRecognizerDelegate>{
+@interface SliderViewController ()<UIGestureRecognizerDelegate, UITabBarControllerDelegate, UIAlertViewDelegate>{
     UIView *_mainContentView;
     UIView *_leftSideView;
     UIView *_rightSideView;
@@ -125,13 +125,44 @@ typedef NS_ENUM(NSInteger, RMoveDirection) {
     [_rightSideView addSubview:rightVC.view];
 }
 
+#pragma mark - UITabBarControllerDelegate methods
+- (void)tabBarController:(UITabBarController *)tabBarController didSelectViewController:(UIViewController *)viewController
+{
+    if (tabBarController.selectedIndex == 1) {
+        if (![CommonUtil isLogin]) {
+            [CommonUtil loginAlertViewShow:self];
+            tabBarController.selectedIndex = 0;
+        }
+    }
+}
+
+#pragma mark - UIAlertViewDelegate methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 0:
+            break;
+        case 1: {
+            LoginViewController *loginViewController = [[LoginViewController alloc] init];
+            loginViewController.controllerType = dynamicType;
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+            [self presentViewController:navigationController animated:YES completion:^{
+                
+            }];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
 #pragma mark - Actions
 
 - (void)showContentControllerWithModel:(NSString *)className
 {
     [self closeSideBar];
     
-    UIViewController *controller = _controllersDict[className];
+    UITabBarController *controller = _controllersDict[className];
     if (!controller)
     {
         Class c = NSClassFromString(className);
@@ -141,6 +172,7 @@ typedef NS_ENUM(NSInteger, RMoveDirection) {
 #else
         controller = [[[c alloc] init] autorelease];
 #endif
+        controller.delegate = self;
         [_controllersDict setObject:controller forKey:className];
     }
     

@@ -28,7 +28,8 @@
     self.coin_spend = [dic objectForKey:@"coin_spend"];
     self.rank = [dic objectForKey:@"rank"];
     self.visiter_count = [dic objectForKey:@"visiter_count"];
-    
+    self.live = [dic objectForKey:@"live"];
+
     return self;
 }
 

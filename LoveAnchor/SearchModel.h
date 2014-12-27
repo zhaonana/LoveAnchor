@@ -17,5 +17,7 @@
 @property (nonatomic, strong) NSDictionary *finance;
 //昵称
 @property (nonatomic, strong) NSString     *nick_name;
+//直播
+@property (nonatomic, strong) NSNumber     *live;
 
 @end

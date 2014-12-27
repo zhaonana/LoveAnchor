@@ -40,6 +40,8 @@ typedef enum {
 @property (nonatomic, strong) NSNumber     *visiter_count;
 //排名类型
 @property (nonatomic, assign) RankType     rankType;
+//直播
+@property (nonatomic, strong) NSNumber     *live;
 
 - (RankingModel *)getRankModelWithDictionary:(NSDictionary *)dic;
 

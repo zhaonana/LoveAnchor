@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "LevelInfoModel.h"
 
-@interface CommonUtil : NSObject
+@interface CommonUtil : NSObject 
 
 /**
  *  根据时间戳计算天数
@@ -59,5 +59,11 @@
  *  @param loginModel 用户信息model
  */
 + (void)saveUserModel:(LoginModel *)loginModel;
+/**
+ *  未登录提示
+ *
+ *  @param controller 
+ */
++ (void)loginAlertViewShow:(UIViewController *)controller;
 
 @end

@@ -445,6 +445,7 @@
 - (void)loginSuccessedWithLoginModel:(LoginModel *)loginModel
 {
     //存储用户信息
+    loginModel.admission = YES;
     [CommonUtil saveUserModel:loginModel];
     [[NSNotificationCenter defaultCenter] postNotificationName:REFRESH_LEFTMENU_NOTIFITION object:nil];
     switch (self.controllerType) {

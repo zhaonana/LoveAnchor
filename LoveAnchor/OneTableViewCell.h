@@ -13,4 +13,6 @@
 @property (nonatomic,strong)UILabel *label3;
 @property (nonatomic,strong)UISwitch *KGSwitch;
 @property (nonatomic,strong)UIImageView *image3;
+@property (nonatomic, copy) void (^switchClick)(BOOL isOn);
+
 @end

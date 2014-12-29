@@ -1470,15 +1470,17 @@
         NSString *action = [result objectForKey:@"action"];
         if (action.length) {
             if ([action isEqualToString:@"room.change"]) {
-                chatModel.chatType = changeType;
-                id data_d = [result objectForKey:@"data_d"];
-                if ([data_d isKindOfClass:[NSDictionary class]]) {
-                    NSString *nick_name = [[data_d objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-                    if (nick_name.length) {
-                        chatModel.nick_name = nick_name;
+                if (_model.admission) {
+                    chatModel.chatType = changeType;
+                    id data_d = [result objectForKey:@"data_d"];
+                    if ([data_d isKindOfClass:[NSDictionary class]]) {
+                        NSString *nick_name = [[data_d objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                        if (nick_name.length) {
+                            chatModel.nick_name = nick_name;
+                        }
                     }
+                    [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
                 }
-                [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
             } else if ([action isEqualToString:@"gift.notify"]) {
                 chatModel.chatType = giftType;
                 id data_d = [result objectForKey:@"data_d"];
@@ -1729,7 +1731,7 @@
                 case 2:
                 case 3:
                 case 4: {
-                    
+                    [self requestWithInfo:@"room_sofa" tag:800];
                 }
                     break;
             default:
@@ -1797,6 +1799,12 @@
             [headImg setImageWithURL:[NSURL URLWithString:model.pic]];
         }
     }
+}
+
+#pragma mark - sendMessage methods
+- (void)sendPublicMessage
+{
+    
 }
 
 #pragma mark - 

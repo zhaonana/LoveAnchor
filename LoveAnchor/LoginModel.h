@@ -10,10 +10,9 @@
 
 @interface LoginModel : NSObject <NSCoding>
 
-@property (nonatomic, strong)NSString *access_token;
-
-@property (nonatomic, strong)NSString *userName;
-
-@property (nonatomic, strong)NSString *passWord;
+@property (nonatomic, strong) NSString *access_token;
+@property (nonatomic, strong) NSString *userName;
+@property (nonatomic, strong) NSString *passWord;
+@property (nonatomic, assign) BOOL admission;
 
 @end

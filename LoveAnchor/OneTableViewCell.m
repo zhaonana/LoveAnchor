@@ -26,17 +26,16 @@
         
         self.KGSwitch = [[UISwitch alloc]initWithFrame:CGRectMake(250, 5, 50, 10)];
         self.KGSwitch.hidden = YES;
-        [self.KGSwitch addTarget:self action:@selector(switchClick) forControlEvents:UIControlEventValueChanged];
+        [self.KGSwitch addTarget:self action:@selector(switchClick:) forControlEvents:UIControlEventValueChanged];
         [self.contentView addSubview:self.KGSwitch];
     }
     return self;
 }
-- (void)switchClick
+- (void)switchClick:(UISwitch *)sender
 {
-    NSLog(@"456");
-}
-- (void)awakeFromNib
-{
+    if (self.switchClick) {
+        self.switchClick (sender.on);
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

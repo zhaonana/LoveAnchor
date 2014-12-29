@@ -66,6 +66,8 @@
     #import "BroadcastViewController.h"
     #import "SongViewController.h"
     #import "FeedbackViewController.h"
+    #import "ModifyPassWordViewController.h"
+    #import "LoveViewController.h"
 #endif
 
 

@@ -14,4 +14,6 @@
 @property (nonatomic,strong)UILabel *label2;
 @property (nonatomic,strong)UISwitch *KGSwitth;
 @property (nonatomic,strong)UIImageView *image2;
+@property (nonatomic, copy) void (^switchClick)(BOOL isOn);
+
 @end

@@ -37,17 +37,15 @@
     [self.contentView addSubview:self.image2];
     
     self.KGSwitth = [[UISwitch alloc]initWithFrame:CGRectMake(250, 15, 50, 10)];
-    [self.KGSwitth addTarget:self action:@selector(switchClick) forControlEvents:UIControlEventValueChanged];
-    self.KGSwitth.on = YES;
+    [self.KGSwitth addTarget:self action:@selector(switchClick:) forControlEvents:UIControlEventValueChanged];
     [self.contentView addSubview:self.KGSwitth];
 }
-- (void)switchClick
-{
-    NSLog(@"123");
-}
 
-- (void)awakeFromNib
+- (void)switchClick:(UISwitch *)sender
 {
+    if (self.switchClick) {
+        self.switchClick (sender.on);
+    }
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated

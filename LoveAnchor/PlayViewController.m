@@ -644,7 +644,7 @@
     //发送
     UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
     sendButton.frame = CGRectMake(260, 38, 45, 30);
-    sendButton.tag = 100000000;
+    sendButton.tag = 1000000;
     [sendButton setBackgroundImage:[UIImage imageNamed:@"fasong"] forState:UIControlStateNormal];
     [sendButton setBackgroundImage:[UIImage imageNamed:@"fasongdianji"] forState:UIControlStateHighlighted];
     [sendButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -933,6 +933,8 @@
         } else {
             [CommonUtil loginAlertViewShow:self];
         }
+    } else if (button.tag == 1000000) { //发送消息
+        [self sendPublicMessage];
     } else if (button.tag == 102) {
         _classifyView.hidden = !_classifyView.hidden;
     } else if (button.tag == 104) {
@@ -1470,15 +1472,17 @@
         NSString *action = [result objectForKey:@"action"];
         if (action.length) {
             if ([action isEqualToString:@"room.change"]) {
-                chatModel.chatType = changeType;
-                id data_d = [result objectForKey:@"data_d"];
-                if ([data_d isKindOfClass:[NSDictionary class]]) {
-                    NSString *nick_name = [[data_d objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-                    if (nick_name.length) {
-                        chatModel.nick_name = nick_name;
+                if (_model.admission) {
+                    chatModel.chatType = changeType;
+                    id data_d = [result objectForKey:@"data_d"];
+                    if ([data_d isKindOfClass:[NSDictionary class]]) {
+                        NSString *nick_name = [[data_d objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                        if (nick_name.length) {
+                            chatModel.nick_name = nick_name;
+                        }
                     }
+                    [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
                 }
-                [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
             } else if ([action isEqualToString:@"gift.notify"]) {
                 chatModel.chatType = giftType;
                 id data_d = [result objectForKey:@"data_d"];
@@ -1563,18 +1567,28 @@
 }
 
 #pragma mark - 键盘回收
--(BOOL)textFieldShouldReturn:(UITextField *)textField
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     _inputView.hidden = YES;
     [_chatTextField resignFirstResponder];
     return YES;
 }
 
--(void)textFieldDidBeginEditing:(UITextField *)textField
+- (void)textFieldDidBeginEditing:(UITextField *)textField
 {
     _inputView.hidden = NO;
     chatBView.frame = CGRectMake(5, 38, 250, 30);
     [_inputView addSubview:chatBView];
+}
+
+- (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
+{
+    if ([CommonUtil isLogin]) {
+        return YES;
+    } else {
+        [CommonUtil loginAlertViewShow:self];
+        return NO;
+    }
 }
 
 #pragma mark - request
@@ -1729,7 +1743,7 @@
                 case 2:
                 case 3:
                 case 4: {
-                    
+                    [self requestWithInfo:@"room_sofa" tag:800];
                 }
                     break;
             default:
@@ -1799,18 +1813,35 @@
     }
 }
 
-#pragma mark - 
-- (void) keyboardWasShown:(NSNotification *) notif
+#pragma mark - sendMessage methods
+- (void)sendPublicMessage
+{
+    NSNumber *coinNum = [[CommonUtil getUserModel].finance objectForKey:@"coin_count"];
+    NSString *level = [NSString stringWithFormat:@"%d",[CommonUtil getLevelInfoWithCoin:coinNum.intValue isRich:YES].level];
+    NSDictionary *message = @{@"msg": @{@"content": _chatTextField.text,
+                                        @"level": level,
+                                        @"from_medals": @"{}"
+                                        }};
+    NSData *msgData = [CommonUtil toJSONData:message];
+    NSString *msgJson = [[NSString alloc] initWithData:msgData
+                                                 encoding:NSUTF8StringEncoding];
+    [_socketIO sendMessage:msgJson];
+    [_chatTextField resignFirstResponder];
+    _chatTextField.text = @"";
+}
+
+#pragma mark - 键盘通知
+- (void)keyboardWasShown:(NSNotification *)notif
 {
     NSDictionary *info = [notif userInfo];
-    NSValue *value = [info objectForKey:UIKeyboardFrameBeginUserInfoKey];
+    NSValue *value = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
     CGSize keyboardSize = [value CGRectValue].size;
     
-    NSLog(@"keyBoard:%f", keyboardSize.height);  //216
-    _inputView.frame = CGRectMake(0, kScreenHeight-216-75, kScreenWidth, 75);
-    ///keyboardWasShown = YES;
+    NSLog(@"keyBoard:%f", keyboardSize.height);  //216 184 252
+    _inputView.frame = CGRectMake(0, kScreenHeight-keyboardSize.height-75, kScreenWidth, 75);
 }
-- (void) keyboardWasHidden:(NSNotification *) notif
+
+- (void)keyboardWasHidden:(NSNotification *)notif
 {
     NSDictionary *info = [notif userInfo];
     
@@ -1820,8 +1851,6 @@
     _inputView.frame = CGRectMake(0, kScreenHeight, kScreenWidth, 75);
     chatBView.frame = CGRectMake(5, 5, 260, 35);
     [chatView addSubview:chatBView];
-    // keyboardWasShown = NO;
-    
 }
 
 @end

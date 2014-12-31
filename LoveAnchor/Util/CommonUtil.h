@@ -71,5 +71,11 @@
  *  @param str 加密字符串
  */
 + (NSString *)md5:(NSString *)str;
+/**
+ *  将字典或者数组转化为JSON串
+ *
+ *  @param 字典或数组
+ */
++ (NSData *)toJSONData:(id)theData;
 
 @end

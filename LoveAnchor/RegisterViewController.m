@@ -386,7 +386,6 @@
             //存储用户信息
             LoginModel *loginModel = [[LoginModel alloc] init];
             loginModel.access_token = [loginJson objectForKey:@"access_token"];
-            loginModel.passWord = [loginJson objectForKey:@"password"];
             loginModel.userName = [loginJson objectForKey:@"username"];
             loginModel.admission = YES;
             [CommonUtil saveUserModel:loginModel];

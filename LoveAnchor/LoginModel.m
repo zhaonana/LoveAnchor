@@ -17,8 +17,8 @@
 - (void)encodeWithCoder:(NSCoder *)aCoder
 {
     [aCoder encodeObject:self.userName forKey:@"userName"];
-    [aCoder encodeObject:self.passWord forKey:@"passWord"];
     [aCoder encodeObject:self.access_token forKey:@"access_token"];
+    [aCoder encodeObject:self.finance forKey:@"finance"];
 }
 
 - (id)initWithCoder:(NSCoder *)aDecoder
@@ -28,9 +28,9 @@
         return nil;
     }
     
-    self.passWord = [aDecoder decodeObjectForKey:@"passWord"];
     self.userName = [aDecoder decodeObjectForKey:@"userName"];
     self.access_token = [aDecoder decodeObjectForKey:@"access_token"];
+    self.finance = [aDecoder decodeObjectForKey:@"finance"];
     return self;
 }
 @end

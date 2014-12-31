@@ -390,12 +390,14 @@
                 NSDictionary *loginJson = [result objectForKey:@"data"];
                 int code = [[result objectForKey:@"code"] intValue];
                 if (code == 1) {
-                    LoginModel *loginModel = [[LoginModel alloc] init];
-                    loginModel.access_token = [loginJson objectForKey:@"access_token"];
-                    loginModel.passWord = [loginJson objectForKey:@"password"];
-                    loginModel.userName = [loginJson objectForKey:@"username"];
-                    
-                    [self loginSuccessedWithLoginModel:loginModel];
+//                    LoginModel *loginModel = [[LoginModel alloc] init];
+//                    loginModel.access_token = [loginJson objectForKey:@"access_token"];
+//                    loginModel.passWord = [loginJson objectForKey:@"password"];
+//                    loginModel.userName = [loginJson objectForKey:@"username"];
+                    _access_token = [loginJson objectForKey:@"access_token"];
+                    [self allRequestWithToken:_access_token];
+
+//                    [self loginSuccessedWithLoginModel:loginModel];
                 } else if (code == 30312) {
                     UIAlertView *alert = [[UIAlertView alloc]init];
                     alert.title = @"提示";
@@ -430,6 +432,7 @@
                     NSDictionary *dict = [result objectForKey:@"data"];
                     LoginModel *loginModel = [[LoginModel alloc] init];
                     loginModel.userName = [dict objectForKey:@"nick_name"];
+                    loginModel.finance = [dict objectForKey:@"finance"];
                     loginModel.access_token = _access_token;
                     
                     [self loginSuccessedWithLoginModel:loginModel];

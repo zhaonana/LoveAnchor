@@ -345,4 +345,18 @@
     [alertView show];
 }
 
++ (NSData *)toJSONData:(id)theData
+{
+    NSError *error = nil;
+    NSData *jsonData = [NSJSONSerialization dataWithJSONObject:theData
+                                                       options:NSJSONWritingPrettyPrinted
+                                                         error:&error];
+    
+    if ([jsonData length] > 0 && error == nil){
+        return jsonData;
+    } else {
+        return nil;
+    }
+}
+
 @end

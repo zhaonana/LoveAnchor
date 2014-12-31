@@ -1,8 +1,9 @@
-//  2924006737 buzhidaomima
+//  2924006737
 //  AppDelegate.m
 //  LoveAnchor
 //  15811562734
 //  Created by zhongqinglongtu on 14-8-11.
+//  buzhidaomima
 //  Copyright (c) 2014年 zhongqinglongtu. All rights reserved.
 //
 

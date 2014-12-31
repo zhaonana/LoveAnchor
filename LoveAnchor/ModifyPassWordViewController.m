@@ -8,11 +8,11 @@
 
 #import "ModifyPassWordViewController.h"
 
-@interface ModifyPassWordViewController ()<UITextFieldDelegate>
+@interface ModifyPassWordViewController ()<UITextFieldDelegate,ASIHTTPRequestDelegate,UIAlertViewDelegate>
 {
-    UITextField *_nameTextField;
-    UITextField *_passTextField;
-    
+    UITextField     *_nameTextField;
+    UITextField     *_passTextField;
+    LoginModel      *model;
 }
 
 @end
@@ -32,13 +32,16 @@
 {
     [super viewDidLoad];
     [self createRightView];
+    model = [CommonUtil getUserModel];
 }
 - (void)createRightView
 {
     self.view.backgroundColor = [UIColor colorWithRed:232/255.0 green:241/255.0 blue:243/255.0 alpha:1];
-    UILabel *topTitle = [[UILabel alloc]initWithFrame:CGRectMake(140, 0, 40, 44)];
-    topTitle.text = @"设置";
+    UILabel *topTitle = [[UILabel alloc]initWithFrame:CGRectMake(120, 0, 80, 44)];
+    topTitle.text = @"修改密码";
     topTitle.font = [UIFont systemFontOfSize:18];
+    topTitle.backgroundColor = [UIColor clearColor];
+    topTitle.textAlignment = NSTextAlignmentCenter;
     topTitle.textColor = textFontColor;
     [self.navigationController.navigationBar addSubview:topTitle];
     
@@ -76,7 +79,7 @@
     UIImageView *passImage = [[UIImageView alloc] initWithFrame:CGRectMake(20, 52, 20, 20)];
     passImage.image = [UIImage imageNamed:@"mima"];
     [bagImageView addSubview:passImage];
-    //用户名输入框
+    //输入旧密码
     _nameTextField = [[UITextField alloc]init];
     _nameTextField.frame = CGRectMake(50, 0, 270, 42);
     _nameTextField.placeholder = @"请输入旧密码";
@@ -98,7 +101,7 @@
     UIButton *loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     loginButton.frame = CGRectMake(10, 180, kScreenWidth-20, 44);
     loginButton.tag = 101;
-    [loginButton setTitle:@"注册" forState:UIControlStateNormal];
+    [loginButton setTitle:@"提交" forState:UIControlStateNormal];
     loginButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [loginButton setBackgroundColor:[UIColor lightGrayColor]];
@@ -115,8 +118,52 @@
     if (button.tag == 100) {
         [self dismissViewControllerAnimated:YES completion:nil];
     } else if (button.tag == 101) {
-        NSLog(@"haole ");
+        if (_nameTextField.text.length >= 6 && _nameTextField.text.length <= 20) {
+            if (_passTextField.text.length >= 6 && _passTextField.text.length <= 20) {
+                [self request];
+            } else {
+                UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"新密码6-20位，请重新输入！" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+                [alertView show];
+            }
+            
+        } else {
+            UIAlertView *alertView = [[UIAlertView alloc]initWithTitle:@"提示" message:@"旧密码6-20位，请重新输入！" delegate:self cancelButtonTitle:@"取消" otherButtonTitles:@"确定", nil];
+            [alertView show];
+        }
+        
     }
+}
+#pragma mark - 数据解析
+- (void)request
+{
+    NSString *oldPassword = [CommonUtil md5:_nameTextField.text];
+    NSString *newPassword = [CommonUtil md5:_passTextField.text];
+    NSString *url = [NSString stringWithFormat:@"%@user/changePassword/%@?oldPassword=%@&newPassword=%@",BaseURL,model.access_token,oldPassword,newPassword];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
+    request.delegate = self;
+    [request setTimeOutSeconds:100];
+    [request startAsynchronous];
+    NSLog(@"token == %@",model.access_token);
+}
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    NSLog(@"code == %@",request.responseString);
+    id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+    if ([result isKindOfClass:[NSDictionary class]]) {
+        int code = [[result objectForKey:@"code"] intValue];
+        if (code == 1) {
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"密码修改成功！" delegate:self cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc]initWithTitle:@"提示" message:@"密码修改失败！" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
+            [alert show];
+        }
+    }
+}
+
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
@@ -124,3 +171,4 @@
     [super didReceiveMemoryWarning];
 }
 @end
+

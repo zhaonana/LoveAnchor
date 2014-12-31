@@ -7,6 +7,7 @@
 //
 
 #import "CommonUtil.h"
+#import <CommonCrypto/CommonDigest.h>
 
 @implementation CommonUtil
 
@@ -343,6 +344,18 @@
 {
     UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:@"此功能需要您登录后再使用" delegate:controller cancelButtonTitle:@"稍后再说" otherButtonTitles:@"现在登录", nil];
     [alertView show];
+}
+
++ (NSString *)md5:(NSString *)str
+{
+    const char *concat_str = [str UTF8String];
+    unsigned char result[CC_MD5_DIGEST_LENGTH];
+    CC_MD5(concat_str, strlen(concat_str), result);
+    NSMutableString *hash = [NSMutableString string];
+    for (int i = 0; i < 16; i++){
+        [hash appendFormat:@"%02X", result[i]];
+    }
+    return [hash lowercaseString];
 }
 
 @end

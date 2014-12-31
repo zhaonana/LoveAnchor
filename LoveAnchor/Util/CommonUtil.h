@@ -65,5 +65,11 @@
  *  @param controller 
  */
 + (void)loginAlertViewShow:(UIViewController *)controller;
+/**
+ *  md5加密
+ *
+ *  @param str 加密字符串
+ */
++ (NSString *)md5:(NSString *)str;
 
 @end

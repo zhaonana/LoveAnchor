@@ -43,6 +43,7 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         loginModel = [[LoginModel alloc]init];
+       
         
         _labelTitle = [[NSArray alloc] initWithObjects:@"财富等级在10富及以上才能购买或拥有尊贵VIP勋章",@"尊贵VIP勋章，炫彩紫色昵称，彰显身份",@"发言限制100字，让你畅所欲言",@"可购买VIP专属礼物",@"除房主以外，防止被禁言",@"可进入已达到观众人数上限的房间",@"房间排位升至所有玩家之前",@"可隐身进入房间，观众列表不显示昵称", nil];
         

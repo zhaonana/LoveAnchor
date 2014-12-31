@@ -68,6 +68,7 @@
     #import "FeedbackViewController.h"
     #import "ModifyPassWordViewController.h"
     #import "LoveViewController.h"
+    #import "HelpViewController.h"
 #endif
 
 

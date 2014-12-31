@@ -33,9 +33,10 @@
 - (void)showUI
 {
     self.view.backgroundColor = [UIColor whiteColor];
-    UILabel *topTitle = [[UILabel alloc]initWithFrame:CGRectMake(140, 0, 40, 44)];
-    topTitle.text = @"设置";
+    UILabel *topTitle = [[UILabel alloc]initWithFrame:CGRectMake(130, 0, 60, 44)];
+    topTitle.text = @"爱主播";
     topTitle.font = [UIFont systemFontOfSize:18];
+    topTitle.textAlignment = NSTextAlignmentCenter;
     topTitle.textColor = textFontColor;
     [self.navigationController.navigationBar addSubview:topTitle];
     
@@ -52,6 +53,18 @@
 - (IBAction)buttonClick:(UIButton *)sender {
     if (sender.tag == 100) {
         [self dismissViewControllerAnimated:YES completion:nil];
+    } else if (sender.tag == 101) {
+        FeedbackViewController *feed = [[FeedbackViewController alloc]init];
+        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:feed];
+        [self presentViewController:nc animated:YES completion:nil];
+        
+    } else if (sender.tag == 102) {
+        HelpViewController *help = [[HelpViewController alloc]init];
+        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:help];
+        [self presentViewController:nc animated:YES completion:nil];
+        
+    } else if (sender.tag == 103) {
+        
     }
 }
 

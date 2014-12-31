@@ -8,12 +8,14 @@
 
 #import "SetViewController.h"
 
-@interface SetViewController (){
-    UITableView *_tableView;
-    NSArray *_two1Array;
-    NSArray *_two2Array;
-    NSArray *_oneArray;
-    UISwitch *_KGSwitch;
+@interface SetViewController ()<ASIHTTPRequestDelegate>
+{
+    UITableView         *_tableView;
+    NSArray             *_two1Array;
+    NSArray             *_two2Array;
+    NSArray             *_oneArray;
+    UISwitch            *_KGSwitch;
+    LoginModel          *model;
 }
 
 @end
@@ -34,6 +36,9 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    model = [CommonUtil getUserModel];
+    
     UILabel *topTitle = [[UILabel alloc]initWithFrame:CGRectMake(140, 0, 40, 44)];
     topTitle.text = @"设置";
     topTitle.font = [UIFont systemFontOfSize:18];
@@ -199,6 +204,26 @@
         LoveViewController *love = [[LoveViewController alloc] init];
         UINavigationController *nv = [[UINavigationController alloc]initWithRootViewController:love];
         [self presentViewController:nv animated:YES completion:nil];
+    } else if (indexPath.row == 12) {
+        [self request];
+        [self dismissViewControllerAnimated:YES completion:nil];
+    }
+}
+#pragma mark - 解析
+- (void)request
+{
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@user/logout/%@",BaseURL,model.access_token]]];
+    NSLog(@"result == %@",model.access_token);
+    request.delegate = self;
+    [request setTimeOutSeconds:100];
+    [request startAsynchronous];
+}
+
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+    if ([result isKindOfClass:[NSDictionary class]]) {
+        NSLog(@"result == %@",[result objectForKey:@"code"]);
     }
 }
 

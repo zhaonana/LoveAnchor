@@ -360,7 +360,7 @@
 		F70EE5B21A4D3A7A00A601C0 /* LoveViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = F70EE5B01A4D3A7A00A601C0 /* LoveViewController.xib */; };
 		F70EE5B51A4D429000A601C0 /* logo.png in Resources */ = {isa = PBXBuildFile; fileRef = F70EE5B31A4D429000A601C0 /* logo.png */; };
 		F70EE5B61A4D429000A601C0 /* logo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F70EE5B41A4D429000A601C0 /* logo@2x.png */; };
-		F713022A1A53B5AE00E67EE0 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F71302291A53B5AE00E67EE0 /* HelpViewController.m */; };
+		F713022D1A540EDC00E67EE0 /* HelpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F713022C1A540EDC00E67EE0 /* HelpViewController.m */; };
 		F71890F11A12195B005ECCA9 /* huangV1.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890ED1A12195B005ECCA9 /* huangV1.png */; };
 		F71890F21A12195B005ECCA9 /* huangV1@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890EE1A12195B005ECCA9 /* huangV1@2x.png */; };
 		F71890F31A12195B005ECCA9 /* ziV1.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890EF1A12195B005ECCA9 /* ziV1.png */; };
@@ -368,6 +368,20 @@
 		F71890F81A121ADF005ECCA9 /* guoqiVIP.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890F51A121ADF005ECCA9 /* guoqiVIP.png */; };
 		F71890F91A121ADF005ECCA9 /* guoqiVIP@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890F61A121ADF005ECCA9 /* guoqiVIP@2x.png */; };
 		F71890FA1A121ADF005ECCA9 /* jiqiren@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890F71A121ADF005ECCA9 /* jiqiren@2x.png */; };
+		F73C5BA21A591F370020DBD6 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BA11A591F370020DBD6 /* index.html */; };
+		F73C5BAD1A5931480020DBD6 /* MyBadgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F73C5BAC1A5931480020DBD6 /* MyBadgeViewController.m */; };
+		F73C5BB11A5934100020DBD6 /* MyBadgeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F73C5BAF1A5934100020DBD6 /* MyBadgeTableViewCell.m */; };
+		F73C5BB21A5934100020DBD6 /* MyBadgeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BB01A5934100020DBD6 /* MyBadgeTableViewCell.xib */; };
+		F73C5BBD1A5975910020DBD6 /* xinlangweibo.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BB31A5975910020DBD6 /* xinlangweibo.png */; };
+		F73C5BBE1A5975910020DBD6 /* QQkongjian.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BB41A5975910020DBD6 /* QQkongjian.png */; };
+		F73C5BBF1A5975910020DBD6 /* weixin.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BB51A5975910020DBD6 /* weixin.png */; };
+		F73C5BC01A5975910020DBD6 /* pengyouquan@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BB61A5975910020DBD6 /* pengyouquan@2x.png */; };
+		F73C5BC11A5975910020DBD6 /* xinlangweibo@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BB71A5975910020DBD6 /* xinlangweibo@2x.png */; };
+		F73C5BC21A5975910020DBD6 /* QQkongjian@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BB81A5975910020DBD6 /* QQkongjian@2x.png */; };
+		F73C5BC31A5975910020DBD6 /* QQhaoyou@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BB91A5975910020DBD6 /* QQhaoyou@2x.png */; };
+		F73C5BC41A5975910020DBD6 /* weixin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BBA1A5975910020DBD6 /* weixin@2x.png */; };
+		F73C5BC51A5975910020DBD6 /* QQhaoyou.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BBB1A5975910020DBD6 /* QQhaoyou.png */; };
+		F73C5BC61A5975910020DBD6 /* pengyouquan.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BBC1A5975910020DBD6 /* pengyouquan.png */; };
 		F7456E1D1998609100CF28E8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7456E1C1998609100CF28E8 /* Foundation.framework */; };
 		F7456E1F1998609100CF28E8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7456E1E1998609100CF28E8 /* CoreGraphics.framework */; };
 		F7456E211998609100CF28E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7456E201998609100CF28E8 /* UIKit.framework */; };
@@ -1076,8 +1090,8 @@
 		F70EE5B01A4D3A7A00A601C0 /* LoveViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = LoveViewController.xib; sourceTree = "<group>"; };
 		F70EE5B31A4D429000A601C0 /* logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = logo.png; sourceTree = "<group>"; };
 		F70EE5B41A4D429000A601C0 /* logo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "logo@2x.png"; sourceTree = "<group>"; };
-		F71302281A53B5AE00E67EE0 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
-		F71302291A53B5AE00E67EE0 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
+		F713022B1A540EDC00E67EE0 /* HelpViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HelpViewController.h; sourceTree = "<group>"; };
+		F713022C1A540EDC00E67EE0 /* HelpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HelpViewController.m; sourceTree = "<group>"; };
 		F71890ED1A12195B005ECCA9 /* huangV1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = huangV1.png; sourceTree = "<group>"; };
 		F71890EE1A12195B005ECCA9 /* huangV1@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "huangV1@2x.png"; sourceTree = "<group>"; };
 		F71890EF1A12195B005ECCA9 /* ziV1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ziV1.png; sourceTree = "<group>"; };
@@ -1085,6 +1099,22 @@
 		F71890F51A121ADF005ECCA9 /* guoqiVIP.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = guoqiVIP.png; sourceTree = "<group>"; };
 		F71890F61A121ADF005ECCA9 /* guoqiVIP@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guoqiVIP@2x.png"; sourceTree = "<group>"; };
 		F71890F71A121ADF005ECCA9 /* jiqiren@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jiqiren@2x.png"; sourceTree = "<group>"; };
+		F73C5BA11A591F370020DBD6 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
+		F73C5BAB1A5931480020DBD6 /* MyBadgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyBadgeViewController.h; sourceTree = "<group>"; };
+		F73C5BAC1A5931480020DBD6 /* MyBadgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyBadgeViewController.m; sourceTree = "<group>"; };
+		F73C5BAE1A5934100020DBD6 /* MyBadgeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyBadgeTableViewCell.h; sourceTree = "<group>"; };
+		F73C5BAF1A5934100020DBD6 /* MyBadgeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyBadgeTableViewCell.m; sourceTree = "<group>"; };
+		F73C5BB01A5934100020DBD6 /* MyBadgeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyBadgeTableViewCell.xib; sourceTree = "<group>"; };
+		F73C5BB31A5975910020DBD6 /* xinlangweibo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xinlangweibo.png; sourceTree = "<group>"; };
+		F73C5BB41A5975910020DBD6 /* QQkongjian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QQkongjian.png; sourceTree = "<group>"; };
+		F73C5BB51A5975910020DBD6 /* weixin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weixin.png; sourceTree = "<group>"; };
+		F73C5BB61A5975910020DBD6 /* pengyouquan@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "pengyouquan@2x.png"; sourceTree = "<group>"; };
+		F73C5BB71A5975910020DBD6 /* xinlangweibo@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "xinlangweibo@2x.png"; sourceTree = "<group>"; };
+		F73C5BB81A5975910020DBD6 /* QQkongjian@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "QQkongjian@2x.png"; sourceTree = "<group>"; };
+		F73C5BB91A5975910020DBD6 /* QQhaoyou@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "QQhaoyou@2x.png"; sourceTree = "<group>"; };
+		F73C5BBA1A5975910020DBD6 /* weixin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@2x.png"; sourceTree = "<group>"; };
+		F73C5BBB1A5975910020DBD6 /* QQhaoyou.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QQhaoyou.png; sourceTree = "<group>"; };
+		F73C5BBC1A5975910020DBD6 /* pengyouquan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pengyouquan.png; sourceTree = "<group>"; };
 		F7456E191998609100CF28E8 /* LoveAnchor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoveAnchor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7456E1C1998609100CF28E8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F7456E1E1998609100CF28E8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -2062,6 +2092,7 @@
 		F7456E221998609100CF28E8 /* LoveAnchor */ = {
 			isa = PBXGroup;
 			children = (
+				F73C5BA11A591F370020DBD6 /* index.html */,
 				F7456E2B1998609100CF28E8 /* AppDelegate.h */,
 				F7456E2C1998609100CF28E8 /* AppDelegate.m */,
 				F7B70E621A1E0F970064D56E /* SliderViewController.h */,
@@ -2137,6 +2168,16 @@
 				39B662661A2499DE0033D28C /* usericon */,
 				F785D6791A033223002B32E9 /* touxiangquan.png */,
 				F70EE5B31A4D429000A601C0 /* logo.png */,
+				F73C5BB31A5975910020DBD6 /* xinlangweibo.png */,
+				F73C5BB41A5975910020DBD6 /* QQkongjian.png */,
+				F73C5BB51A5975910020DBD6 /* weixin.png */,
+				F73C5BB61A5975910020DBD6 /* pengyouquan@2x.png */,
+				F73C5BB71A5975910020DBD6 /* xinlangweibo@2x.png */,
+				F73C5BB81A5975910020DBD6 /* QQkongjian@2x.png */,
+				F73C5BB91A5975910020DBD6 /* QQhaoyou@2x.png */,
+				F73C5BBA1A5975910020DBD6 /* weixin@2x.png */,
+				F73C5BBB1A5975910020DBD6 /* QQhaoyou.png */,
+				F73C5BBC1A5975910020DBD6 /* pengyouquan.png */,
 				F70EE5B41A4D429000A601C0 /* logo@2x.png */,
 				F756ED5C1A3EE5DC00B170A7 /* shangla.png */,
 				F756ED5D1A3EE5DC00B170A7 /* shangla@2x.png */,
@@ -2571,6 +2612,8 @@
 		F7C7CCDC19ADB27A003FCC03 /* 左菜单 */ = {
 			isa = PBXGroup;
 			children = (
+				F713022B1A540EDC00E67EE0 /* HelpViewController.h */,
+				F713022C1A540EDC00E67EE0 /* HelpViewController.m */,
 				F7C7CCDE19ADB2D3003FCC03 /* LeftMenuViewController.h */,
 				F7C7CCDF19ADB2D3003FCC03 /* LeftMenuViewController.m */,
 				F7BEBDA119E8E67000D7CCE3 /* StoreViewController.h */,
@@ -2587,6 +2630,11 @@
 				F7BE191619E7CB6D009C6C8C /* VerifyViewController.m */,
 				F7B0C9A419B9B53600CE7B23 /* PersonageViewController.h */,
 				F7B0C9A519B9B53600CE7B23 /* PersonageViewController.m */,
+				F73C5BAB1A5931480020DBD6 /* MyBadgeViewController.h */,
+				F73C5BAC1A5931480020DBD6 /* MyBadgeViewController.m */,
+				F73C5BAE1A5934100020DBD6 /* MyBadgeTableViewCell.h */,
+				F73C5BAF1A5934100020DBD6 /* MyBadgeTableViewCell.m */,
+				F73C5BB01A5934100020DBD6 /* MyBadgeTableViewCell.xib */,
 				F703DB351A174D5200C53D4C /* SeatManageViewController.h */,
 				F703DB361A174D5200C53D4C /* SeatManageViewController.m */,
 				F7CD8DDA1A1B413D00E7E953 /* SeatManageTableViewCell.h */,
@@ -2606,8 +2654,6 @@
 				F70EE5AE1A4D3A7A00A601C0 /* LoveViewController.h */,
 				F70EE5AF1A4D3A7A00A601C0 /* LoveViewController.m */,
 				F70EE5B01A4D3A7A00A601C0 /* LoveViewController.xib */,
-				F71302281A53B5AE00E67EE0 /* HelpViewController.h */,
-				F71302291A53B5AE00E67EE0 /* HelpViewController.m */,
 				F70EE5AB1A4C1D6B00A601C0 /* ModifyPassWordViewController.h */,
 				F70EE5AC1A4C1D6B00A601C0 /* ModifyPassWordViewController.m */,
 			);
@@ -2733,6 +2779,7 @@
 				F7456EE11998692300CF28E8 /* sousuoxuanzhong@2x.png in Resources */,
 				39B663581A24A3BD0033D28C /* 14zhubo.png in Resources */,
 				39B663C21A24A3BD0033D28C /* 7zhubo.png in Resources */,
+				F73C5BC31A5975910020DBD6 /* QQhaoyou@2x.png in Resources */,
 				F7456F001998692300CF28E8 /* zuanshi@2x.png in Resources */,
 				39BB5D221A3FD8C500BA7B20 /* f_static_053.png in Resources */,
 				F771335E1A243F6F00568D39 /* qiyongdianji.png in Resources */,
@@ -2757,6 +2804,7 @@
 				F79E7D761A0B6DE900DDBFC5 /* city.plist in Resources */,
 				39BC423E1A47F56600271572 /* xiugainicheng@2x.png in Resources */,
 				F78FA86219CBFAD900445235 /* xuweiyidai@2x.png in Resources */,
+				F73C5BBF1A5975910020DBD6 /* weixin.png in Resources */,
 				39C9CDF41A4AACC8005410A0 /* aizhubo3@2x.png in Resources */,
 				F78FA86519CBFAD900445235 /* yumao.png in Resources */,
 				F7456EB41998692300CF28E8 /* dingbuxuanzhongzuo.png in Resources */,
@@ -2828,6 +2876,7 @@
 				F78FA84E19CBFAD900445235 /* qiangzuo@2x.png in Resources */,
 				F7456EDE1998692300CF28E8 /* sousuoweixuanzhong.png in Resources */,
 				39B663731A24A3BD0033D28C /* 26zhubo@2x.png in Resources */,
+				F73C5BBE1A5975910020DBD6 /* QQkongjian.png in Resources */,
 				F785D67E1A03367F002B32E9 /* morentouxiang@2x.png in Resources */,
 				39B662C81A2499DE0033D28C /* 5fu@2x.png in Resources */,
 				39BB5CF81A3FD8C500BA7B20 /* f_static_011.png in Resources */,
@@ -2846,6 +2895,7 @@
 				F756ED5A1A3EE1E400B170A7 /* fasongdianji.png in Resources */,
 				39B663A41A24A3BD0033D28C /* 49zhubo.png in Resources */,
 				39B6629E1A2499DE0033D28C /* 10fu@2x.png in Resources */,
+				F73C5BBD1A5975910020DBD6 /* xinlangweibo.png in Resources */,
 				39B663B41A24A3BD0033D28C /* 56zhubo.png in Resources */,
 				39BB5D151A3FD8C500BA7B20 /* f_static_040.png in Resources */,
 				F78FA85F19CBFAD900445235 /* tianjiadaozhuomian@2x.png in Resources */,
@@ -2874,6 +2924,7 @@
 				39B6636E1A24A3BD0033D28C /* 24zhubo.png in Resources */,
 				39BB5D261A3FD8C500BA7B20 /* f_static_057.png in Resources */,
 				39B663641A24A3BD0033D28C /* 1zhubo.png in Resources */,
+				F73C5BB21A5934100020DBD6 /* MyBadgeTableViewCell.xib in Resources */,
 				39B663811A24A3BD0033D28C /* 32zhubo@2x.png in Resources */,
 				39B663A91A24A3BD0033D28C /* 50zhubo@2x.png in Resources */,
 				39BB5C851A3AF31300BA7B20 /* RankCell.xib in Resources */,
@@ -2888,6 +2939,7 @@
 				F7456ECD1998692300CF28E8 /* paihangbangdiyiming@2x.png in Resources */,
 				F7456EDC1998692300CF28E8 /* shuzidise.png in Resources */,
 				F7B5B89219EE5A990006ACCB /* 43400.png in Resources */,
+				F73C5BC41A5975910020DBD6 /* weixin@2x.png in Resources */,
 				F7456EB11998692300CF28E8 /* dingbuxuanzhong@2x.png in Resources */,
 				F78FA85419CBFAD900445235 /* shipin@2x.png in Resources */,
 				39BB5CF41A3FD8C500BA7B20 /* f_static_007.png in Resources */,
@@ -2895,6 +2947,7 @@
 				F79E7D791A0B6DE900DDBFC5 /* HZAreaPickerView.xib in Resources */,
 				39BB5D291A3FD8C500BA7B20 /* f_static_060.png in Resources */,
 				F78FA84419CBFAD900445235 /* gongliao@2x.png in Resources */,
+				F73C5BA21A591F370020DBD6 /* index.html in Resources */,
 				39B662C41A2499DE0033D28C /* 3fu@2x.png in Resources */,
 				39B6635B1A24A3BD0033D28C /* 15zhubo@2x.png in Resources */,
 				F7456EF01998692300CF28E8 /* zhibodatingweixuanzhong.png in Resources */,
@@ -2958,6 +3011,7 @@
 				F7BE190519E6B720009C6C8C /* shouji@2x.png in Resources */,
 				F7456EBA1998692300CF28E8 /* gerenxinxibeijing.png in Resources */,
 				F756ED5B1A3EE1E400B170A7 /* fasongdianji@2x.png in Resources */,
+				F73C5BC61A5975910020DBD6 /* pengyouquan.png in Resources */,
 				F7456EB21998692300CF28E8 /* dingbuxuanzhongdise.png in Resources */,
 				F771335B1A243F6F00568D39 /* jinyongdianji@2x.png in Resources */,
 				39B663901A24A3BD0033D28C /* 3zhubo.png in Resources */,
@@ -2978,6 +3032,7 @@
 				F7BE190819E6B720009C6C8C /* xiaoqie.png in Resources */,
 				39BB5D1D1A3FD8C500BA7B20 /* f_static_048.png in Resources */,
 				39BB5D341A3FD8C500BA7B20 /* f_static_071.png in Resources */,
+				F73C5BC11A5975910020DBD6 /* xinlangweibo@2x.png in Resources */,
 				39BB5CFF1A3FD8C500BA7B20 /* f_static_018.png in Resources */,
 				39B663791A24A3BD0033D28C /* 29zhubo@2x.png in Resources */,
 				39B663AD1A24A3BD0033D28C /* 52zhubo@2x.png in Resources */,
@@ -3034,6 +3089,7 @@
 				F7456ECE1998692300CF28E8 /* paihangbangweixuanzhong.png in Resources */,
 				39B663991A24A3BD0033D28C /* 43zhubo@2x.png in Resources */,
 				39B663621A24A3BD0033D28C /* 19zhubo.png in Resources */,
+				F73C5BC51A5975910020DBD6 /* QQhaoyou.png in Resources */,
 				39B662BA1A2499DE0033D28C /* 23fu@2x.png in Resources */,
 				F785D67B1A033223002B32E9 /* touxiangquan.png in Resources */,
 				39BB5CF21A3FD8C500BA7B20 /* f_static_005.png in Resources */,
@@ -3094,6 +3150,7 @@
 				39B663931A24A3BD0033D28C /* 40zhubo@2x.png in Resources */,
 				F7456EF51998692300CF28E8 /* zhibofenlei@2x.png in Resources */,
 				39BB5D381A3FD8C500BA7B20 /* f_static_075.png in Resources */,
+				F73C5BC01A5975910020DBD6 /* pengyouquan@2x.png in Resources */,
 				39B662A91A2499DE0033D28C /* 16fu.png in Resources */,
 				39BC42371A47F56600271572 /* liaotianbeijing.png in Resources */,
 				F78FA85A19CBFAD900445235 /* shoucangdianji@2x.png in Resources */,
@@ -3188,6 +3245,7 @@
 				39B663671A24A3BD0033D28C /* 20zhubo@2x.png in Resources */,
 				39B662A51A2499DE0033D28C /* 14fu.png in Resources */,
 				F7B6C9B91A36BD3400DEF262 /* guanbishipin.png in Resources */,
+				F73C5BC21A5975910020DBD6 /* QQkongjian@2x.png in Resources */,
 				39B55D901A2D64940088B6E5 /* WeiboSDK.bundle in Resources */,
 				F7B6C9C51A3AD39A00DEF262 /* aizhubo.png in Resources */,
 				39B663C51A24A3BD0033D28C /* 8zhubo@2x.png in Resources */,
@@ -3276,7 +3334,7 @@
 				39B663CE1A257EF30033D28C /* LevelInfoModel.m in Sources */,
 				F7456F16199871A500CF28E8 /* AttentionViewController.m in Sources */,
 				F7B5B89819EFC0AE0006ACCB /* TwoTableViewCell.m in Sources */,
-				F713022A1A53B5AE00E67EE0 /* HelpViewController.m in Sources */,
+				F713022D1A540EDC00E67EE0 /* HelpViewController.m in Sources */,
 				F70EE5AD1A4C1D6B00A601C0 /* ModifyPassWordViewController.m in Sources */,
 				F7C7CCD019AD9007003FCC03 /* UIImageView+WebCache.m in Sources */,
 				F7BE191419E7941A009C6C8C /* RegisterViewController.m in Sources */,
@@ -3293,6 +3351,7 @@
 				F75D703619F26503004C144B /* TwoCell.m in Sources */,
 				39BB5C721A3AF2EA00BA7B20 /* MJRefreshFooterView.m in Sources */,
 				3922656C1A359DEC00767721 /* SocketIOPacket.m in Sources */,
+				F73C5BAD1A5931480020DBD6 /* MyBadgeViewController.m in Sources */,
 				39BB5C801A3AF2FF00BA7B20 /* TTTAttributedLabel.m in Sources */,
 				39BB5C711A3AF2EA00BA7B20 /* MJRefreshConst.m in Sources */,
 				F7C7CCE019ADB2D3003FCC03 /* LeftMenuViewController.m in Sources */,
@@ -3323,6 +3382,7 @@
 				F7C7CCCD19AD9007003FCC03 /* SDWebImageManager.m in Sources */,
 				F7B70E5E1A1C5F680064D56E /* SeatManageModel.m in Sources */,
 				F7B1D7C119C83F3000C26A16 /* LoginViewController.m in Sources */,
+				F73C5BB11A5934100020DBD6 /* MyBadgeTableViewCell.m in Sources */,
 				F78FAF2A1A0C96030055BEFC /* YellowVCollectionViewCell.m in Sources */,
 				39BB5C5C1A3AF2D400BA7B20 /* CommonUtil.m in Sources */,
 				F78FA81019CA976B00445235 /* PlayViewController.m in Sources */,
@@ -3473,8 +3533,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Wu binjie (F66XSBWD3U)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wu binjie (F66XSBWD3U)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Haiyan Du (2MHBU9SBXT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Haiyan Du (2MHBU9SBXT)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/LoveAnchor/ShareSDK/Connection",
@@ -3499,11 +3559,7 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-<<<<<<< HEAD
-				PROVISIONING_PROFILE = "f5b7ef40-a976-4442-83f2-54b904cd6cbf";
-=======
 				PROVISIONING_PROFILE = "05bcef7b-1705-4c93-bbb0-f5bb77e3efe7";
->>>>>>> bc368bff3716da0467f4533a7200be416b95763a
 				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = app;
 			};
@@ -3514,8 +3570,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
-				CODE_SIGN_IDENTITY = "iPhone Developer: Wu binjie (F66XSBWD3U)";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Wu binjie (F66XSBWD3U)";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Haiyan Du (2MHBU9SBXT)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Haiyan Du (2MHBU9SBXT)";
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/LoveAnchor/ShareSDK/Connection",
@@ -3536,11 +3592,7 @@
 				);
 				OTHER_LDFLAGS = "-all_load";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-<<<<<<< HEAD
-				PROVISIONING_PROFILE = "f5b7ef40-a976-4442-83f2-54b904cd6cbf";
-=======
 				PROVISIONING_PROFILE = "05bcef7b-1705-4c93-bbb0-f5bb77e3efe7";
->>>>>>> bc368bff3716da0467f4533a7200be416b95763a
 				SDKROOT = iphoneos;
 				WRAPPER_EXTENSION = app;
 			};

@@ -8,7 +8,7 @@
 
 #import "LoveViewController.h"
 
-@interface LoveViewController ()
+@interface LoveViewController ()<ASIHTTPRequestDelegate>
 @property (weak, nonatomic) IBOutlet UILabel *versonLabel;
 
 @end
@@ -64,10 +64,31 @@
         [self presentViewController:nc animated:YES completion:nil];
         
     } else if (sender.tag == 103) {
-        
+        [self request];
     }
 }
+- (void)request
+{
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:[NSString stringWithFormat:@"%@sys/show_download2ios_info",BaseURL]]];
+    request.delegate = self;
+    [request setTimeOutSeconds:100];
+    [request startAsynchronous];
+}
 
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    NSLog(@"requse == %@",request.responseString);
+    
+    id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+    if ([result isKindOfClass:[NSDictionary class]]) {
+        int code = [[result objectForKey:@"code"] intValue];
+        if (code == 1) {
+            
+        }else if (code == 30405) {
+            
+        }
+    }
+}
 
 - (void)didReceiveMemoryWarning
 {

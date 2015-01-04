@@ -69,6 +69,8 @@
     #import "ModifyPassWordViewController.h"
     #import "LoveViewController.h"
     #import "HelpViewController.h"
+    #import "MyBadgeViewController.h"
+    #import "MyBadgeTableViewCell.h"
 #endif
 
 

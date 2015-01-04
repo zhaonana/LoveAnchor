@@ -321,6 +321,8 @@
             } else {
                 label3.text = @"保密";
             }
+        } else {
+            label3.text = @"保密";
         }
         
         label3.textColor = [UIColor lightGrayColor];
@@ -467,12 +469,14 @@
         [cell addSubview:label10];
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     } else if (indexPath.section == 4 && indexPath.row == 0) {
-        UILabel *label13 = [[UILabel alloc]initWithFrame:CGRectMake(228, 0, 60, 42)];
+        UILabel *label13 = [[UILabel alloc]initWithFrame:CGRectMake(120, 0, 165, 42)];
         label13.font = [UIFont systemFontOfSize:14];
+        label13.textAlignment = NSTextAlignmentRight;
+        label13.backgroundColor = [UIColor clearColor];
         if (mySeat.pic_url.length) {
             label13.text = @"管理座驾";
         } else {
-            label13.text = @"前去购买";
+            label13.text = @"你还没有座驾，前去购买";
         }
         label13.textColor = textFontColor;
         cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
@@ -485,7 +489,9 @@
         
     } else if (indexPath.section == 4 && indexPath.row == 1) {
         for (int i = 0; i<HZIDArray.count; i++) {
-            UIImageView *HzImageView = [[UIImageView alloc]initWithFrame:CGRectMake(55+20*i, 13.5, 15, 15)];
+            CGFloat s = (230-15*HZIDArray.count)/(HZIDArray.count-1);
+            NSLog(@"s==%f",s);
+            UIImageView *HzImageView = [[UIImageView alloc]initWithFrame:CGRectMake(55+(15*i+s*i), 13.5, 15, 15)];
             [HzImageView setImageWithURL:[NSURL URLWithString:HZImageArray[i]]];
             HzImageView.backgroundColor = [UIColor clearColor];
             for (int j = 0; j < HZhightIDArray.count; j++) {
@@ -687,7 +693,10 @@
         }
         
     } else if (indexPath.section == 4 && indexPath.row == 1) {
-//        [self badgeRequest];
+        MyBadgeViewController *badge = [[MyBadgeViewController alloc]init];
+        badge._id = [dict objectForKey:@"_id"];
+        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:badge];
+        [self presentViewController:nc animated:YES completion:nil];
     }
 }
 

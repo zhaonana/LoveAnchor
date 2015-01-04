@@ -42,6 +42,14 @@
     returnButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [returnButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.navigationController.navigationBar addSubview:returnButton];
+    
+    UIWebView *webView = [[UIWebView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+    [self.view addSubview:webView];
+    //获取文件路径
+    NSString *filePath = [[NSBundle mainBundle]pathForResource:@"index" ofType:@"html"];
+    NSURL *url = [NSURL fileURLWithPath:filePath];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    [webView loadRequest:request];
 }
 
 - (void)buttonClick:(UIButton *)button

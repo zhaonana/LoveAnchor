@@ -697,6 +697,7 @@
         badge._id = [dict objectForKey:@"_id"];
         UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:badge];
         [self presentViewController:nc animated:YES completion:nil];
+        
     }
 }
 

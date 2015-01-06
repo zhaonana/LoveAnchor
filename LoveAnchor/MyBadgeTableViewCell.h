@@ -2,16 +2,18 @@
 //  MyBadgeTableViewCell.h
 //  LoveAnchor
 //
-//  Created by zhongqinglongtu on 15-1-4.
+//  Created by zhongqinglongtu on 15-1-5.
 //  Copyright (c) 2015年 zhongqinglongtu. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
 
 @interface MyBadgeTableViewCell : UITableViewCell
-@property (weak, nonatomic) IBOutlet UIImageView *IconImageView;
-@property (weak, nonatomic) IBOutlet UILabel *contenLab;
-@property (weak, nonatomic) IBOutlet UILabel *TimeLabel;
-@property (weak, nonatomic) IBOutlet UILabel *DemandLabel;
+
+@property (nonatomic, strong)UIImageView    *badgeImageView;
+@property (nonatomic, strong)UILabel        *titleLabel;
+@property (nonatomic, strong)UILabel        *timeLabel;
+@property (nonatomic, strong)UILabel        *introduceLabel;
+@property (nonatomic, strong)UILabel        *moneyLabel;
 
 @end

@@ -369,9 +369,6 @@
 		F71890F91A121ADF005ECCA9 /* guoqiVIP@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890F61A121ADF005ECCA9 /* guoqiVIP@2x.png */; };
 		F71890FA1A121ADF005ECCA9 /* jiqiren@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F71890F71A121ADF005ECCA9 /* jiqiren@2x.png */; };
 		F73C5BA21A591F370020DBD6 /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BA11A591F370020DBD6 /* index.html */; };
-		F73C5BAD1A5931480020DBD6 /* MyBadgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F73C5BAC1A5931480020DBD6 /* MyBadgeViewController.m */; };
-		F73C5BB11A5934100020DBD6 /* MyBadgeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F73C5BAF1A5934100020DBD6 /* MyBadgeTableViewCell.m */; };
-		F73C5BB21A5934100020DBD6 /* MyBadgeTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BB01A5934100020DBD6 /* MyBadgeTableViewCell.xib */; };
 		F73C5BBD1A5975910020DBD6 /* xinlangweibo.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BB31A5975910020DBD6 /* xinlangweibo.png */; };
 		F73C5BBE1A5975910020DBD6 /* QQkongjian.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BB41A5975910020DBD6 /* QQkongjian.png */; };
 		F73C5BBF1A5975910020DBD6 /* weixin.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BB51A5975910020DBD6 /* weixin.png */; };
@@ -382,6 +379,8 @@
 		F73C5BC41A5975910020DBD6 /* weixin@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BBA1A5975910020DBD6 /* weixin@2x.png */; };
 		F73C5BC51A5975910020DBD6 /* QQhaoyou.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BBB1A5975910020DBD6 /* QQhaoyou.png */; };
 		F73C5BC61A5975910020DBD6 /* pengyouquan.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BBC1A5975910020DBD6 /* pengyouquan.png */; };
+		F73C5BC91A5A76C90020DBD6 /* MyBadgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F73C5BC81A5A76C90020DBD6 /* MyBadgeViewController.m */; };
+		F73C5BD11A5A7E0B0020DBD6 /* MyBadgeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F73C5BD01A5A7E0B0020DBD6 /* MyBadgeTableViewCell.m */; };
 		F7456E1D1998609100CF28E8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7456E1C1998609100CF28E8 /* Foundation.framework */; };
 		F7456E1F1998609100CF28E8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7456E1E1998609100CF28E8 /* CoreGraphics.framework */; };
 		F7456E211998609100CF28E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7456E201998609100CF28E8 /* UIKit.framework */; };
@@ -1100,11 +1099,6 @@
 		F71890F61A121ADF005ECCA9 /* guoqiVIP@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "guoqiVIP@2x.png"; sourceTree = "<group>"; };
 		F71890F71A121ADF005ECCA9 /* jiqiren@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "jiqiren@2x.png"; sourceTree = "<group>"; };
 		F73C5BA11A591F370020DBD6 /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
-		F73C5BAB1A5931480020DBD6 /* MyBadgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyBadgeViewController.h; sourceTree = "<group>"; };
-		F73C5BAC1A5931480020DBD6 /* MyBadgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyBadgeViewController.m; sourceTree = "<group>"; };
-		F73C5BAE1A5934100020DBD6 /* MyBadgeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyBadgeTableViewCell.h; sourceTree = "<group>"; };
-		F73C5BAF1A5934100020DBD6 /* MyBadgeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyBadgeTableViewCell.m; sourceTree = "<group>"; };
-		F73C5BB01A5934100020DBD6 /* MyBadgeTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyBadgeTableViewCell.xib; sourceTree = "<group>"; };
 		F73C5BB31A5975910020DBD6 /* xinlangweibo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = xinlangweibo.png; sourceTree = "<group>"; };
 		F73C5BB41A5975910020DBD6 /* QQkongjian.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QQkongjian.png; sourceTree = "<group>"; };
 		F73C5BB51A5975910020DBD6 /* weixin.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = weixin.png; sourceTree = "<group>"; };
@@ -1115,6 +1109,10 @@
 		F73C5BBA1A5975910020DBD6 /* weixin@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "weixin@2x.png"; sourceTree = "<group>"; };
 		F73C5BBB1A5975910020DBD6 /* QQhaoyou.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = QQhaoyou.png; sourceTree = "<group>"; };
 		F73C5BBC1A5975910020DBD6 /* pengyouquan.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = pengyouquan.png; sourceTree = "<group>"; };
+		F73C5BC71A5A76C90020DBD6 /* MyBadgeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyBadgeViewController.h; sourceTree = "<group>"; };
+		F73C5BC81A5A76C90020DBD6 /* MyBadgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyBadgeViewController.m; sourceTree = "<group>"; };
+		F73C5BCF1A5A7E0B0020DBD6 /* MyBadgeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyBadgeTableViewCell.h; sourceTree = "<group>"; };
+		F73C5BD01A5A7E0B0020DBD6 /* MyBadgeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyBadgeTableViewCell.m; sourceTree = "<group>"; };
 		F7456E191998609100CF28E8 /* LoveAnchor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoveAnchor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7456E1C1998609100CF28E8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F7456E1E1998609100CF28E8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -2630,11 +2628,10 @@
 				F7BE191619E7CB6D009C6C8C /* VerifyViewController.m */,
 				F7B0C9A419B9B53600CE7B23 /* PersonageViewController.h */,
 				F7B0C9A519B9B53600CE7B23 /* PersonageViewController.m */,
-				F73C5BAB1A5931480020DBD6 /* MyBadgeViewController.h */,
-				F73C5BAC1A5931480020DBD6 /* MyBadgeViewController.m */,
-				F73C5BAE1A5934100020DBD6 /* MyBadgeTableViewCell.h */,
-				F73C5BAF1A5934100020DBD6 /* MyBadgeTableViewCell.m */,
-				F73C5BB01A5934100020DBD6 /* MyBadgeTableViewCell.xib */,
+				F73C5BC71A5A76C90020DBD6 /* MyBadgeViewController.h */,
+				F73C5BC81A5A76C90020DBD6 /* MyBadgeViewController.m */,
+				F73C5BCF1A5A7E0B0020DBD6 /* MyBadgeTableViewCell.h */,
+				F73C5BD01A5A7E0B0020DBD6 /* MyBadgeTableViewCell.m */,
 				F703DB351A174D5200C53D4C /* SeatManageViewController.h */,
 				F703DB361A174D5200C53D4C /* SeatManageViewController.m */,
 				F7CD8DDA1A1B413D00E7E953 /* SeatManageTableViewCell.h */,
@@ -2924,7 +2921,6 @@
 				39B6636E1A24A3BD0033D28C /* 24zhubo.png in Resources */,
 				39BB5D261A3FD8C500BA7B20 /* f_static_057.png in Resources */,
 				39B663641A24A3BD0033D28C /* 1zhubo.png in Resources */,
-				F73C5BB21A5934100020DBD6 /* MyBadgeTableViewCell.xib in Resources */,
 				39B663811A24A3BD0033D28C /* 32zhubo@2x.png in Resources */,
 				39B663A91A24A3BD0033D28C /* 50zhubo@2x.png in Resources */,
 				39BB5C851A3AF31300BA7B20 /* RankCell.xib in Resources */,
@@ -3351,7 +3347,7 @@
 				F75D703619F26503004C144B /* TwoCell.m in Sources */,
 				39BB5C721A3AF2EA00BA7B20 /* MJRefreshFooterView.m in Sources */,
 				3922656C1A359DEC00767721 /* SocketIOPacket.m in Sources */,
-				F73C5BAD1A5931480020DBD6 /* MyBadgeViewController.m in Sources */,
+				F73C5BC91A5A76C90020DBD6 /* MyBadgeViewController.m in Sources */,
 				39BB5C801A3AF2FF00BA7B20 /* TTTAttributedLabel.m in Sources */,
 				39BB5C711A3AF2EA00BA7B20 /* MJRefreshConst.m in Sources */,
 				F7C7CCE019ADB2D3003FCC03 /* LeftMenuViewController.m in Sources */,
@@ -3382,7 +3378,7 @@
 				F7C7CCCD19AD9007003FCC03 /* SDWebImageManager.m in Sources */,
 				F7B70E5E1A1C5F680064D56E /* SeatManageModel.m in Sources */,
 				F7B1D7C119C83F3000C26A16 /* LoginViewController.m in Sources */,
-				F73C5BB11A5934100020DBD6 /* MyBadgeTableViewCell.m in Sources */,
+				F73C5BD11A5A7E0B0020DBD6 /* MyBadgeTableViewCell.m in Sources */,
 				F78FAF2A1A0C96030055BEFC /* YellowVCollectionViewCell.m in Sources */,
 				39BB5C5C1A3AF2D400BA7B20 /* CommonUtil.m in Sources */,
 				F78FA81019CA976B00445235 /* PlayViewController.m in Sources */,

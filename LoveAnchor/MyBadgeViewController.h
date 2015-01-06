@@ -2,7 +2,7 @@
 //  MyBadgeViewController.h
 //  LoveAnchor
 //
-//  Created by zhongqinglongtu on 15-1-4.
+//  Created by zhongqinglongtu on 15-1-5.
 //  Copyright (c) 2015年 zhongqinglongtu. All rights reserved.
 //
 
@@ -10,6 +10,6 @@
 
 @interface MyBadgeViewController : UIViewController
 
-@property (nonatomic, copy) NSString *_id;
+@property (nonatomic, strong)NSString *_id;
 
 @end

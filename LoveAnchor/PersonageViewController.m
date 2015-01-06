@@ -490,7 +490,6 @@
     } else if (indexPath.section == 4 && indexPath.row == 1) {
         for (int i = 0; i<HZIDArray.count; i++) {
             CGFloat s = (230-15*HZIDArray.count)/(HZIDArray.count-1);
-            NSLog(@"s==%f",s);
             UIImageView *HzImageView = [[UIImageView alloc]initWithFrame:CGRectMake(55+(15*i+s*i), 13.5, 15, 15)];
             [HzImageView setImageWithURL:[NSURL URLWithString:HZImageArray[i]]];
             HzImageView.backgroundColor = [UIColor clearColor];

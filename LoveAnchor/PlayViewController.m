@@ -15,6 +15,7 @@
 #import "NSString+TrimmingAdditions.h"
 #import "RankCell.h"
 #import "UIImageView+BoundsAdditions.h"
+#import "ShareView.h"
 
 #define REFRESH_PLAYVIEW_NOTIFITION @"refreshPlayViewNotifition"
 
@@ -1069,8 +1070,10 @@
             [self presentViewController:datum animated:YES completion:nil];
         }
             break;
-        case 102:
-            
+        case 102: {
+            ShareView *shareView = [[[NSBundle mainBundle] loadNibNamed:@"ShareView" owner:self options:nil] lastObject];
+            [self.view addSubview:shareView];
+        }
             break;
         case 103: {
             if (tap) {

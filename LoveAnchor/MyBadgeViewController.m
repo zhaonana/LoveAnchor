@@ -126,7 +126,6 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"123 == %@",request.responseString);
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
     if ([result isKindOfClass:[NSDictionary class]]) {
         NSArray *array = [result objectForKey:@"data"];
@@ -136,10 +135,10 @@
             [timeArray addObject:[dict objectForKey:@"expiry_days"]];
             [introduceArray addObject:[dict objectForKey:@"desc"]];
             [moneyArray addObject:[dict objectForKey:@"sum_cost"]];
-            [zongArray addObject:[dict objectForKey:@"coins"]];
+            NSNumber *coins = [dict objectForKey:@"coins"];
+            [zongArray addObject:coins ? coins : @""];
             
         }
-        NSLog(@"sdcmkl == %@",zongArray);
         [_tableView reloadData];
     }
     

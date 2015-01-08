@@ -82,19 +82,18 @@
     cell.titleLabel.text = [titleArray objectAtIndex:indexPath.row];
     cell.timeLabel.text = [NSString stringWithFormat:@"（点亮后有效期：%@天）",[timeArray objectAtIndex:indexPath.row]];
     cell.introduceLabel.text = [NSString stringWithFormat:@"%@",[introduceArray objectAtIndex:indexPath.row]];
-    
+    cell.moneyLabel.text = [NSString stringWithFormat:@"金豆：%@/%@",[moneyArray objectAtIndex:indexPath.row],[zongArray objectAtIndex:indexPath.row]];
     
     if (indexPath.row == 0 || indexPath.row == 1) {
         [cell.badgeImageView setFrame:CGRectMake(10, 5, 35, 35)];
     } else if (indexPath.row == 2 || indexPath.row == 3 || indexPath.row == 6 || indexPath.row == 7 || indexPath.row == 38) {
         [cell.badgeImageView setFrame:CGRectMake(10, 12.5, 35, 35)];
     } else if (indexPath.row == 4 || indexPath.row == 5 || indexPath.row == 8 || indexPath.row == 9) {
+        [cell.badgeImageView setFrame:CGRectMake(10, 17.5, 35, 35)];
         cell.introduceLabel.frame = CGRectMake(50, 25, 270, 30);
         cell.moneyLabel.frame = CGRectMake(50, 55, 100, 15);
-    } else {
-        [cell.badgeImageView setFrame:CGRectMake(10, 17.5, 35, 35)];
     }
-    if (indexPath.row == 0 || indexPath.row == 1 || indexPath.row == 8) {
+    if (indexPath.row == 0 || indexPath.row == 1 || indexPath.row == 8 || indexPath.row == 9) {
         cell.moneyLabel.hidden = YES;
     }
 
@@ -139,6 +138,7 @@
             [zongArray addObject:coins ? coins : @""];
             
         }
+        NSLog(@"234 == %@",zongArray);
         [_tableView reloadData];
     }
     

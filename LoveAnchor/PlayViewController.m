@@ -18,7 +18,7 @@
 
 #define REFRESH_PLAYVIEW_NOTIFITION @"refreshPlayViewNotifition"
 
-@interface PlayViewController () <VMediaPlayerDelegate, UITextFieldDelegate, SocketIODelegate, ASIHTTPRequestDelegate>
+@interface PlayViewController () <VMediaPlayerDelegate, UITextFieldDelegate, SocketIODelegate, ASIHTTPRequestDelegate,UIAlertViewDelegate>
 
 {
     BOOL tap;
@@ -93,6 +93,10 @@
     UIView       *nameView;
     //改昵称背景
     UIView       *nickView;
+    UIScrollView *_gifScrollView;
+    //改昵称输入框
+    UITextField *GTextField;
+    LoginModel *modelName;
 }
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
@@ -128,6 +132,8 @@
 @property (nonatomic, strong) NSMutableArray          *alwaysArray;
 //沙发
 @property (nonatomic, strong) NSMutableArray          *sofaArray;
+//直播id
+@property (nonatomic, strong) NSNumber *live_id;
 
 @end
 
@@ -136,6 +142,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    modelName = [CommonUtil getUserModel];
     
     imageArray = [NSArray arrayWithObjects:@"xiugainicheng",@"guangbo",@"diange",@"shezhix",@"yijianfankui", nil];
     titleArray = [NSArray arrayWithObjects:@"改昵称",@"广播",@"点歌",@"设置",@"意见反馈", nil];
@@ -164,6 +171,7 @@
     [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(keyboardWasHidden:) name:UIKeyboardDidHideNotification object:nil];
     //mmPlayer
     NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
+    
     self.videoURL = [NSURL URLWithString:[url stringByAddingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
     [mMPayer setDataSource:self.videoURL];
@@ -182,6 +190,7 @@
     [super viewWillAppear:animated];
     
     _model = [CommonUtil getUserModel];
+    
 
     [self requestWithParam:@"room_user_live" tag:500];
     [self requestWithParam:@"room_user_month" tag:501];
@@ -510,10 +519,15 @@
     gifView.userInteractionEnabled = YES;
     gifView.hidden = YES;
     [self.view addSubview:gifView];
-    gifView.hidden = YES;
+    //不要删
+//    _gifScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, kScreenWidth, 140)];
+//    _gifScrollView.contentSize = CGSizeMake(kScreenWidth*7, 140);
+    
+    
+    
     
     //横线
-    UIImageView *gifHXImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 25, kScreenWidth, 0.5)];
+    UIImageView *gifHXImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 30, kScreenWidth, 0.5)];
     gifHXImageView.backgroundColor = [UIColor lightGrayColor];
     [gifView addSubview:gifHXImageView];
     //充值到赠送背景
@@ -708,21 +722,26 @@
     YNameLabel.text = @"原昵称：";
     YNameLabel.font = [UIFont systemFontOfSize:14];
     YNameLabel.textColor = [UIColor lightGrayColor];
-    YNameLabel.backgroundColor = [UIColor redColor];
+    YNameLabel.backgroundColor = [UIColor clearColor];
     [nameView addSubview:YNameLabel];
     
     UILabel *MGNameLabel = [[UILabel alloc]initWithFrame:CGRectMake(90, 10, 190, 15)];
-    MGNameLabel.text = @"shcsdchaksdhcak";
+    MGNameLabel.text = [NSString stringWithFormat:@"%@",self.allModel.nick_name];
     MGNameLabel.font = [UIFont systemFontOfSize:14];
     MGNameLabel.textColor = [UIColor lightGrayColor];
     MGNameLabel.textAlignment = NSTextAlignmentRight;
-    MGNameLabel.backgroundColor = [UIColor purpleColor];
+    MGNameLabel.backgroundColor = [UIColor clearColor];
     [nameView addSubview:MGNameLabel];
     
-    UITextField *GTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 35, 280, 35)];
-    GTextField.borderStyle = UITextBorderStyleBezel;
+    UIView *bagNameView = [[UIView alloc]initWithFrame:CGRectMake(10, 35, 280, 35)];
+    bagNameView.layer.borderColor = [UIColor lightGrayColor].CGColor;
+    bagNameView.layer.borderWidth = 0.3;
+    [nameView addSubview:bagNameView];
+    //改昵称输入框
+    GTextField = [[UITextField alloc]initWithFrame:CGRectMake(5, 0, 270, 35)];
+    GTextField.delegate = self;
     GTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    [nameView addSubview:GTextField];
+    [bagNameView addSubview:GTextField];
     
     UIImageView *GImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 85, 300, 0.3)];
     GImageView.backgroundColor = [UIColor lightGrayColor];
@@ -736,6 +755,7 @@
     [QxButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
     [QxButton setTitleColor:[UIColor grayColor] forState:UIControlStateHighlighted];
     QxButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    QxButton.tag = 112;
     [QxButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [nameView addSubview:QxButton];
     //确定button
@@ -743,6 +763,7 @@
     [QdButton setTitle:@"确定修改" forState:UIControlStateNormal];
     [QdButton setTitleColor:textFontColor forState:UIControlStateNormal];
     QdButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    QdButton.tag = 111;
     [QdButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [nameView addSubview:QdButton];
     /************************************************************************************************/
@@ -888,6 +909,13 @@
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch (alertView.tag) {
+            
+        case 100: {
+            nickView.hidden = YES;
+            nameView.hidden = YES;
+            [self textFieldShouldReturn:GTextField];
+        }
+            break;
         case 120:
             break;
         default: {
@@ -963,6 +991,24 @@
             _scrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 28, kScreenWidth, kScreenHeight-253)];
             _scrollView.contentSize = CGSizeMake(kScreenWidth *4, kScreenHeight-253);
         }
+    } else if (button.tag == 111) {
+        if ((GTextField.text.length <= 18) && (GTextField.text.length >= 2)) {
+            [self requestGname];
+        }else{
+            UIAlertView *alert = [[UIAlertView alloc]init];
+            alert.title = @"修改失败";
+            alert.message = @"昵称长度为2-18位，请重新输入";
+            [alert addButtonWithTitle:@"确定"];
+            alert.delegate = self;
+            [alert show];
+        }
+    } else if (button.tag == 112) {
+        nickView.hidden = YES;
+        nameView.hidden = YES;
+    } else if (button.tag == 120) {
+        
+    } else if (button.tag == 121) {
+        
     } else {
         if (button.selected) {
             return;
@@ -1000,6 +1046,8 @@
             break;
         case 902: {
             SongViewController *song = [[SongViewController alloc]init];
+            song.userId = self.allModel._id;
+            song.live_id = _live_id;
             UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:song];
             [self presentViewController:nc animated:YES completion:nil];
         }
@@ -1097,6 +1145,7 @@
         case 105: {
             nickView.hidden = YES;
             nameView.hidden = YES;
+            [self textFieldShouldReturn:GTextField];
         }
             break;
         case 1000: {    //增加羽毛
@@ -1112,14 +1161,73 @@
         case 3:
         case 4: {
             _grabTag = sender.view.tag;
-            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil message:@"抢座" delegate:self cancelButtonTitle:@"100元" otherButtonTitles:nil];
-            [alert show];
+            [self robSofa];
         }
             break;
         default:
             break;
     }
     
+}
+//抢沙发
+-  (void)robSofa
+{
+    UIView *robSofaBagView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+    robSofaBagView.alpha = 0.5;
+    robSofaBagView.backgroundColor = [UIColor blackColor];
+    [self.view addSubview:robSofaBagView];
+    
+    UIView *robSofaView = [[UIView alloc]initWithFrame:CGRectMake(15, 220, kScreenWidth-30, 150)];
+    robSofaView.backgroundColor = [UIColor whiteColor];
+    robSofaView.layer.cornerRadius = 5;
+    [self.view addSubview:robSofaView];
+    
+    UILabel *sofaLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 10, 150, 15)];
+    sofaLabel.text = @"抢占该座位最少需要";
+    sofaLabel.textColor = [UIColor lightGrayColor];
+    sofaLabel.font = [UIFont systemFontOfSize:12];
+    [robSofaView addSubview:sofaLabel];
+    
+    UIImageView *JBImageView = [[UIImageView alloc]initWithFrame:CGRectMake(15, 65, 23, 23)];
+    JBImageView.image = [UIImage imageNamed:@"jinbi"];
+    [robSofaView addSubview:JBImageView];
+    
+    UILabel *JBLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 65, 100, 23)];
+    JBLabel.text = [NSString stringWithFormat:@"%d金币",100];
+    JBLabel.textColor = [UIColor lightGrayColor];
+    JBLabel.font = [UIFont systemFontOfSize:13];
+    [robSofaView addSubview:JBLabel];
+    
+    UIButton *JJButton = [[UIButton alloc]initWithFrame:CGRectMake(180, 65, 100, 23)];
+    [JJButton setTitle:@"我要加价" forState:UIControlStateNormal];
+    [JJButton setTitleColor:textFontColor forState:UIControlStateNormal];
+    JJButton.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:13];
+    [JJButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [robSofaView addSubview:JJButton];
+    
+    UIImageView *HXXImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 108, robSofaView.frame.size.width, 0.3)];
+    HXXImageView.backgroundColor = [UIColor lightGrayColor];
+    [robSofaView addSubview:HXXImageView];
+    
+    UIImageView *SxxImageView = [[UIImageView alloc]initWithFrame:CGRectMake(robSofaView.frame.size.width/2, 112, 0.3, 35)];
+    SxxImageView.backgroundColor = [UIColor lightGrayColor];
+    [robSofaView addSubview:SxxImageView];
+    
+    UIButton *songQXButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 110, robSofaView.frame.size.width/2-1, 40)];
+    [songQXButton setTitle:@"取消" forState:UIControlStateNormal];
+    [songQXButton setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+    songQXButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    songQXButton.tag = 120;
+    [songQXButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [robSofaView addSubview:songQXButton];
+    
+    UIButton *songQDButton = [[UIButton alloc]initWithFrame:CGRectMake(robSofaView.frame.size.width/2+1, 110, robSofaView.frame.size.width/2-1, 40)];
+    [songQDButton setTitle:@"确定" forState:UIControlStateNormal];
+    [songQDButton setTitleColor:textFontColor forState:UIControlStateNormal];
+    songQDButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    songQDButton.tag = 121;
+    [songQDButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [robSofaView addSubview:songQDButton];
 }
 /**********************************************************************************************************/
 
@@ -1571,6 +1679,7 @@
 {
     _inputView.hidden = YES;
     [_chatTextField resignFirstResponder];
+    [textField resignFirstResponder];
     return YES;
 }
 
@@ -1636,12 +1745,23 @@
 
 - (void)requestWithGrab:(NSInteger)num
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%@live/grab_sofa%d/%@/%@/%d",BaseURL,_grabTag,_model.access_token,self.allModel._id,num];
+    NSString *urlStr = [NSString stringWithFormat:@"%@live/grab_sofa%ld/%@/%@/%ld",BaseURL,_grabTag,_model.access_token,self.allModel._id,num];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     [request setTimeOutSeconds:100];
     request.delegate = self;
     request.tag = _grabTag;
     [request startAsynchronous];
+}
+- (void)requestGname
+{
+    NSString *strUrl = [NSString stringWithFormat:@"%@user/edit/%@",BaseURL,modelName.access_token];
+    ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:strUrl]];
+    request.delegate = self;
+    NSString *str = [NSString stringWithFormat:@"%@",GTextField.text];
+    [request setPostValue:str forKey:@"nick_name"];
+    [request startAsynchronous];
+    request.tag = 400;
+    
 }
 
 - (void)requestFinished:(ASIHTTPRequest *)request
@@ -1713,6 +1833,9 @@
                     NSDictionary *financeDic = [userDic objectForKey:@"finance"];
                     NSNumber *featherNum = [financeDic objectForKey:@"feather_receive_total"];
                     _quantityLabel.text = featherNum.stringValue;
+                    
+                    NSDictionary *roomDic = [dataDic objectForKey:@"room"];
+                    _live_id = [roomDic objectForKey:@"live_id"];
                 }
                     break;
                 case 800: { //沙发
@@ -1744,6 +1867,16 @@
                 case 3:
                 case 4: {
                     [self requestWithInfo:@"room_sofa" tag:800];
+                }
+                    break;
+                case 400: {
+                    UIAlertView *alert = [[UIAlertView alloc]init];
+                    alert.title = @"修改昵称提示";
+                    alert.message = @"修改成功";
+                    [alert addButtonWithTitle:@"确定"];
+                    alert.tag = 100;
+                    alert.delegate = self;
+                    [alert show];
                 }
                     break;
             default:

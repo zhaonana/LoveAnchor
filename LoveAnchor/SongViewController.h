@@ -10,4 +10,6 @@
 
 @interface SongViewController : UIViewController
 
+@property (nonatomic, strong)NSNumber *userId;
+@property (nonatomic, strong)NSNumber *live_id;
 @end

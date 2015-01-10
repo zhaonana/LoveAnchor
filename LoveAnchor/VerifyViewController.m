@@ -8,7 +8,11 @@
 
 #import "VerifyViewController.h"
 
-@interface VerifyViewController ()
+@interface VerifyViewController ()<ASIHTTPRequestDelegate,UIAlertViewDelegate>
+{
+    UITextField *passTextField;
+    UITextField *nameTextField;
+}
 
 @end
 
@@ -26,6 +30,7 @@
 {
     [super viewDidLoad];
     [self showUI];
+    
 }
 
 #pragma mark - 界面
@@ -65,7 +70,7 @@
     diHengxianImage.backgroundColor = [UIColor lightGrayColor];
     [self.view addSubview:diHengxianImage];
     
-    UITextField *nameTextField = [[UITextField alloc]init];
+    nameTextField = [[UITextField alloc]init];
     nameTextField.frame = CGRectMake(50, 0, 270, 42);
     nameTextField.placeholder = @"请输入短信验证码";
     nameTextField.borderStyle = UITextBorderStyleNone;
@@ -76,10 +81,13 @@
     nameImage.image = [UIImage imageNamed:@"zhanghao"];
     [bagImageView addSubview:nameImage];
     
-    UITextField *passTextField = [[UITextField alloc]init];
+    passTextField = [[UITextField alloc]init];
     passTextField.frame = CGRectMake(50, 42, 270, 42);
     passTextField.placeholder = @"请输入您的密码";
     passTextField.borderStyle = UITextBorderStyleNone;
+    passTextField.secureTextEntry = YES;
+    passTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    passTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     passTextField.delegate = self;
     [bagImageView addSubview:passTextField];
     
@@ -94,7 +102,7 @@
     [self.view addSubview:sanLabel];
     
     UILabel *telLabel = [[UILabel alloc]initWithFrame:CGRectMake(185, 180, 100, 15)];
-    telLabel.text = @"18888888888";
+    telLabel.text = self.tel;
     telLabel.textColor = [UIColor lightGrayColor];
     telLabel.font = [UIFont systemFontOfSize:12];
     [self.view addSubview:telLabel];
@@ -133,7 +141,17 @@
         case 100:
             [self dismissViewControllerAnimated:YES completion:nil];
             break;
-        case 101: { 
+        case 101: {
+            if (passTextField.text.length >= 6 && passTextField.text.length <= 20) {
+                [self mobilePhoneRegisteredRequest];
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc]init];
+                alert.title = @"提示";
+                alert.message = @"密码为6~20位！";
+                [alert addButtonWithTitle:@"确定"];
+                alert.delegate = self;
+                [alert show];
+            }
             
         }
             break;
@@ -141,11 +159,55 @@
             break;
     }
 }
+#pragma mark - 数据
+- (void)mobilePhoneRegisteredRequest
+{
+    NSInteger time = [[NSDate date] timeIntervalSince1970];
+    
+    NSDate *date = [NSDate dateWithTimeIntervalSince1970:time];
+	NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+	[formatter setDateFormat:@"yyyyMMddHHmm"];
+	[formatter setTimeZone:[NSTimeZone localTimeZone]];
+	NSString *stringFromDate = [formatter stringFromDate:date];
+    NSLog(@"date1:%@",stringFromDate);
+    
+    NSString *str = @"izhubo_ios";
+    NSString *izhuboStr = [NSString stringWithFormat:@"izhubo_%@",stringFromDate];
 
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/registerMobile2?user_name=%@&password=%@&qd=%@&nick_name=%@&checkNo=%@",BaseURL,self.tel,passTextField.text,str,izhuboStr,nameTextField.text];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    request.delegate = self;
+    [request setTimeOutSeconds:100];
+    [request startAsynchronous];
+}
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    NSLog(@"hehe == %@",request.responseString);
+    id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+    if ([result isKindOfClass:[NSDictionary class]]) {
+        int code = [[result objectForKey:@"code"]intValue];
+        if (code == 1) {
+            UIAlertView *alert = [[UIAlertView alloc]init];
+            alert.title = @"提示";
+            alert.message = @"注册成功！";
+            [alert addButtonWithTitle:@"确定"];
+            alert.delegate = self;
+            [alert show];
+        }else if (code == 31510) {
+            NSLog(@"验证码过期");
+        } else if (code == 31512) {
+            NSLog(@"手机号已被注册");
+        }
+    }
+}
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     [textField resignFirstResponder];
     return YES;
+}
+-(void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    
 }
 - (void)didReceiveMemoryWarning
 {

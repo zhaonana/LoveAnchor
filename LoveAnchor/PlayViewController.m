@@ -96,8 +96,17 @@
     UIView       *nickView;
     UIScrollView *_gifScrollView;
     //改昵称输入框
-    UITextField *GTextField;
-    LoginModel *modelName;
+    UITextField  *GTextField;
+    LoginModel   *modelName;
+    //点击抢座背景
+    UIView       *robSofaBagView;
+    //点击抢座的选项
+    UIView       *robSofaView;
+    //显示金币
+    UILabel      *JBLabel;
+    //记录金币的
+    int          JBStr;
+
 }
 
 @property (nonatomic, strong) UIActivityIndicatorView *activityView;
@@ -133,6 +142,8 @@
 @property (nonatomic, strong) NSMutableArray          *alwaysArray;
 //沙发
 @property (nonatomic, strong) NSMutableArray          *sofaArray;
+//user
+@property (nonatomic, strong) NSMutableArray          *userArray;
 //直播id
 @property (nonatomic, strong) NSNumber *live_id;
 
@@ -156,7 +167,8 @@
     _alwaysArray     = [[NSMutableArray alloc] init];
     _attentionArray  = [[NSMutableArray alloc] init];
     _sofaArray       = [[NSMutableArray alloc] init];
-    
+    _userArray       = [[NSMutableArray alloc] init];
+    JBStr = 100;
     _model = [CommonUtil getUserModel];
     //socket
     _socketIO = [[SocketIO alloc] initWithDelegate:self];
@@ -878,6 +890,7 @@
     [self.view addSubview:_backView];
     
     for (int i = 0; i < 4; i++) {
+        //标题名字
         UILabel *titleLabel = [[UILabel alloc]initWithFrame:CGRectMake(i*80, 10, 80, 15)];
         titleLabel.text = @"虚位以待";
         titleLabel.tag = 900 + i;
@@ -885,16 +898,18 @@
         titleLabel.textAlignment = NSTextAlignmentCenter;
         titleLabel.font = [UIFont systemFontOfSize:12];
         [_backView addSubview:titleLabel];
-        
+        //头像圈
         UIImageView *imageView = [[UIImageView alloc]initWithFrame:CGRectMake(7.5+i*80, 30, 65, 65)];
         imageView.image = [UIImage imageNamed:@"xuweiyidai"];
+        imageView.backgroundColor = [UIColor clearColor];
         [_backView addSubview:imageView];
-        
+        //头像
         UIImageView *headView = [[UIImageView alloc] initWithFrame:CGRectMake(15+i*80, 38, 50, 50)];
         [headView makeBoundImage];
         headView.tag = 400 + i;
+        headView.backgroundColor = [UIColor clearColor];
         [_backView addSubview:headView];
-        
+        //抢座图片
         UIImageView *QImageView = [[UIImageView alloc]initWithFrame:CGRectMake(21+i*80, 100, 38, 18)];
         QImageView.tag = 1 + i;
         QImageView.userInteractionEnabled = YES;
@@ -904,13 +919,13 @@
         UITapGestureRecognizer *grabTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(liveClick:)];
         [QImageView addGestureRecognizer:grabTap];
     }
+    
 }
 /**********************************************************************************************************/
 #pragma mark - UIAlertViewDelegate methods
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
     switch (alertView.tag) {
-            
         case 100: {
             nickView.hidden = YES;
             nameView.hidden = YES;
@@ -1007,9 +1022,15 @@
         nickView.hidden = YES;
         nameView.hidden = YES;
     } else if (button.tag == 120) {
-        
+        robSofaBagView.hidden = YES;
+        robSofaView.hidden = YES;
     } else if (button.tag == 121) {
-        
+        [self requestWithGrab:JBStr/100];
+        robSofaBagView.hidden = YES;
+        robSofaView.hidden = YES;
+    } else if (button.tag == 122) {
+        JBStr = JBStr+100;
+        JBLabel.text = [NSString stringWithFormat:@"%d金币",JBStr];
     } else {
         if (button.selected) {
             return;
@@ -1151,6 +1172,11 @@
             [self textFieldShouldReturn:GTextField];
         }
             break;
+        case 106: {
+            robSofaBagView.hidden = YES;
+            robSofaView.hidden = YES;
+        }
+            break;
         case 1000: {    //增加羽毛
             if ([CommonUtil isLogin]) {
                 [self requestWithFeather:@"feather/amass" tag:1000];
@@ -1175,12 +1201,16 @@
 //抢沙发
 -  (void)robSofa
 {
-    UIView *robSofaBagView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+    robSofaBagView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
     robSofaBagView.alpha = 0.5;
+    robSofaBagView.tag = 106;
     robSofaBagView.backgroundColor = [UIColor blackColor];
     [self.view addSubview:robSofaBagView];
     
-    UIView *robSofaView = [[UIView alloc]initWithFrame:CGRectMake(15, 220, kScreenWidth-30, 150)];
+    UITapGestureRecognizer *sofatap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(liveClick:)];
+    [robSofaBagView addGestureRecognizer:sofatap];
+    
+    robSofaView = [[UIView alloc]initWithFrame:CGRectMake(15, 220, kScreenWidth-30, 150)];
     robSofaView.backgroundColor = [UIColor whiteColor];
     robSofaView.layer.cornerRadius = 5;
     [self.view addSubview:robSofaView];
@@ -1195,7 +1225,7 @@
     JBImageView.image = [UIImage imageNamed:@"jinbi"];
     [robSofaView addSubview:JBImageView];
     
-    UILabel *JBLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 65, 100, 23)];
+    JBLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 65, 100, 23)];
     JBLabel.text = [NSString stringWithFormat:@"%d金币",100];
     JBLabel.textColor = [UIColor lightGrayColor];
     JBLabel.font = [UIFont systemFontOfSize:13];
@@ -1205,6 +1235,7 @@
     [JJButton setTitle:@"我要加价" forState:UIControlStateNormal];
     [JJButton setTitleColor:textFontColor forState:UIControlStateNormal];
     JJButton.titleLabel.font = [UIFont fontWithName:@"Helvetica-Bold" size:13];
+    JJButton.tag = 122;
     [JJButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [robSofaView addSubview:JJButton];
     
@@ -1728,6 +1759,7 @@
 
 - (void)requestWithInfo:(NSString *)param tag:(NSInteger)tag
 {
+    
     NSString *urlStr = [NSString stringWithFormat:@"%@public/%@/%@",BaseURL,param,self.allModel._id];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     [request setTimeOutSeconds:100];
@@ -1836,7 +1868,6 @@
                     NSDictionary *financeDic = [userDic objectForKey:@"finance"];
                     NSNumber *featherNum = [financeDic objectForKey:@"feather_receive_total"];
                     _quantityLabel.text = featherNum.stringValue;
-                    
                     NSDictionary *roomDic = [dataDic objectForKey:@"room"];
                     _live_id = [roomDic objectForKey:@"live_id"];
                 }
@@ -1844,12 +1875,19 @@
                 case 800: { //沙发
                     NSDictionary *dataDic = [result objectForKey:@"data"];
                     NSArray *userArr = [dataDic objectForKey:@"user"];
+                    NSArray *sofaArr = [dataDic objectForKey:@"sofa"];
                     for (NSDictionary *dic in userArr) {
+                        RankingModel *rankModel = [[RankingModel alloc] init];
+                        [rankModel getRankModelWithDictionary:dic];
+                        [_userArray addObject:rankModel];
+                    }
+                    for (NSDictionary *dic in sofaArr) {
                         RankingModel *rankModel = [[RankingModel alloc] init];
                         [rankModel getRankModelWithDictionary:dic];
                         [_sofaArray addObject:rankModel];
                     }
                     [self refreshSofaView];
+                    
                 }
                     break;
                 case 900: { //自己羽毛数量
@@ -1936,15 +1974,64 @@
 
 - (void)refreshSofaView
 {
-    for (int i = 0; i < _sofaArray.count; i++) {
-        RankingModel *model = [_sofaArray objectAtIndex:i];
-        if (model.nick_name.length) {
-            UILabel *nickLab = (UILabel *)[_backView viewWithTag:900 + i];
-            [nickLab setText:model.nick_name];
-        }
-        if (model.pic.length) {
-            UIImageView *headImg = (UIImageView *)[_backView viewWithTag:400 + i];
-            [headImg setImageWithURL:[NSURL URLWithString:model.pic]];
+    for (int j = 0; j < _sofaArray.count; j++) {
+        RankingModel *model = [_sofaArray objectAtIndex:j];
+        NSLog(@"%@",model.i);
+        switch (model.i.intValue) {
+            case 1: {
+                for (RankingModel *userModel in _userArray) {
+                    if (model.xy_user_id.intValue == userModel._id.intValue) {
+                        UILabel *nickLab = (UILabel *)[_backView viewWithTag:900];
+                        [nickLab setText:userModel.nick_name];
+                        if (userModel.pic.length) {
+                            UIImageView *headImg = (UIImageView *)[_backView viewWithTag:400];
+                            [headImg setImageWithURL:[NSURL URLWithString:userModel.pic]];
+                        }
+                    }
+                }
+            }
+                break;
+            case 2: {
+                for (RankingModel *userModel in _userArray) {
+                    if (model.xy_user_id.intValue == userModel._id.intValue) {
+                        UILabel *nickLab = (UILabel *)[_backView viewWithTag:901];
+                        [nickLab setText:userModel.nick_name];
+                        if (userModel.pic.length) {
+                            UIImageView *headImg = (UIImageView *)[_backView viewWithTag:401];
+                            [headImg setImageWithURL:[NSURL URLWithString:userModel.pic]];
+                        }
+                    }
+                }
+            }
+                break;
+            case 3: {
+                for (RankingModel *userModel in _userArray) {
+                    if (model.xy_user_id.intValue == userModel._id.intValue) {
+                        UILabel *nickLab = (UILabel *)[_backView viewWithTag:902];
+                        [nickLab setText:userModel.nick_name];
+                        if (userModel.pic.length) {
+                            UIImageView *headImg = (UIImageView *)[_backView viewWithTag:402];
+                            [headImg setImageWithURL:[NSURL URLWithString:userModel.pic]];
+                        }
+                    }
+                }
+            }
+                break;
+            case 4: {
+                for (RankingModel *userModel in _userArray) {
+                    if (model.xy_user_id.intValue == userModel._id.intValue) {
+                        UILabel *nickLab = (UILabel *)[_backView viewWithTag:903];
+                        [nickLab setText:userModel.nick_name];
+                        if (userModel.pic.length) {
+                            UIImageView *headImg = (UIImageView *)[_backView viewWithTag:403];
+                            [headImg setImageWithURL:[NSURL URLWithString:userModel.pic]];
+                        }
+                    }
+                }
+            }
+                break;
+            default:
+                break;
         }
     }
 }
@@ -1953,7 +2040,7 @@
 - (void)sendPublicMessage
 {
     NSNumber *coinNum = [[CommonUtil getUserModel].finance objectForKey:@"coin_count"];
-    NSString *level = [NSString stringWithFormat:@"%d",[CommonUtil getLevelInfoWithCoin:coinNum.intValue isRich:YES].level];
+    NSString *level = [NSString stringWithFormat:@"%ld",[CommonUtil getLevelInfoWithCoin:coinNum.intValue isRich:YES].level];
     NSDictionary *message = @{@"msg": @{@"content": _chatTextField.text,
                                         @"level": level,
                                         @"from_medals": @"{}"

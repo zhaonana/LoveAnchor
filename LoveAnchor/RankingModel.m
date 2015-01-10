@@ -29,6 +29,8 @@
     self.rank = [dic objectForKey:@"rank"];
     self.visiter_count = [dic objectForKey:@"visiter_count"];
     self.live = [dic objectForKey:@"live"];
+    self.xy_user_id = [dic objectForKey:@"xy_user_id"];
+    self.i = [dic objectForKey:@"i"];
 
     return self;
 }

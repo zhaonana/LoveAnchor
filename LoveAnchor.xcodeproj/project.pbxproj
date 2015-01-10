@@ -386,6 +386,7 @@
 		F73C5BC61A5975910020DBD6 /* pengyouquan.png in Resources */ = {isa = PBXBuildFile; fileRef = F73C5BBC1A5975910020DBD6 /* pengyouquan.png */; };
 		F73C5BC91A5A76C90020DBD6 /* MyBadgeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F73C5BC81A5A76C90020DBD6 /* MyBadgeViewController.m */; };
 		F73C5BD11A5A7E0B0020DBD6 /* MyBadgeTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = F73C5BD01A5A7E0B0020DBD6 /* MyBadgeTableViewCell.m */; };
+		F73C5BD41A61077F0020DBD6 /* BackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F73C5BD31A61077F0020DBD6 /* BackViewController.m */; };
 		F7456E1D1998609100CF28E8 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7456E1C1998609100CF28E8 /* Foundation.framework */; };
 		F7456E1F1998609100CF28E8 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7456E1E1998609100CF28E8 /* CoreGraphics.framework */; };
 		F7456E211998609100CF28E8 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F7456E201998609100CF28E8 /* UIKit.framework */; };
@@ -1124,6 +1125,8 @@
 		F73C5BC81A5A76C90020DBD6 /* MyBadgeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyBadgeViewController.m; sourceTree = "<group>"; };
 		F73C5BCF1A5A7E0B0020DBD6 /* MyBadgeTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyBadgeTableViewCell.h; sourceTree = "<group>"; };
 		F73C5BD01A5A7E0B0020DBD6 /* MyBadgeTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyBadgeTableViewCell.m; sourceTree = "<group>"; };
+		F73C5BD21A61077F0020DBD6 /* BackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BackViewController.h; sourceTree = "<group>"; };
+		F73C5BD31A61077F0020DBD6 /* BackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BackViewController.m; sourceTree = "<group>"; };
 		F7456E191998609100CF28E8 /* LoveAnchor.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LoveAnchor.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F7456E1C1998609100CF28E8 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		F7456E1E1998609100CF28E8 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -2648,6 +2651,8 @@
 				F7B5B87419ECF0EA0006ACCB /* StorecollectionVIewCell.m */,
 				F7B1D7BF19C83F3000C26A16 /* LoginViewController.h */,
 				F7B1D7C019C83F3000C26A16 /* LoginViewController.m */,
+				F73C5BD21A61077F0020DBD6 /* BackViewController.h */,
+				F73C5BD31A61077F0020DBD6 /* BackViewController.m */,
 				F7BE191219E7941A009C6C8C /* RegisterViewController.h */,
 				F7BE191319E7941A009C6C8C /* RegisterViewController.m */,
 				F7BE191519E7CB6D009C6C8C /* VerifyViewController.h */,
@@ -3373,6 +3378,7 @@
 				39BB5C761A3AF2EA00BA7B20 /* UIView+MJExtension.m in Sources */,
 				F7B70E611A1C9F910064D56E /* DynamicModel.m in Sources */,
 				F75D703319F25A49004C144B /* OneCell.m in Sources */,
+				F73C5BD41A61077F0020DBD6 /* BackViewController.m in Sources */,
 				F75D703619F26503004C144B /* TwoCell.m in Sources */,
 				39BB5C721A3AF2EA00BA7B20 /* MJRefreshFooterView.m in Sources */,
 				3922656C1A359DEC00767721 /* SocketIOPacket.m in Sources */,

@@ -168,14 +168,22 @@
     loginButton.layer.cornerRadius = 5.0;
     [self.view addSubview:loginButton];
     
-    UILabel *sanLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 280, 112, 15)];
+    UIButton *forgetButton = [[UIButton alloc]initWithFrame:CGRectMake(200, 275, 100, 20)];
+    [forgetButton setTitle:@"忘记密码？" forState:UIControlStateNormal];
+    [forgetButton setTitleColor:textFontColor forState:UIControlStateNormal];
+    forgetButton.tag = 105;
+    forgetButton.titleLabel.font = [UIFont systemFontOfSize:13];
+    [forgetButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [self.view addSubview:forgetButton];
+    
+    UILabel *sanLabel = [[UILabel alloc]initWithFrame:CGRectMake(20, 310, 112, 15)];
     sanLabel.text = @"使用第三方账户登陆";
     sanLabel.font = [UIFont systemFontOfSize:12];
     sanLabel.textColor = [UIColor lightGrayColor];
     [self.view addSubview:sanLabel];
     
     UIButton *QQButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    QQButton.frame = CGRectMake(15, 300, kScreenWidth-30, 45);
+    QQButton.frame = CGRectMake(15, 330, kScreenWidth-30, 45);
     QQButton.tag = 103;
     [QQButton setTitle:@"QQ账号登陆" forState:UIControlStateNormal];
     QQButton.titleLabel.font = [UIFont systemFontOfSize:15];
@@ -190,7 +198,7 @@
     [QQButton addSubview:image];
     
     UIButton *WBButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    WBButton.frame = CGRectMake(15, 360, kScreenWidth-30, 45);
+    WBButton.frame = CGRectMake(15, 390, kScreenWidth-30, 45);
     WBButton.tag = 104;
     [WBButton setTitle:@"新浪微博账户登陆" forState:UIControlStateNormal];
     WBButton.titleLabel.font = [UIFont systemFontOfSize:15];
@@ -265,6 +273,11 @@
             }
         }
             break;
+        case 105: {
+            BackViewController *back = [[BackViewController alloc]init];
+            UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:back];
+            [self presentViewController:nc animated:YES completion:nil];
+        }
         default:
             break;
     }

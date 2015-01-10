@@ -14,11 +14,13 @@
     UIButton *_leftButton;
     UIButton *_rightButton;
     UITextField *_telTextField;
+    UITextField *_YZTextField;
     
     UITextField *_nameTextField;
     UITextField *_passTextField;
     UITextField *_validationTextField;
     UIImageView *_validationImageView;
+    UIImageView *_validationImageView1;
     
     NSString *_str;
     NSString *auth_key;
@@ -144,11 +146,40 @@
     _telTextField.borderStyle = UITextBorderStyleNone;
     [leftInputView addSubview:_telTextField];
     
-    UILabel *hintLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 100, 200, 30)];
+    UILabel *hintLabel = [[UILabel alloc]initWithFrame:CGRectMake(60, 60, 200, 15)];
     hintLabel.text = @"通过手机号注册，方便随时找回密码";
     hintLabel.textColor = [UIColor grayColor];
     hintLabel.font = [UIFont systemFontOfSize:12];
     [self.leftView addSubview:hintLabel];
+    
+    UIView *leftInputView1 = [[UIView alloc]initWithFrame:CGRectMake(0, 80, kScreenWidth-0.5, 44)];
+    leftInputView1.backgroundColor = [UIColor whiteColor];
+    [self.leftView addSubview:leftInputView1];
+    
+    UIImageView *hengxianImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 0.5)];
+    hengxianImage1.backgroundColor = [UIColor lightGrayColor];
+    [leftInputView1 addSubview:hengxianImage1];
+    
+    UIImageView *diHengxianImage1 = [[UIImageView alloc]initWithFrame:CGRectMake(0, 44, kScreenWidth, 0.5)];
+    diHengxianImage1.backgroundColor = [UIColor lightGrayColor];
+    [leftInputView1 addSubview:diHengxianImage1];
+    
+    _YZTextField = [[UITextField alloc]initWithFrame:CGRectMake(10, 0, kScreenWidth/2, 44)];
+    _YZTextField.placeholder = @"请输入验证码";
+    [_YZTextField setAutocapitalizationType:UITextAutocapitalizationTypeNone];
+    _YZTextField.font = [UIFont systemFontOfSize:15];
+    _YZTextField.borderStyle = UITextBorderStyleNone;
+    [leftInputView1 addSubview:_YZTextField];
+    
+    //验证码图片
+    _validationImageView1 = [[UIImageView alloc]initWithFrame:CGRectMake(220, 12, 55, 20)];
+    _validationImageView1.backgroundColor = [UIColor clearColor];
+    _validationImageView1.userInteractionEnabled = YES;
+    [leftInputView1 addSubview:_validationImageView1];
+    
+    //点击手势
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(judgeClick:)];
+    [_validationImageView1 addGestureRecognizer:tap];
     
     UIButton *nextButton = [UIButton buttonWithType:UIButtonTypeCustom];
     nextButton.frame = CGRectMake(15, 130, 290, 44);
@@ -202,6 +233,7 @@
     _passTextField = [[UITextField alloc]init];
     _passTextField.frame = CGRectMake(50, 42, 270, 42);
     _passTextField.placeholder = @"请输入您的密码";
+    _passTextField.secureTextEntry = YES;
     _passTextField.borderStyle = UITextBorderStyleNone;
     _passTextField.autocorrectionType = UITextAutocorrectionTypeNo;
     _passTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -276,7 +308,7 @@
     NSLog(@"12345678");
     [self updateTheVerificationCode];
 }
-
+/***************************************************************/
 #pragma mark - 注册
 - (void)request
 {
@@ -329,6 +361,30 @@
     loginRequest.delegate = self;
     [loginRequest startAsynchronous];
 }
+/***************************************************************/
+#pragma mark - 验证验证码
+- (void)verificationtel
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/checkCodeVeri?auth_code=%@&auth_key=%@",BaseURL,_YZTextField.text,auth_key];
+    ASIHTTPRequest *request8 = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    [request8 setTimeOutSeconds:10];
+    request8.tag = 5;
+    request8.delegate = self;
+    [request8 startAsynchronous];
+    
+}
+//下一步
+- (void)nextRequest
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/registerMobile?user_name=%@&auth_code=%@&auth_key=%@",BaseURL,_telTextField.text,_YZTextField.text,auth_key];
+    ASIHTTPRequest *request8 = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    [request8 setTimeOutSeconds:100];
+    request8.tag = 6;
+    request8.delegate = self;
+    [request8 startAsynchronous];
+}
+
+/***************************************************************/
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     if (request.tag == 0) {
@@ -341,6 +397,7 @@
             auth_key = [allDTjson objectForKey:@"auth_key"];
             NSLog(@"456 == %@",_str);
             [_validationImageView setImageWithURL:[NSURL URLWithString:_str]];
+            [_validationImageView1 setImageWithURL:[NSURL URLWithString:_str]];
             NSLog(@"vvv==%@",auth_key);
         }
     } else if (request.tag == 1) {
@@ -399,6 +456,43 @@
         NSLog(@"更新验证码 = %@",data);
         UIImage *image = [[UIImage alloc]initWithData:data];
         _validationImageView.image = image;
+        _validationImageView1.image = image;
+    } else if (request.tag == 5) {
+        id result2 = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+        if ([result2 isKindOfClass:[NSDictionary class]]) {
+            int allDTjson2 = [[result2 objectForKey:@"code"] intValue];
+            NSLog(@"验证验证码 == %d",allDTjson2);
+            if (allDTjson2 == 1) {
+                NSLog(@"注册成功");
+                [self nextRequest];
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc]init];
+                alert.title = @"提示";
+                alert.message = @"验证码输入错误";
+                [alert addButtonWithTitle:@"确定"];
+                [alert show];
+                [self updateTheVerificationCode];
+            }
+        }
+    } else if (request.tag == 6) {
+        NSLog(@"shoujihaozhucu == %@",request.responseString);
+        id result2 = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
+        if ([result2 isKindOfClass:[NSDictionary class]]) {
+            int code = [[result2 objectForKey:@"code"]intValue];
+            NSLog(@"code == %d",code);
+            if (code == 1) {
+                VerifyViewController *verify = [[VerifyViewController alloc]init];
+                verify.tel = _telTextField.text;
+                UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:verify];
+                [self presentViewController:nc animated:YES completion:nil];
+            } else {
+                UIAlertView *alert = [[UIAlertView alloc]init];
+                alert.title = @"提示";
+                alert.message = @"该手机号码已被注册！";
+                [alert addButtonWithTitle:@"确定"];
+                [alert show];
+            }
+        }
     }
 }
 
@@ -414,9 +508,15 @@
     else if (button.tag == 103) {
         button.backgroundColor = textFontColor;
         button.selected = NO;
-        VerifyViewController *verify = [[VerifyViewController alloc]init];
-        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:verify];
-        [self presentViewController:nc animated:YES completion:nil];
+        if (_telTextField.text.length == 11) {
+            [self verificationtel];
+        } else {
+            UIAlertView *alart = [[UIAlertView alloc]init];
+            alart.title = @"提示";
+            alart.message = @"手机号码格式不正确，请重新输入！";
+            [alart addButtonWithTitle:@"确定"];
+            [alart show];
+        }
     }
     //用户名注册
     else if (button.tag == 102) {

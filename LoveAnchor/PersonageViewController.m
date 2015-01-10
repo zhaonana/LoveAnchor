@@ -836,13 +836,15 @@
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result isKindOfClass:[NSDictionary class]]) {
             NSDictionary *seatDict = [result objectForKey:@"data"];
-            NSDictionary *dic = [seatDict objectForKey:@"car"];
-            NSNumber *currId = [dic objectForKey:@"curr"];
-            mySeat = [[SeatManageModel alloc] init];
-            for (SeatManageModel *seat in allSeatArray) {
-                if (seat._id.intValue == currId.intValue) {
-                    mySeat._id = currId;
-                    mySeat.pic_url = seat.pic_url;
+            if ([seatDict isKindOfClass:[NSDictionary class]]) {
+                NSDictionary *dic = [seatDict objectForKey:@"car"];
+                NSNumber *currId = [dic objectForKey:@"curr"];
+                mySeat = [[SeatManageModel alloc] init];
+                for (SeatManageModel *seat in allSeatArray) {
+                    if (seat._id.intValue == currId.intValue) {
+                        mySeat._id = currId;
+                        mySeat.pic_url = seat.pic_url;
+                    }
                 }
             }
         }

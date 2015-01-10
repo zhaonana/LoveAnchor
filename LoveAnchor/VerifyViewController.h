@@ -10,4 +10,6 @@
 
 @interface VerifyViewController : UIViewController<UITextFieldDelegate>
 
+@property (nonatomic, strong)NSString *tel;
+
 @end

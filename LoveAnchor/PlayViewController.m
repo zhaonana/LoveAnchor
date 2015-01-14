@@ -1141,6 +1141,10 @@
             break;
         case 102: {
             ShareView *shareView = [[[NSBundle mainBundle] loadNibNamed:@"ShareView" owner:self options:nil] lastObject];
+            [shareView setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+            NSString *liveAddress = [NSString stringWithFormat:@"http://www.izhubo.com/%@",self.allModel._id];
+            NSString *shareText = [NSString stringWithFormat:@"我正在%@的直播间玩耍,小伙伴快快加入吧! %@",self.allModel.nick_name,liveAddress];
+            [shareView shareWithText:shareText shareImageUrl:self.allModel.pic shareUrl:liveAddress];
             [self.view addSubview:shareView];
         }
             break;

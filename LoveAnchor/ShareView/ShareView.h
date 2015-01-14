@@ -10,6 +10,12 @@
 
 @interface ShareView : UIView
 
-@property (retain, nonatomic) IBOutlet UIView *shareButView;
+@property (nonatomic, copy) NSString *shareText;
+@property (nonatomic, copy) NSString *imageUrl;
+@property (nonatomic, copy) NSString *urlString;
+
+@property (nonatomic, strong) IBOutlet UIView *shareButView;
+
+- (void)shareWithText:(NSString *)str shareImageUrl:(NSString *)imageUrl shareUrl:(NSString *)url;
 
 @end

@@ -145,7 +145,9 @@
 //user
 @property (nonatomic, strong) NSMutableArray          *userArray;
 //直播id
-@property (nonatomic, strong) NSNumber *live_id;
+@property (nonatomic, strong) NSNumber                *live_id;
+
+@property (nonatomic, strong) ShareView               *shareView;
 
 @end
 
@@ -155,7 +157,6 @@
 {
     [super viewDidLoad];
     modelName = [CommonUtil getUserModel];
-    
     imageArray = [NSArray arrayWithObjects:@"xiugainicheng",@"guangbo",@"diange",@"shezhix",@"yijianfankui", nil];
     titleArray = [NSArray arrayWithObjects:@"改昵称",@"广播",@"点歌",@"设置",@"意见反馈", nil];
     
@@ -196,6 +197,9 @@
     } else {
         [self.activityView setHidden:YES];
     }
+    
+    _shareView = [[[NSBundle mainBundle] loadNibNamed:@"ShareView" owner:self options:nil] lastObject];
+    [_shareView setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -1140,12 +1144,10 @@
         }
             break;
         case 102: {
-            ShareView *shareView = [[[NSBundle mainBundle] loadNibNamed:@"ShareView" owner:self options:nil] lastObject];
-            [shareView setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+            [self.view addSubview:_shareView];
             NSString *liveAddress = [NSString stringWithFormat:@"http://www.izhubo.com/%@",self.allModel._id];
             NSString *shareText = [NSString stringWithFormat:@"我正在%@的直播间玩耍,小伙伴快快加入吧! %@",self.allModel.nick_name,liveAddress];
-            [shareView shareWithText:shareText shareImageUrl:self.allModel.pic shareUrl:liveAddress];
-            [self.view addSubview:shareView];
+            [_shareView shareWithText:shareText shareImageUrl:self.allModel.pic shareUrl:liveAddress controller:self];
         }
             break;
         case 103: {
@@ -1618,17 +1620,15 @@
         NSString *action = [result objectForKey:@"action"];
         if (action.length) {
             if ([action isEqualToString:@"room.change"]) {
-                if (_model.admission) {
-                    chatModel.chatType = changeType;
-                    id data_d = [result objectForKey:@"data_d"];
-                    if ([data_d isKindOfClass:[NSDictionary class]]) {
-                        NSString *nick_name = [[data_d objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
-                        if (nick_name.length) {
-                            chatModel.nick_name = nick_name;
-                        }
+                chatModel.chatType = changeType;
+                id data_d = [result objectForKey:@"data_d"];
+                if ([data_d isKindOfClass:[NSDictionary class]]) {
+                    NSString *nick_name = [[data_d objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                    if (nick_name.length) {
+                        chatModel.nick_name = nick_name;
                     }
-                    [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
                 }
+                [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
             } else if ([action isEqualToString:@"gift.notify"]) {
                 chatModel.chatType = giftType;
                 id data_d = [result objectForKey:@"data_d"];

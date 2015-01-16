@@ -18,11 +18,12 @@
 
 @implementation ShareView
 
-- (void)shareWithText:(NSString *)str shareImageUrl:(NSString *)imageUrl shareUrl:(NSString *)url
+- (void)shareWithText:(NSString *)str shareImageUrl:(NSString *)imageUrl shareUrl:(NSString *)url controller:(UIViewController *)controller
 {
     self.shareText = str;
     self.imageUrl = imageUrl;
     self.urlString = url;
+    self.controller = controller;
     
     _image = [UIImage imageWithData:[NSData dataWithContentsOfURL:[NSURL URLWithString:imageUrl]]];
 }
@@ -44,16 +45,12 @@
                                           description:shareContent                                           mediaType:SSPublishContentMediaTypeNews];
     
     SSPublishContentEventHandler publishHandler =^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+        [self removeFromSuperview];
         if (state == SSResponseStateSuccess) {
-            [self removeFromSuperview];
-            self.hidden = NO;
-            
             [[[UIAlertView alloc] initWithTitle:@"分享成功!" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
         }
         else if (state == SSResponseStateFail) {
-            NSLog(@"分享失败,错误码:%d,错误描述:%@", [error errorCode], [error errorDescription]);
-            
-            self.hidden = NO;
+            NSLog(@"分享失败,错误码:%ld,错误描述:%@", (long)[error errorCode], [error errorDescription]);
             [[[UIAlertView alloc] initWithTitle:@"暂时无法分享!" message:nil delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
         }
     };
@@ -78,8 +75,7 @@
         }
             break;
         case 200: { //新浪微博
-            self.hidden = YES;
-            
+            [self removeFromSuperview];
             imageAttach = [ShareSDK jpegImageWithImage:_image quality:.5f];
             
             publishContent = [ShareSDK content:shareContent

@@ -10,12 +10,13 @@
 
 @interface ShareView : UIView
 
-@property (nonatomic, copy) NSString *shareText;
-@property (nonatomic, copy) NSString *imageUrl;
-@property (nonatomic, copy) NSString *urlString;
+@property (nonatomic, copy)   NSString         *shareText;
+@property (nonatomic, copy)   NSString         *imageUrl;
+@property (nonatomic, copy)   NSString         *urlString;
+@property (nonatomic, strong) UIViewController *controller;
 
 @property (nonatomic, strong) IBOutlet UIView *shareButView;
 
-- (void)shareWithText:(NSString *)str shareImageUrl:(NSString *)imageUrl shareUrl:(NSString *)url;
+- (void)shareWithText:(NSString *)str shareImageUrl:(NSString *)imageUrl shareUrl:(NSString *)url controller:(UIViewController *)controller;
 
 @end

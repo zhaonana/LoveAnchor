@@ -16,6 +16,7 @@
 #import "RankCell.h"
 #import "UIImageView+BoundsAdditions.h"
 #import "ShareView.h"
+#import "ChatSelectView.h"
 
 #define REFRESH_PLAYVIEW_NOTIFITION @"refreshPlayViewNotifition"
 
@@ -146,8 +147,16 @@
 @property (nonatomic, strong) NSMutableArray          *userArray;
 //直播id
 @property (nonatomic, strong) NSNumber                *live_id;
-
+//分享
 @property (nonatomic, strong) ShareView               *shareView;
+//聊天选框
+@property (nonatomic, strong) UITableView             *chooseTableView;
+//聊天对象
+@property (nonatomic, strong) NSMutableArray          *chooseArray;
+//聊天对象
+@property (nonatomic, strong) UILabel                 *chatPeopleLabel;
+//点击昵称弹框
+@property (nonatomic, strong) ChatSelectView          *chatSelectView;
 
 @end
 
@@ -169,8 +178,11 @@
     _attentionArray  = [[NSMutableArray alloc] init];
     _sofaArray       = [[NSMutableArray alloc] init];
     _userArray       = [[NSMutableArray alloc] init];
+    _chooseArray     = [[NSMutableArray alloc] initWithObjects:@"所有人", self.allModel.nick_name, nil];
+    
     JBStr = 100;
     _model = [CommonUtil getUserModel];
+    
     //socket
     _socketIO = [[SocketIO alloc] initWithDelegate:self];
     NSDictionary *dic = @{@"room_id": self.allModel._id,
@@ -180,9 +192,10 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [self shouwUI];
     
+    //键盘通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardDidShowNotification object:nil];
-    
     [[NSNotificationCenter defaultCenter]  addObserver:self selector:@selector(keyboardWasHidden:) name:UIKeyboardDidHideNotification object:nil];
+    
     //mmPlayer
     NSString *url = [NSString stringWithFormat:@"rtmp://ttvpull.izhubo.com/live/%@",self.allModel._id];
     
@@ -197,9 +210,23 @@
     } else {
         [self.activityView setHidden:YES];
     }
-    
+    //分享
     _shareView = [[[NSBundle mainBundle] loadNibNamed:@"ShareView" owner:self options:nil] lastObject];
     [_shareView setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
+    
+    //聊天选框
+    _chooseTableView = [[UITableView alloc] initWithFrame:CGRectMake(5, kScreenHeight, 130, 130) style:UITableViewStylePlain];
+    _chooseTableView.tag = 500;
+    _chooseTableView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
+    _chooseTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [_chooseTableView setDelegate:self];
+    [_chooseTableView setDataSource:self];
+    [self.view addSubview:_chooseTableView];
+    [_chooseTableView setHidden:YES];
+    
+    //聊天弹框
+    _chatSelectView = [[[NSBundle mainBundle] loadNibNamed:@"ChatSelectView" owner:self options:nil] lastObject];
+    [_chatSelectView setFrame:CGRectMake(0, 0, kScreenWidth, kScreenHeight)];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -207,7 +234,6 @@
     [super viewWillAppear:animated];
     
     _model = [CommonUtil getUserModel];
-    
 
     [self requestWithParam:@"room_user_live" tag:500];
     [self requestWithParam:@"room_user_month" tag:501];
@@ -267,7 +293,7 @@
     UILabel *shengjiLabel = [[UILabel alloc]initWithFrame:CGRectMake(30, 8, 90, 16)];
     NSNumber *coin = [self.allModel.finance objectForKey:@"bean_count_total"];
     NSInteger nextCoin = [CommonUtil getLevelInfoWithCoin:coin.intValue isRich:YES].nextCoin;
-    shengjiLabel.text = [NSString stringWithFormat:@"差%ld经验升级",nextCoin];
+    shengjiLabel.text = [NSString stringWithFormat:@"差%ld经验升级",(long)nextCoin];
     shengjiLabel.font = [UIFont systemFontOfSize:10];
     [_upgradeView addSubview:shengjiLabel];
     
@@ -298,7 +324,7 @@
     UIImageView *gradeView = [[UIImageView alloc]initWithFrame:CGRectMake(size.width + 38, 5, 25, 25)];
     NSNumber *coinNum = [self.allModel.finance objectForKey:@"bean_count_total"];
     NSInteger level = [CommonUtil getLevelInfoWithCoin:coinNum.intValue isRich:NO].level;
-    NSString *imageName = [NSString stringWithFormat:@"%ldzhubo",level];
+    NSString *imageName = [NSString stringWithFormat:@"%ldzhubo",(long)level];
     gradeView.image = [UIImage imageNamed:imageName];
     [_navView addSubview:gradeView];
     //返回上一页
@@ -498,7 +524,7 @@
     _chatTextField = [[UITextField alloc]initWithFrame:CGRectMake(27, 0, 233, 35)];
     _chatTextField.backgroundColor = [UIColor clearColor];
     _chatTextField.borderStyle = UITextBorderStyleNone;
-    _chatTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    _chatTextField.placeholder = @"点此输入文字聊天";
     _chatTextField.delegate = self;
     [chatBView addSubview:_chatTextField];
     
@@ -627,19 +653,26 @@
     //textfield输入状态
     _inputView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight, kScreenWidth, 75)];
     _inputView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
+    _inputView.userInteractionEnabled = YES;
     [self.view addSubview:_inputView];
     //箭头
     UIImageView *arrowsView = [[UIImageView alloc]initWithFrame:CGRectMake(5, 5, 130, 20)];
     arrowsView.image = [UIImage imageNamed:@"xiala"];
+    arrowsView.tag = 200;
+    arrowsView.userInteractionEnabled = YES;
     [_inputView addSubview:arrowsView];
     //所有人
-    UILabel *allLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 110, 20)];
-    allLabel.text = @"所有人";
-    allLabel.backgroundColor = [UIColor clearColor];
-    allLabel.textAlignment = NSTextAlignmentCenter;
-    allLabel.font = [UIFont systemFontOfSize:14];
-    allLabel.textColor = [UIColor lightGrayColor];
-    [arrowsView addSubview:allLabel];
+    _chatPeopleLabel = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 110, 20)];
+    _chatPeopleLabel.text = @"所有人";
+    _chatPeopleLabel.backgroundColor = [UIColor clearColor];
+    _chatPeopleLabel.textAlignment = NSTextAlignmentCenter;
+    _chatPeopleLabel.font = [UIFont systemFontOfSize:14];
+    _chatPeopleLabel.textColor = [UIColor lightGrayColor];
+    [arrowsView addSubview:_chatPeopleLabel];
+    
+    UITapGestureRecognizer *chooseTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(gestureTap:)];
+    [arrowsView addGestureRecognizer:chooseTap];
+    
     //悄悄话
     UIView *QQHView = [[UIView alloc]initWithFrame:CGRectMake(146, 5, 80, 20)];
     QQHView.backgroundColor = [UIColor clearColor];
@@ -982,7 +1015,25 @@
             [CommonUtil loginAlertViewShow:self];
         }
     } else if (button.tag == 1000000) { //发送消息
-        [self sendPublicMessage];
+        if (_chatTextField.text.length && _chatTextField.text) {
+            NSDictionary *message = [NSDictionary dictionary];
+            if ([_chatTextField.placeholder isEqualToString:@"对所有人说"]) {
+                //公聊
+                message = @{@"msg": @{@"content": _chatTextField.text,
+                                                    @"level": [self getUserLevel],
+                                                    @"from_medals": @"{}"
+                                                    }};
+            } else {
+                //对某人公聊
+                NSDictionary *somePeople = [NSDictionary dictionary];
+                message = @{@"msg": @{@"content": _chatTextField.text,
+                                      @"level": [self getUserLevel],
+                                      @"from_medals": @"{}",
+                                      @"to": somePeople
+                                      }};
+            }
+            [self sendMessage:message];
+        }
     } else if (button.tag == 102) {
         _classifyView.hidden = !_classifyView.hidden;
     } else if (button.tag == 104) {
@@ -1107,6 +1158,11 @@
         audienceScrollView.contentOffset = CGPointMake(kScreenWidth*(button.tag-105), 0);
         [self announcementchanged];
     }];
+}
+
+- (void)gestureTap:(UITapGestureRecognizer *)tap
+{
+    _chooseTableView.hidden = !_chooseTableView.hidden;
 }
 
 #pragma mark - 点击播放界面方法
@@ -1395,7 +1451,14 @@
         }
             break;
         case 1002: {    //私聊
-            
+            ChatCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ChatCell"];
+            if (cell == nil) {
+                cell = [[[NSBundle mainBundle] loadNibNamed:@"ChatCell" owner:self options:nil] lastObject];
+            }
+            ChatModel *chatModel = [_privateArray objectAtIndex:indexPath.row];
+            [cell loadContentWithModel:chatModel];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
         }
             break;
         case 600: {     //本场观众
@@ -1431,6 +1494,19 @@
             return rankCell;
         }
             break;
+        case 500: {     //聊天对象
+            static NSString *identifier = @"cell";
+            UITableViewCell * cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (cell == nil) {
+                cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+            }
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            cell.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
+            cell.textLabel.text = [_chooseArray objectAtIndex:indexPath.row];
+            cell.textLabel.font = [UIFont systemFontOfSize:13.0];
+            return cell;
+        }
+            break;
         default:
             break;
     }
@@ -1457,6 +1533,9 @@
             break;
         case 602:
             return _alwaysArray.count;
+            break;
+        case 500:
+            return _chooseArray.count;
             break;
         default:
             break;
@@ -1495,7 +1574,9 @@
         }
             break;
         case 1002: {
-            
+            ChatModel *chatModel = [_privateArray objectAtIndex:indexPath.row];
+            CGRect rect = [chatModel.content boundingRectWithSize:CGSizeMake(304.0, CGFLOAT_MAX) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:12.0]} context:nil];
+            return rect.size.height + 30.0;
         }
             break;
         case 600: {
@@ -1510,6 +1591,10 @@
             return 44.0;
         }
             break;
+        case 500: {
+            return 24.0;
+        }
+            break;
         default:
             break;
     }
@@ -1517,10 +1602,14 @@
     return 0.0;
 }
 
--(void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    [_chatTextField resignFirstResponder];
+    NSString *chooseName = [_chooseArray objectAtIndex:indexPath.row];
+    _chatPeopleLabel.text = chooseName;
+    _chatTextField.placeholder = [NSString stringWithFormat:@"对%@说",chooseName];
+    [_chooseTableView setHidden:YES];
 }
+
 #pragma mark - 后台运行
 - (void)setupObservers
 {
@@ -1541,7 +1630,7 @@
 
 - (void)applicationDidEnterForeground:(NSNotification *)notification
 {
-    [mMPayer setVideoShown:YES];
+//    [mMPayer setVideoShown:YES];
     if (![mMPayer isPlaying]) {
         [mMPayer setDataSource:self.videoURL];
         [mMPayer prepareAsync];
@@ -1554,13 +1643,13 @@
 {
     if ([mMPayer isPlaying]) {
         [mMPayer reset];
-        [mMPayer setVideoShown:NO];
+//        [mMPayer setVideoShown:NO];
     }
 }
 
 - (void)refreshPlayView:(NSNotification *)notifition
 {
-    [mMPayer setVideoShown:YES];
+//    [mMPayer setVideoShown:YES];
     if (![mMPayer isPlaying]) {
         [mMPayer setDataSource:self.videoURL];
         [mMPayer prepareAsync];
@@ -1664,6 +1753,7 @@
                 [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
             }
         } else {
+            NSNumber *private = [[NSNumber alloc] init];
             NSString *content = [result objectForKey:@"content"];
             NSNumber *level = [result objectForKey:@"level"];
             NSDictionary *fromDic = [result objectForKey:@"from"];
@@ -1673,16 +1763,22 @@
                 chatModel.chatType = tellTAType;
                 NSString *toNick = [[toDic objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
                 chatModel.toNick_name = toNick;
+                private = [toDic objectForKey:@"private"];
             } else {
                 chatModel.chatType = contentType;
+                private = [NSNumber numberWithInt:0];
             }
             if (nick_name.length) {
                 chatModel.nick_name = nick_name;
                 chatModel.content = content;
                 chatModel.level = level;
             }
-            [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
-            [self reloadDataWithTableView:_publicTableView dataArray:_publicDataArray chatModel:chatModel];
+            if (private.intValue == 1) {
+                [self reloadDataWithTableView:_privateTableView dataArray:_privateArray chatModel:chatModel];
+            } else {
+                [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
+                [self reloadDataWithTableView:_publicTableView dataArray:_publicDataArray chatModel:chatModel];
+            }
         }
     }
 }
@@ -1716,8 +1812,8 @@
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
     _inputView.hidden = YES;
+    [_chooseTableView setHidden:YES];
     [_chatTextField resignFirstResponder];
-    [textField resignFirstResponder];
     return YES;
 }
 
@@ -1736,6 +1832,30 @@
         [CommonUtil loginAlertViewShow:self];
         return NO;
     }
+}
+
+#pragma mark - 键盘通知
+- (void)keyboardWasShown:(NSNotification *)notif
+{
+    NSDictionary *info = [notif userInfo];
+    NSValue *value = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGSize keyboardSize = [value CGRectValue].size;
+    
+    NSLog(@"keyBoard:%f", keyboardSize.height);  //216 184 252
+    _inputView.frame = CGRectMake(0, kScreenHeight-keyboardSize.height - 75, kScreenWidth, 75);
+    _chooseTableView.frame = CGRectMake(5, _inputView.frame.origin.y - 130, 130, 130);
+}
+
+- (void)keyboardWasHidden:(NSNotification *)notif
+{
+    NSDictionary *info = [notif userInfo];
+    
+    NSValue *value = [info objectForKey:UIKeyboardFrameBeginUserInfoKey];
+    CGSize keyboardSize = [value CGRectValue].size;
+    NSLog(@"keyboardWasHidden keyBoard:%f", keyboardSize.height);
+    _inputView.frame = CGRectMake(0, kScreenHeight, kScreenWidth, 75);
+    chatBView.frame = CGRectMake(5, 5, 260, 35);
+    [chatView addSubview:chatBView];
 }
 
 #pragma mark - request
@@ -1784,7 +1904,7 @@
 
 - (void)requestWithGrab:(NSInteger)num
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%@live/grab_sofa%ld/%@/%@/%ld",BaseURL,_grabTag,_model.access_token,self.allModel._id,num];
+    NSString *urlStr = [NSString stringWithFormat:@"%@live/grab_sofa%ld/%@/%@/%ld",BaseURL,(long)_grabTag,_model.access_token,self.allModel._id,num];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     [request setTimeOutSeconds:100];
     request.delegate = self;
@@ -2041,43 +2161,24 @@
 }
 
 #pragma mark - sendMessage methods
-- (void)sendPublicMessage
+//聊天
+- (void)sendMessage:(NSDictionary *)message
 {
-    NSNumber *coinNum = [[CommonUtil getUserModel].finance objectForKey:@"coin_count"];
-    NSString *level = [NSString stringWithFormat:@"%ld",[CommonUtil getLevelInfoWithCoin:coinNum.intValue isRich:YES].level];
-    NSDictionary *message = @{@"msg": @{@"content": _chatTextField.text,
-                                        @"level": level,
-                                        @"from_medals": @"{}"
-                                        }};
     NSData *msgData = [CommonUtil toJSONData:message];
     NSString *msgJson = [[NSString alloc] initWithData:msgData
                                                  encoding:NSUTF8StringEncoding];
     [_socketIO sendMessage:msgJson];
+    
+    [_chooseTableView setHidden:YES];
     [_chatTextField resignFirstResponder];
     _chatTextField.text = @"";
 }
 
-#pragma mark - 键盘通知
-- (void)keyboardWasShown:(NSNotification *)notif
+- (NSString *)getUserLevel
 {
-    NSDictionary *info = [notif userInfo];
-    NSValue *value = [info objectForKey:UIKeyboardFrameEndUserInfoKey];
-    CGSize keyboardSize = [value CGRectValue].size;
-    
-    NSLog(@"keyBoard:%f", keyboardSize.height);  //216 184 252
-    _inputView.frame = CGRectMake(0, kScreenHeight-keyboardSize.height-75, kScreenWidth, 75);
-}
-
-- (void)keyboardWasHidden:(NSNotification *)notif
-{
-    NSDictionary *info = [notif userInfo];
-    
-    NSValue *value = [info objectForKey:UIKeyboardFrameBeginUserInfoKey];
-    CGSize keyboardSize = [value CGRectValue].size;
-    NSLog(@"keyboardWasHidden keyBoard:%f", keyboardSize.height);
-    _inputView.frame = CGRectMake(0, kScreenHeight, kScreenWidth, 75);
-    chatBView.frame = CGRectMake(5, 5, 260, 35);
-    [chatView addSubview:chatBView];
+    NSNumber *coinNum = [[CommonUtil getUserModel].finance objectForKey:@"coin_count"];
+    NSString *level = [NSString stringWithFormat:@"%ld",(long)[CommonUtil getLevelInfoWithCoin:coinNum.intValue isRich:YES].level];
+    return level;
 }
 
 @end

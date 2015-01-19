@@ -37,11 +37,14 @@
     //第三方登录
     [ShareSDK registerApp:@"47e11a1b1da2"];
     //sina
-    [ShareSDK connectSinaWeiboWithAppKey:@"2352021188"
-                                appSecret:@"37964df50726ec3ddb017fef36397851"
-                                redirectUri:@"http://weibo.com/u/2389484970/home?wvr=5"];
-    //QQ
-    [ShareSDK connectQZoneWithAppKey:@"1103558424" appSecret:@"ldR56iwXfFAZMAVo" qqApiInterfaceCls:[QQApiInterface class] tencentOAuthCls:[TencentOAuth class]];
+    [ShareSDK connectSinaWeiboWithAppKey:@"2575545847"
+                                appSecret:@"03696fb118ab4d137d24518fc6c814c5"
+                                redirectUri:@"http://www.izhubo.com"];
+    //QQ空间
+    [ShareSDK connectQZoneWithAppKey:@"101166962" appSecret:@"35835d825a7414fdfbc8bd802002f67f" qqApiInterfaceCls:[QQApiInterface class] tencentOAuthCls:[TencentOAuth class]];
+    
+    //QQ好友
+    [ShareSDK connectQQWithQZoneAppKey:@"101166962" qqApiInterfaceCls:[QQApiInterface class]tencentOAuthCls:[TencentOAuth class]];
     
     [self.window makeKeyAndVisible];
     return YES;

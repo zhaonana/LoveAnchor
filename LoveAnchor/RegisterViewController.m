@@ -388,24 +388,18 @@
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     if (request.tag == 0) {
-        NSLog(@"获取验证码为:%@",request.responseString);
         id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result isKindOfClass:[NSDictionary class]]) {
             NSDictionary *allDTjson = [result objectForKey:@"data"];
-            NSLog(@"123 == %@",allDTjson);
             _str = [allDTjson objectForKey:@"auth_url"];
             auth_key = [allDTjson objectForKey:@"auth_key"];
-            NSLog(@"456 == %@",_str);
             [_validationImageView setImageWithURL:[NSURL URLWithString:_str]];
             [_validationImageView1 setImageWithURL:[NSURL URLWithString:_str]];
-            NSLog(@"vvv==%@",auth_key);
         }
     } else if (request.tag == 1) {
-        NSLog(@"注册:%@",request.responseString);
         id result1 = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result1 isKindOfClass:[NSDictionary class]]) {
             int allDtjson1 = [[result1 objectForKey:@"code"] intValue];
-            NSLog(@"ooo == %d",allDtjson1);
             if (allDtjson1 == 30306) {
                 UIAlertView *alert = [[UIAlertView alloc]init];
                 alert.title = @"提示";
@@ -420,7 +414,6 @@
         id result2 = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result2 isKindOfClass:[NSDictionary class]]) {
             int allDTjson2 = [[result2 objectForKey:@"code"] intValue];
-            NSLog(@"验证验证码 == %d",allDTjson2);
             if (allDTjson2 == 1) {
                 NSLog(@"注册成功");
                 [self request];
@@ -434,17 +427,13 @@
             }
         }
     } else if (request.tag == 3) {
-        NSLog(@"登陆 == %@",request.responseString);
         id result3 = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result3 isKindOfClass:[NSDictionary class]]) {
-            NSDictionary *allDTjson3 = [result3 objectForKey:@"code"];
             NSDictionary *loginJson = [result3 objectForKey:@"data"];
-            NSLog(@"登陆 == %@",allDTjson3);
             //存储用户信息
             LoginModel *loginModel = [[LoginModel alloc] init];
             loginModel.access_token = [loginJson objectForKey:@"access_token"];
             loginModel.userName = [loginJson objectForKey:@"username"];
-            loginModel.admission = YES;
             [CommonUtil saveUserModel:loginModel];
             UIViewController *viewController = self;
             viewController = viewController.presentingViewController.presentingViewController;
@@ -453,7 +442,6 @@
         
     } else if (request.tag == 4) {
         NSData *data = [request responseData];
-        NSLog(@"更新验证码 = %@",data);
         UIImage *image = [[UIImage alloc]initWithData:data];
         _validationImageView.image = image;
         _validationImageView1.image = image;
@@ -461,9 +449,7 @@
         id result2 = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result2 isKindOfClass:[NSDictionary class]]) {
             int allDTjson2 = [[result2 objectForKey:@"code"] intValue];
-            NSLog(@"验证验证码 == %d",allDTjson2);
             if (allDTjson2 == 1) {
-                NSLog(@"注册成功");
                 [self nextRequest];
             } else {
                 UIAlertView *alert = [[UIAlertView alloc]init];
@@ -475,11 +461,9 @@
             }
         }
     } else if (request.tag == 6) {
-        NSLog(@"shoujihaozhucu == %@",request.responseString);
         id result2 = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
         if ([result2 isKindOfClass:[NSDictionary class]]) {
             int code = [[result2 objectForKey:@"code"]intValue];
-            NSLog(@"code == %d",code);
             if (code == 1) {
                 VerifyViewController *verify = [[VerifyViewController alloc]init];
                 verify.tel = _telTextField.text;

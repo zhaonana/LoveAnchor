@@ -27,7 +27,7 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>tencent1103558424</string>
+				<string>tencent101166962</string>
 			</array>
 		</dict>
 		<dict>
@@ -35,7 +35,15 @@
 			<string>Editor</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>wb2352021188</string>
+				<string>wb2575545847</string>
+			</array>
+		</dict>
+		<dict>
+			<key>CFBundleTypeRole</key>
+			<string>Editor</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>QQ0607AF72</string>
 			</array>
 		</dict>
 	</array>

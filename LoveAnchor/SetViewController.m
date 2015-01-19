@@ -99,23 +99,6 @@
             case 7: {
                 twoCell.label1.text =  [_two1Array objectAtIndex:3];
                 twoCell.label2.text = [_two2Array objectAtIndex:3];
-                if (userModel) {
-                    if (userModel.admission) {
-                        twoCell.KGSwitth.on = YES;
-                    } else {
-                        twoCell.KGSwitth.on = NO;
-                    }
-                } else {
-                    twoCell.KGSwitth.on = YES;
-                }
-                twoCell.switchClick = ^(BOOL isOn) {
-                    if (isOn) {
-                        userModel.admission = YES;
-                    } else {
-                        userModel.admission = NO;
-                    }
-                    [CommonUtil saveUserModel:userModel];
-                };
             }
                 break;
                 

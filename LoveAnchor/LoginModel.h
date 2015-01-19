@@ -13,6 +13,5 @@
 @property (nonatomic, strong) NSString     *access_token;
 @property (nonatomic, strong) NSString     *userName;
 @property (nonatomic, strong) NSDictionary *finance;
-@property (nonatomic, assign) BOOL         admission;
 
 @end

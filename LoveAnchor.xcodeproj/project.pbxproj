@@ -367,6 +367,7 @@
 		39C9CDF31A4AACC8005410A0 /* aizhubo3.png in Resources */ = {isa = PBXBuildFile; fileRef = 39C9CDED1A4AACC8005410A0 /* aizhubo3.png */; };
 		39C9CDF41A4AACC8005410A0 /* aizhubo3@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 39C9CDEE1A4AACC8005410A0 /* aizhubo3@2x.png */; };
 		F703DB371A174D5200C53D4C /* SeatManageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F703DB361A174D5200C53D4C /* SeatManageViewController.m */; };
+		F7076E281A666D8900CA2DBE /* RetrieveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F7076E271A666D8900CA2DBE /* RetrieveViewController.m */; };
 		F70EE5A71A49807600A601C0 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EE5A61A49807600A601C0 /* FeedbackViewController.m */; };
 		F70EE5AD1A4C1D6B00A601C0 /* ModifyPassWordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EE5AC1A4C1D6B00A601C0 /* ModifyPassWordViewController.m */; };
 		F70EE5B11A4D3A7A00A601C0 /* LoveViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = F70EE5AF1A4D3A7A00A601C0 /* LoveViewController.m */; };
@@ -1109,6 +1110,8 @@
 		39C9CDEE1A4AACC8005410A0 /* aizhubo3@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "aizhubo3@2x.png"; sourceTree = "<group>"; };
 		F703DB351A174D5200C53D4C /* SeatManageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SeatManageViewController.h; sourceTree = "<group>"; };
 		F703DB361A174D5200C53D4C /* SeatManageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SeatManageViewController.m; sourceTree = "<group>"; };
+		F7076E261A666D8900CA2DBE /* RetrieveViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RetrieveViewController.h; sourceTree = "<group>"; };
+		F7076E271A666D8900CA2DBE /* RetrieveViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RetrieveViewController.m; sourceTree = "<group>"; };
 		F70EE5A51A49807600A601C0 /* FeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FeedbackViewController.h; sourceTree = "<group>"; };
 		F70EE5A61A49807600A601C0 /* FeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FeedbackViewController.m; sourceTree = "<group>"; };
 		F70EE5AB1A4C1D6B00A601C0 /* ModifyPassWordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ModifyPassWordViewController.h; sourceTree = "<group>"; };
@@ -2679,6 +2682,8 @@
 				F7B1D7C019C83F3000C26A16 /* LoginViewController.m */,
 				F73C5BD21A61077F0020DBD6 /* BackViewController.h */,
 				F73C5BD31A61077F0020DBD6 /* BackViewController.m */,
+				F7076E261A666D8900CA2DBE /* RetrieveViewController.h */,
+				F7076E271A666D8900CA2DBE /* RetrieveViewController.m */,
 				F7BE191219E7941A009C6C8C /* RegisterViewController.h */,
 				F7BE191319E7941A009C6C8C /* RegisterViewController.m */,
 				F7BE191519E7CB6D009C6C8C /* VerifyViewController.h */,
@@ -3380,6 +3385,7 @@
 				F7C7CCAD19AD8FE7003FCC03 /* ASIDownloadCache.m in Sources */,
 				39935B6D1A43D3DE008CB5BE /* UserInfoModel.m in Sources */,
 				39BB5C701A3AF2EA00BA7B20 /* MJRefreshBaseView.m in Sources */,
+				F7076E281A666D8900CA2DBE /* RetrieveViewController.m in Sources */,
 				39935B701A43D412008CB5BE /* UIImageView+BoundsAdditions.m in Sources */,
 				F7456E2D1998609100CF28E8 /* AppDelegate.m in Sources */,
 				F703DB371A174D5200C53D4C /* SeatManageViewController.m in Sources */,

@@ -138,6 +138,7 @@
 {
     NSString *oldPassword = [CommonUtil md5:_nameTextField.text];
     NSString *newPassword = [CommonUtil md5:_passTextField.text];
+    
     NSString *url = [NSString stringWithFormat:@"%@user/changePassword/%@?oldPassword=%@&newPassword=%@",BaseURL,model.access_token,oldPassword,newPassword];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:url]];
     request.delegate = self;

@@ -8,11 +8,14 @@
 
 #import "BackViewController.h"
 
-@interface BackViewController ()
+@interface BackViewController ()<ASIHTTPRequestDelegate>
 {
     UITextField *_telTextField;
     UITextField *_YZTextField;
     UIImageView *_validationImageView1;
+    
+    NSString    *_auth_key;
+    NSString    *_auth_url;
 }
 
 
@@ -24,7 +27,8 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        _auth_key = [[NSString alloc]init];
+        _auth_url = [[NSString alloc]init];
     }
     return self;
 }
@@ -33,6 +37,7 @@
 {
     [super viewDidLoad];
     [self showUI];
+    [self information];
 }
 #pragma mark - 界面
 
@@ -127,7 +132,7 @@
     [nextButton setTitle:@"下一步" forState:UIControlStateNormal];
     [nextButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [nextButton setBackgroundColor:[UIColor lightGrayColor]];
-    nextButton.tag = 103;
+    nextButton.tag = 101;
     nextButton.selected = NO;
     [nextButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.view addSubview:nextButton];
@@ -137,15 +142,134 @@
 {
     if (button.tag == 100) {
         [self dismissViewControllerAnimated:YES completion:nil];
+    } else {
+        if (_telTextField.text.length == 11) {
+            [self verification];
+        } else {
+            UIAlertView *alert = [[UIAlertView alloc]init];
+            alert.title = @"提示";
+            alert.message = @"手机号码为11位，请重新输入";
+            [alert addButtonWithTitle:@"确定"];
+            [alert show];
+
+        }
+        
     }
+    
 }
 -(void)judgeClick:(UITapGestureRecognizer *)tap
 {
-    
+    NSLog(@"111111");
+    [self updateTheVerificationCode];
 }
 #pragma mark - 数据
+#pragma mark - 获取验证码
+- (void)information
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/authcode_image",BaseURL];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    request.tag = 0;
+    [request setTimeOutSeconds:10];
+    request.delegate = self;
+    [request startAsynchronous];
+}
+#pragma mark - 验证验证码
+- (void)verification
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/checkCodeVeri?auth_code=%@&auth_key=%@",BaseURL,_YZTextField.text,_auth_key];
+    ASIHTTPRequest *request8 = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    [request8 setTimeOutSeconds:10];
+    request8.tag = 1;
+    request8.delegate = self;
+    [request8 startAsynchronous];
+    
+}
+#pragma mark - 更新验证码
+- (void)updateTheVerificationCode
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/authcode?id1=%@",BaseURL,_auth_key];
+    ASIHTTPRequest *updateRequest = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    updateRequest.delegate = self;
+    updateRequest.tag = 2;
+    [updateRequest setTimeOutSeconds:100];
+    [updateRequest startAsynchronous];
+}
+#pragma mark - 获得忘记密码验证码
+- (void)forgotPasswordRequest
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@public/forgotPassword?mobileNo=%@&auth_code=%@&auth_key=%@",BaseURL,_telTextField.text,_YZTextField.text,_auth_key];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    request.tag = 3;
+    request.delegate = self;
+    [request setTimeOutSeconds:100];
+    [request startAsynchronous];
+}
+- (void)requestFinished:(ASIHTTPRequest *)request
+{
+    NSLog(@"111 = %@",request.responseString);
+    id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
 
-
+        switch (request.tag) {
+            //获取验证码
+            case 0:
+            {
+                if ([result isKindOfClass:[NSDictionary class]]) {
+                    NSDictionary *dict = [result objectForKey:@"data"];
+                    _auth_key = [dict objectForKey:@"auth_key"];
+                    _auth_url = [dict objectForKey:@"auth_url"];
+                    [_validationImageView1 setImageWithURL:[NSURL URLWithString:_auth_url]];
+                }
+            }
+                break;
+            //验证验证码
+            case 1:
+            {
+                int code = [[result objectForKey:@"code"]intValue];
+                if (code == 1) {
+                    [self forgotPasswordRequest];
+                } else {
+                    UIAlertView *alert = [[UIAlertView alloc]init];
+                    alert.title = @"提示";
+                    alert.message = @"验证码验证失败";
+                    [alert addButtonWithTitle:@"重新输入"];
+                    [alert show];
+                    
+                }
+            }
+                break;
+            //更新验证码
+            case 2:
+            {
+                NSData *data = [request responseData];
+                NSLog(@"123 == %@",data);
+                UIImage *image = [[UIImage alloc]initWithData:data];
+                _validationImageView1.image = image;
+            }
+                break;
+            //获得忘记密码验证码
+            case 3:
+            {
+                int code = [[result objectForKey:@"code"]intValue];
+                if (code == 1) {
+                    NSLog(@"调到下一页");
+                    RetrieveViewController *retrieve = [[RetrieveViewController alloc]init];
+                    retrieve.tel = _telTextField.text;
+                    UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:retrieve];
+                    [self presentViewController:nc animated:YES completion:nil];
+                } else if (code == 31509) {
+                    UIAlertView *alert = [[UIAlertView alloc]init];
+                    alert.title = @"提示";
+                    alert.message = @"手机号还没有绑定！";
+                    [alert addButtonWithTitle:@"确定"];
+                    [alert show];
+                }
+            }
+                break;
+                
+            default:
+                break;
+        }
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];

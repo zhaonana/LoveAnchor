@@ -43,9 +43,7 @@
 
 - (void)loadDataWithModel:(UserInfoModel *)userModel
 {
-    if (userModel.pic.length) {
-        [_headImage setImageWithURL:[NSURL URLWithString:userModel.pic]];
-    }
+    [_headImage setImageWithURL:[NSURL URLWithString:userModel.pic] placeholderImage:[UIImage imageNamed:@"xuweiyidaitouxiang"]];
     if (userModel.nick_name.length) {
         [_titleLabel setText:userModel.nick_name];
     }
@@ -55,12 +53,12 @@
     if (userModel.finance) {
         NSInteger coin = [[userModel.finance objectForKey:@"bean_count_total"] intValue];
         NSInteger level = [CommonUtil getLevelInfoWithCoin:coin isRich:NO].level;
-        NSString *imageName = [NSString stringWithFormat:@"%dzhubo",level];
+        NSString *imageName = [NSString stringWithFormat:@"%ldzhubo",(long)level];
         [_HGimageView setImage:[UIImage imageNamed:imageName]];
         
         NSInteger richCoin = [[userModel.finance objectForKey:@"coin_spend_total"] intValue];
         NSInteger richLevel = [CommonUtil getLevelInfoWithCoin:richCoin isRich:YES].level;
-        NSString *richImage = [NSString stringWithFormat:@"%dfu",richLevel];
+        NSString *richImage = [NSString stringWithFormat:@"%ldfu",(long)richLevel];
         [_DJimageView setImage:[UIImage imageNamed:richImage]];
     }
 }

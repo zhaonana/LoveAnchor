@@ -53,8 +53,6 @@
     //抢沙发
     UIView       *_sofaView;
     UIView       *_backView;
-    //聊天输入框
-    UITextField  *_chatTextField;
     VMediaPlayer *mMPayer;
     //视频背景
     UIImageView  *bagView;
@@ -98,7 +96,6 @@
     UIScrollView *_gifScrollView;
     //改昵称输入框
     UITextField  *GTextField;
-    LoginModel   *modelName;
     //点击抢座背景
     UIView       *robSofaBagView;
     //点击抢座的选项
@@ -157,6 +154,12 @@
 @property (nonatomic, strong) UILabel                 *chatPeopleLabel;
 //点击昵称弹框
 @property (nonatomic, strong) ChatSelectView          *chatSelectView;
+//个人信息model
+@property (nonatomic, strong) UserInfoModel           *userModel;
+//徽章
+@property (nonatomic, strong) NSMutableArray          *badgeArray;
+//聊天输入框
+@property (nonatomic, strong) UITextField             *chatTextField;
 
 @end
 
@@ -165,7 +168,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    modelName = [CommonUtil getUserModel];
     imageArray = [NSArray arrayWithObjects:@"xiugainicheng",@"guangbo",@"diange",@"shezhix",@"yijianfankui", nil];
     titleArray = [NSArray arrayWithObjects:@"改昵称",@"广播",@"点歌",@"设置",@"意见反馈", nil];
     
@@ -178,7 +180,16 @@
     _attentionArray  = [[NSMutableArray alloc] init];
     _sofaArray       = [[NSMutableArray alloc] init];
     _userArray       = [[NSMutableArray alloc] init];
-    _chooseArray     = [[NSMutableArray alloc] initWithObjects:@"所有人", self.allModel.nick_name, nil];
+    
+    UserInfoModel *all = [[UserInfoModel alloc] init];
+    all.nick_name = @"所有人";
+    
+    UserInfoModel *user = [[UserInfoModel alloc] init];
+    user._id = self.allModel._id;
+    user.nick_name = self.allModel.nick_name;
+    user.finance = self.allModel.finance;
+    _chooseArray     = [[NSMutableArray alloc] initWithObjects:all, user, nil];
+    _badgeArray      = [[NSMutableArray alloc] init];
     
     JBStr = 100;
     _model = [CommonUtil getUserModel];
@@ -1020,16 +1031,20 @@
             if ([_chatTextField.placeholder isEqualToString:@"对所有人说"]) {
                 //公聊
                 message = @{@"msg": @{@"content": _chatTextField.text,
-                                                    @"level": [self getUserLevel],
+                                                    @"level": [self getUserLevel:_model.finance],
                                                     @"from_medals": @"{}"
                                                     }};
             } else {
                 //对某人公聊
-                NSDictionary *somePeople = [NSDictionary dictionary];
+                NSDictionary *peopleJson = @{@"private": @"0",
+                                            @"_id": _userModel._id,
+                                            @"nick_name": _userModel.nick_name,
+                                            @"level": [self getUserLevel:_userModel.finance]
+                                            };
                 message = @{@"msg": @{@"content": _chatTextField.text,
-                                      @"level": [self getUserLevel],
+                                      @"level": [self getUserLevel:_model.finance],
                                       @"from_medals": @"{}",
-                                      @"to": somePeople
+                                      @"to": peopleJson
                                       }};
             }
             [self sendMessage:message];
@@ -1435,6 +1450,31 @@
                 default:
                     break;
             }
+            __block PlayViewController *playVC = self;
+            cell.nickTapBlock = ^(NSInteger tag) {
+                switch (tag) {
+                    case 50: {  //第一个昵称
+                        if ([playVC.model.userName isEqualToString:chatModel.nick_name]) {
+                            [[[UIAlertView alloc] initWithTitle:@"提示" message:@"不能对自己操作" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
+                        } else {
+                            [playVC requestUserInfo:@"user_info" userId:chatModel._id tag:300];
+                            [playVC.view addSubview:_chatSelectView];
+                        }
+                    }
+                        break;
+                    case 60: {  //第二个昵称
+                        if ([playVC.model.userName isEqualToString:chatModel.toNick_name]) {
+                            [[[UIAlertView alloc] initWithTitle:@"提示" message:@"不能对自己操作" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
+                        } else {
+                            [playVC requestUserInfo:@"user_info" userId:chatModel.to_id tag:300];
+                            [playVC.view addSubview:_chatSelectView];
+                        }
+                    }
+                        break;
+                    default:
+                        break;
+                }
+            };
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             return cell;
         }
@@ -1502,7 +1542,7 @@
             }
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             cell.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
-            cell.textLabel.text = [_chooseArray objectAtIndex:indexPath.row];
+            cell.textLabel.text = [[_chooseArray objectAtIndex:indexPath.row] nick_name];
             cell.textLabel.font = [UIFont systemFontOfSize:13.0];
             return cell;
         }
@@ -1604,10 +1644,19 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *chooseName = [_chooseArray objectAtIndex:indexPath.row];
-    _chatPeopleLabel.text = chooseName;
-    _chatTextField.placeholder = [NSString stringWithFormat:@"对%@说",chooseName];
-    [_chooseTableView setHidden:YES];
+    switch (tableView.tag) {
+        case 500: {
+            UserInfoModel *user = [_chooseArray objectAtIndex:indexPath.row];
+            [self requestUserInfo:@"user_info" userId:user._id tag:300];
+            _chatPeopleLabel.text = user.nick_name;
+            _chatTextField.placeholder = [NSString stringWithFormat:@"对%@说",user.nick_name];
+            [_chooseTableView setHidden:YES];
+        }
+            break;
+            
+        default:
+            break;
+    }
 }
 
 #pragma mark - 后台运行
@@ -1683,23 +1732,7 @@
 {
     NSLog(@"socket.io connected.");
 }
-/*
- {"content":"/给力","level":7,"from_medals":{},"from":{"_id":11157909,"spend":120996,"nick_name":"快乐仙","priv":3,"s":"","medal_list":[]},"room_id":12700590,"etime":1418033100591}
- 
- {"content":"亏死了","level":10,"from_medals":{"1":1418202588407},"to":{"private":false,"_id":12695998,"nick_name":"小贝贝","level":2,"vip":0,"priv":3},"from":{"_id":12256761,"spend":397151,"nick_name":"0014&clubs;十四爷失忆了","priv":3,"s":"","vip":2,"car":16,"medal_list":["1"],"vip_hiding":0},"room_id":12695998,"etime":1418191732714}
- 
- {"action":"room.change","data_d":{"_id":13225491,"spend":0,"nick_name":"一切在无言中","priv":3,"s":"","medal_list":[]}}
- 
- {"action":"gift.notify","data_d":{"from":{"_id":12843524,"nick_name":"华冉","priv":3,"finance":{"coin_spend_total":14362},"qd":"ttxy"},"to":{"_id":10265417,"nick_name":"青楼、风尘女子","priv":2,"finance":{"bean_count_total":2412676,"coin_spend_total":70509}},"gift":{"_id":138,"name":"奔驰跑车","count":1,"coin_price":6000},"room_id":10265417,"win_coin":[]}}
- 
- {"action":"gift.marquee","data_d":{"from":{"_id":12843524,"nick_name":"华冉","finance":{"coin_spend_total":20362,"bean_count_total":0}},"to":{"_id":10265417,"nick_name":"青楼、风尘女子","priv":2,"finance":{"bean_count_total":2412676,"coin_spend_total":70509}},"gift":{"_id":138,"name":"奔驰跑车","count":1},"room_id":10265417,"t":1418111245286}}
- 
- {"action":"gift.feather","data_d":{"_id":11663047,"nick_name":"ミ忆&rarr;傷.","user":{"_id":11663047,"nick_name":"ミ忆&rarr;傷.","priv":3,"finance":{"feather_send_total":33,"coin_spend_total":33},"qd":"ttxy"}}}
- 
- {"action":"room.star","data_d":{"_id":13165230,"nick_name":"小小叮当","finance":{"bean_count_total":169373,"feather_receive_total":774,"coin_spend_total":54},"star":{"room_id":13165230},"pic":"http://ttimg.app1101168695.twsapp.com/46/6/13165230_0_200200.jpg?v=548_548_1417776204762","followers":194}}
- 
- {"action":"manage.shutup","data_d":{"xy_user_id":13025690,"nick_name":"有钱难买我愿意","f_id":12539754,"f_name":"淡淡的忧伤；淡淡的怀念","minute":720}}
- */
+
 - (void)socketIO:(SocketIO *)socket didReceiveMessage:(SocketIOPacket *)packet
 {
     NSLog(@"didReceiveMessage()");
@@ -1713,9 +1746,11 @@
                 id data_d = [result objectForKey:@"data_d"];
                 if ([data_d isKindOfClass:[NSDictionary class]]) {
                     NSString *nick_name = [[data_d objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                    NSNumber *_id = [data_d objectForKey:@"_id"];
                     if (nick_name.length) {
                         chatModel.nick_name = nick_name;
                     }
+                    chatModel._id = _id;
                 }
                 [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
             } else if ([action isEqualToString:@"gift.notify"]) {
@@ -1724,14 +1759,18 @@
                 if ([data_d isKindOfClass:[NSDictionary class]]) {
                     NSDictionary *fromDic = [data_d objectForKey:@"from"];
                     NSString *fromNick = [[fromDic objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                    NSNumber *_id = [fromDic objectForKey:@"_id"];
                     if (fromNick.length) {
                         chatModel.nick_name = fromNick;
                     }
+                    chatModel._id = _id;
                     NSDictionary *toDic = [data_d objectForKey:@"to"];
                     NSString *toNick = [[toDic objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                    NSNumber *to_id = [toDic objectForKey:@"_id"];
                     if (toNick.length) {
                         chatModel.toNick_name = toNick;
                     }
+                    chatModel.to_id = to_id;
                     NSDictionary *giftDic = [data_d objectForKey:@"gift"];
                     NSString *giftName = [giftDic objectForKey:@"name"];
                     NSNumber *giftNum = [giftDic objectForKey:@"count"];
@@ -1747,9 +1786,11 @@
                 chatModel.chatType = featherType;
                 id data_d = [result objectForKey:@"data_d"];
                 NSString *nick_name = [[data_d objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                NSNumber *_id = [data_d objectForKey:@"_id"];
                 if (nick_name.length) {
                     chatModel.nick_name = nick_name;
                 }
+                chatModel._id = _id;
                 [self reloadDataWithTableView:_synthesizeTableView dataArray:_dataArray chatModel:chatModel];
             }
         } else {
@@ -1758,11 +1799,14 @@
             NSNumber *level = [result objectForKey:@"level"];
             NSDictionary *fromDic = [result objectForKey:@"from"];
             NSString *nick_name = [[fromDic objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+            NSNumber *_id = [fromDic objectForKey:@"_id"];
             NSDictionary *toDic = [result objectForKey:@"to"];
             if (toDic) {
                 chatModel.chatType = tellTAType;
                 NSString *toNick = [[toDic objectForKey:@"nick_name"] stringByTrimmingLeftCharactersInSet:[NSCharacterSet whitespaceCharacterSet]];
+                NSNumber *to_id = [toDic objectForKey:@"_id"];
                 chatModel.toNick_name = toNick;
+                chatModel.to_id = to_id;
                 private = [toDic objectForKey:@"private"];
             } else {
                 chatModel.chatType = contentType;
@@ -1770,6 +1814,7 @@
             }
             if (nick_name.length) {
                 chatModel.nick_name = nick_name;
+                chatModel._id = _id;
                 chatModel.content = content;
                 chatModel.level = level;
             }
@@ -1859,6 +1904,16 @@
 }
 
 #pragma mark - request
+- (void)requestUserInfo:(NSString *)param userId:(NSNumber *)userId tag:(NSInteger)tag
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@zone/%@/%@",BaseURL,param,userId];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    [request setTimeOutSeconds:100];
+    request.delegate = self;
+    request.tag = tag;
+    [request startAsynchronous];
+}
+
 - (void)requestWithParam:(NSString *)param tag:(NSInteger)tag
 {
     NSString *urlStr = [NSString stringWithFormat:@"%@rank/%@/%@?size=3456",BaseURL,param,self.allModel._id];
@@ -1904,7 +1959,7 @@
 
 - (void)requestWithGrab:(NSInteger)num
 {
-    NSString *urlStr = [NSString stringWithFormat:@"%@live/grab_sofa%ld/%@/%@/%ld",BaseURL,(long)_grabTag,_model.access_token,self.allModel._id,num];
+    NSString *urlStr = [NSString stringWithFormat:@"%@live/grab_sofa%ld/%@/%@/%ld",BaseURL,(long)_grabTag,_model.access_token,self.allModel._id,(long)num];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     [request setTimeOutSeconds:100];
     request.delegate = self;
@@ -1913,7 +1968,7 @@
 }
 - (void)requestGname
 {
-    NSString *strUrl = [NSString stringWithFormat:@"%@user/edit/%@",BaseURL,modelName.access_token];
+    NSString *strUrl = [NSString stringWithFormat:@"%@user/edit/%@",BaseURL,_model.access_token];
     ASIFormDataRequest *request = [ASIFormDataRequest requestWithURL:[NSURL URLWithString:strUrl]];
     request.delegate = self;
     NSString *str = [NSString stringWithFormat:@"%@",GTextField.text];
@@ -1930,6 +1985,23 @@
         NSNumber *code = [result objectForKey:@"code"];
         if (code.intValue == 1) {
             switch (request.tag) {
+                case 300: { //个人信息
+                    NSDictionary *dataDic = [result objectForKey:@"data"];
+                     _userModel = [[UserInfoModel alloc] init];
+                    [_userModel getUserInfoWithDictionary:dataDic];
+                    [self requestUserInfo:@"user_medal" userId:_userModel._id tag:301];
+                }
+                    break;
+                case 301: { //徽章信息
+                    NSArray *dataArr = [result objectForKey:@"data"];
+                    for (NSDictionary *dic in dataArr) {
+                        BadgeModel *badgeModel = [[BadgeModel alloc] init];
+                        [badgeModel getBadgeModelWithDictionary:dic];
+                        [_badgeArray addObject:badgeModel];
+                    }
+                    [self refreshChatSelectView:_userModel];
+                }
+                    break;
                 case 500: { //本场观众
                     NSArray *dataArr = [result objectForKey:@"data"];
                     for (NSDictionary *dic in dataArr) {
@@ -2095,12 +2167,74 @@
     }
     return isAttention;
 }
+//刷新聊天选框
+- (void)refreshChatSelectView:(UserInfoModel *)userModel
+{
+    [_chatSelectView.headImgView makeBoundImage];
+    [_chatSelectView.headImgView setImageWithURL:[NSURL URLWithString:userModel.pic] placeholderImage:[UIImage imageNamed:@"xuweiyidaitouxiang"]];
+    if (userModel.nick_name.length) {
+        [_chatSelectView.nickNameLab setText:userModel.nick_name];
+    }
+    if (userModel.finance) {
+        NSInteger richCoin = [[userModel.finance objectForKey:@"coin_spend_total"] intValue];
+        NSInteger richLevel = [CommonUtil getLevelInfoWithCoin:richCoin isRich:YES].level;
+        NSString *richImage = [NSString stringWithFormat:@"%ldfu",(long)richLevel];
+        [_chatSelectView.levelImgView setImage:[UIImage imageNamed:richImage]];
+    }
+    NSInteger count = _badgeArray.count;
+    if (count > 6) {
+        count = 6;
+    }
+    for (int i = 0; i <count; i++) {
+        UIImageView *HzImageView = [[UIImageView alloc] initWithFrame:CGRectMake(65 + 25 * i, 48, 15, 15)];
+        NSString *greyPic = [_badgeArray[i] grey_pic];
+        [HzImageView setImageWithURL:[NSURL URLWithString:greyPic]];
+        for (NSString *ids in _userModel.medals.allKeys) {
+            if (ids.intValue == [_badgeArray[i] ID].intValue) {
+                NSString *picUrl = [_badgeArray[i] pic_url];
+                [HzImageView setImageWithURL:[NSURL URLWithString:picUrl]];
+            }
+        }
+        [_chatSelectView.backView addSubview:HzImageView];
+    }
+    
+    __block PlayViewController *playVC = self;
+    _chatSelectView.selectTypeBlock = ^(NSInteger tag) {
+        switch (tag) {
+            case 10: {  //资料
+                DatumViewController *datum = [[DatumViewController alloc] init];
+                datum.userId = userModel._id;
+                [playVC presentViewController:datum animated:YES completion:nil];
+            }
+                break;
+            case 20:    //公聊
+            case 30: {  //私聊
+                playVC.chatTextField.placeholder = [NSString stringWithFormat:@"对%@说",userModel.nick_name];
+                for (UserInfoModel *users in playVC.chooseArray) {
+                    if ([users.nick_name isEqualToString:userModel.nick_name]) {
+                        [playVC.chooseArray removeObject:users];
+                    }
+                }
+                playVC.chatPeopleLabel.text = userModel.nick_name;
+                [playVC.chooseArray addObject:userModel];
+                [playVC.chooseTableView reloadData];
+            }
+                break;
+            case 40: {  //送礼
+                
+            }
+                break;
+            default:
+                break;
+        }
+    };
+}
 
+//刷新沙发
 - (void)refreshSofaView
 {
     for (int j = 0; j < _sofaArray.count; j++) {
         RankingModel *model = [_sofaArray objectAtIndex:j];
-        NSLog(@"%@",model.i);
         switch (model.i.intValue) {
             case 1: {
                 for (RankingModel *userModel in _userArray) {
@@ -2174,9 +2308,9 @@
     _chatTextField.text = @"";
 }
 
-- (NSString *)getUserLevel
+- (NSString *)getUserLevel:(NSDictionary *)finance
 {
-    NSNumber *coinNum = [[CommonUtil getUserModel].finance objectForKey:@"coin_count"];
+    NSNumber *coinNum = [finance objectForKey:@"coin_spend_total"];
     NSString *level = [NSString stringWithFormat:@"%ld",(long)[CommonUtil getLevelInfoWithCoin:coinNum.intValue isRich:YES].level];
     return level;
 }

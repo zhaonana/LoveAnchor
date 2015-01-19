@@ -23,8 +23,10 @@ typedef enum {
 @property (nonatomic, strong) NSNumber *level;
 //昵称
 @property (nonatomic, strong) NSString *nick_name;
+@property (nonatomic, strong) NSNumber *_id;
 //对方昵称
 @property (nonatomic, strong) NSString *toNick_name;
+@property (nonatomic, strong) NSNumber *to_id;
 //礼物名称
 @property (nonatomic, strong) NSString *giftName;
 //礼物数量

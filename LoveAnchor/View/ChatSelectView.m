@@ -8,30 +8,31 @@
 
 #import "ChatSelectView.h"
 
+@interface ChatSelectView () 
+
+@property (weak, nonatomic) IBOutlet UIView *bgView;
+
+@end
+
 @implementation ChatSelectView
+
+- (void)awakeFromNib
+{
+    UITapGestureRecognizer *bgViewTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
+    [_bgView addGestureRecognizer:bgViewTap];
+}
+
+- (void)tapGesture:(UITapGestureRecognizer *)tap
+{
+    [self removeFromSuperview];
+}
 
 - (IBAction)selectTypeClick:(UIButton *)sender
 {
-    switch (sender.tag) {
-        case 10: {  //资料
-            
-        }
-            break;
-        case 20: {  //公聊
-            
-        }
-            break;
-        case 30: {  //私聊
-            
-        }
-            break;
-        case 40: {  //送礼
-            
-        }
-            break;
-        default:
-            break;
+    if (self.selectTypeBlock) {
+        self.selectTypeBlock(sender.tag);
     }
+    [self removeFromSuperview];
 }
 
 @end

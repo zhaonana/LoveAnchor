@@ -189,6 +189,10 @@
             [[EBPurchaseHelper sharedHelper] requestProduct:@"com.loveAnchor.43400"];
         }
             break;
+        case 100: { //返回
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+            break;
         default:
             break;
     }

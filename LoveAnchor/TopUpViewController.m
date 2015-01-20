@@ -7,9 +7,9 @@
 //
 
 #import "TopUpViewController.h"
+#import "EBPurchaseHelper.h"
 
-@interface TopUpViewController ()
-{
+@interface TopUpViewController () {
     CGSize  actualsize;
     NSArray *_imageArray;
 }
@@ -46,7 +46,6 @@
     [returnButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [self.navigationController.navigationBar addSubview:returnButton];
     
-//    self.view.backgroundColor = [UIColor colorWithRed:230/255.0 green:233/255.0 blue:232/255.0 alpha:0.8];
     UILabel *topLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 74, 75, 18)];
     topLabel.text = @"充值账户:";
     topLabel.textColor = [UIColor colorWithRed:81/255.0 green:87/255.0 blue:94/255.0 alpha:0.8];
@@ -92,20 +91,20 @@
 #pragma mark - tableViewDelegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [[UITableViewCell alloc]init];
+    UITableViewCell *cell = [[UITableViewCell alloc] init];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     cell.backgroundColor = [UIColor whiteColor];
     
-    UIImageView *headImageVIew = [[UIImageView alloc]initWithFrame:CGRectMake(5, 0, 50, 50)];
+    UIImageView *headImageVIew = [[UIImageView alloc] initWithFrame:CGRectMake(5, 0, 50, 50)];
     headImageVIew.image = [UIImage imageNamed:[_imageArray objectAtIndex:indexPath.row]];
     [cell addSubview:headImageVIew];
     
-    UILabel *diLabel = [[UILabel alloc]initWithFrame:CGRectMake(64, 33, 110, 15)];
+    UILabel *diLabel = [[UILabel alloc] initWithFrame:CGRectMake(64, 33, 110, 15)];
     diLabel.text = @"花费人民币6元";
-    diLabel.font= [UIFont systemFontOfSize:12.0f];
+    diLabel.font = [UIFont systemFontOfSize:12.0f];
     [cell addSubview:diLabel];
     
-    UILabel *titleLabel = [[UILabel alloc]init];
+    UILabel *titleLabel = [[UILabel alloc] init];
     NSString *str;
     if (indexPath.row == 0) {
         str = @"兑换 400 个";
@@ -131,7 +130,7 @@
     }
     
     UIFont * tfont = [UIFont systemFontOfSize:17.0f];
-    CGSize size =CGSizeMake(300,60);
+    CGSize size = CGSizeMake(300,60);
     NSDictionary * tdic = [NSDictionary dictionaryWithObjectsAndKeys:tfont,NSFontAttributeName,nil];
     actualsize =[str boundingRectWithSize:size options:NSStringDrawingUsesLineFragmentOrigin  attributes:tdic context:nil].size;
     titleLabel.text = str;
@@ -146,6 +145,7 @@
     
     UIButton *dButton = [UIButton buttonWithType:UIButtonTypeCustom];
     dButton.frame = CGRectMake(240, 10, 60, 30);
+    dButton.tag = indexPath.row;
     [dButton setTitle:@"兑换" forState:UIControlStateNormal];
     dButton.layer.borderColor = [UIColor colorWithRed:228/255.0 green:105/255.0 blue:80/255.0 alpha:0.6].CGColor;
     dButton.layer.borderWidth = 1.0;
@@ -160,9 +160,41 @@
 
 - (void)buttonClick:(UIButton *)button
 {
-    NSLog(@"11");
-    if (button.tag == 100) {
-        [self dismissViewControllerAnimated:YES completion:nil];
+    switch (button.tag) {
+        case 0: {
+            [[EBPurchaseHelper sharedHelper] requestProduct:@"com.loveAnchor.400"];
+        }
+            break;
+        case 1: {
+            [[EBPurchaseHelper sharedHelper] requestProduct:@"com.loveAnchor.800"];
+        }
+            break;
+        case 2: {
+            [[EBPurchaseHelper sharedHelper] requestProduct:@"com.loveAnchor.2000"];
+        }
+            break;
+        case 3: {
+            [[EBPurchaseHelper sharedHelper] requestProduct:@"com.loveAnchor.4600"];
+        }
+            break;
+        case 4: {
+            [[EBPurchaseHelper sharedHelper] requestProduct:@"com.loveAnchor.8600"];
+        }
+            break;
+        case 5: {
+            [[EBPurchaseHelper sharedHelper] requestProduct:@"com.loveAnchor.22000"];
+        }
+            break;
+        case 6: {
+            [[EBPurchaseHelper sharedHelper] requestProduct:@"com.loveAnchor.43400"];
+        }
+            break;
+        case 100: { //返回
+            [self dismissViewControllerAnimated:YES completion:nil];
+        }
+            break;
+        default:
+            break;
     }
 }
 
@@ -170,7 +202,7 @@
 {
     if (section == 0) {
         return 7;
-    }else {
+    } else {
         return 0;
     }
 }
@@ -188,14 +220,14 @@
     return 0;
 }
 
--(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 2;
 }
 
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *view = [[UIView alloc]init];
+    UIView *view = [[UIView alloc] init];
     view.backgroundColor = [UIColor colorWithRed:232/255.0 green:241/255.0 blue:243/255.0 alpha:1];
 
     UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(20, 10, 300, 15)];
@@ -204,7 +236,6 @@
     [view addSubview:label];
     return view;
 }
-
 
 - (void)didReceiveMemoryWarning
 {

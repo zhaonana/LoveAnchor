@@ -127,11 +127,9 @@
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
-    NSLog(@"昵称 == %@",request.responseString);
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
     if ([result isKindOfClass:[NSDictionary class]]) {
         int code = [[result objectForKey:@"code"] intValue];
-        NSLog(@"code == %d",code);
         if (code == 1) {
             UIAlertView *alert = [[UIAlertView alloc]init];
             alert.title = @"修改昵称提示";

@@ -111,6 +111,24 @@
     }
 }
 
+#pragma mark - UIAlertViewDelegate methods
+- (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
+{
+    switch (buttonIndex) {
+        case 1: {
+            LoginViewController *loginViewController = [[LoginViewController alloc] init];
+            loginViewController.controllerType = leftmenuType;
+            UINavigationController *navigationController = [[UINavigationController alloc] initWithRootViewController:loginViewController];
+            [self presentViewController:navigationController animated:YES completion:^{
+                
+            }];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
 #pragma mark - tableViewDelegate
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -152,16 +170,20 @@
     return cell;
 }
 
--(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 1) {
-        TopUpViewController *topUp = [[TopUpViewController alloc] init];
-        [topUp setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
-        UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:topUp];
-        [self presentViewController:nc animated:NO completion:nil];
+        if ([CommonUtil isLogin]) {
+            TopUpViewController *topUp = [[TopUpViewController alloc] init];
+            [topUp setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
+            UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:topUp];
+            [self presentViewController:nc animated:NO completion:nil];
+        } else {
+            [CommonUtil loginAlertViewShow:self];
+        }
+        
         
     } else if (indexPath.row == 2){
-        NSLog(@"11");
         SetViewController *set = [[SetViewController alloc]init];
         [set setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
         UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:set];

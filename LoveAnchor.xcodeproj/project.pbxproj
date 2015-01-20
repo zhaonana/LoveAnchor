@@ -30,6 +30,11 @@
 		392265771A35AA2B00767721 /* ChatCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 392265751A35AA2B00767721 /* ChatCell.xib */; };
 		3922657A1A35B00F00767721 /* ChatModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 392265791A35B00F00767721 /* ChatModel.m */; };
 		3922657F1A35B8AE00767721 /* ChatCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 3922657E1A35B8AE00767721 /* ChatCell.m */; };
+		392E6C851A6E2A5A00140022 /* EBPurchase.m in Sources */ = {isa = PBXBuildFile; fileRef = 392E6C821A6E2A5A00140022 /* EBPurchase.m */; };
+		392E6C861A6E2A5A00140022 /* EBPurchaseHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 392E6C841A6E2A5A00140022 /* EBPurchaseHelper.m */; };
+		392E6C8C1A6E2A9700140022 /* SVProgressHUD.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 392E6C891A6E2A9700140022 /* SVProgressHUD.bundle */; };
+		392E6C8D1A6E2A9700140022 /* SVProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = 392E6C8B1A6E2A9700140022 /* SVProgressHUD.m */; };
+		392E6C931A6E2F4400140022 /* NSData+Base64.m in Sources */ = {isa = PBXBuildFile; fileRef = 392E6C921A6E2F4400140022 /* NSData+Base64.m */; };
 		3944F0581A27361900429734 /* libffmpeg.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0531A27361900429734 /* libffmpeg.a */; };
 		3944F0591A27361900429734 /* libopenssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0541A27361900429734 /* libopenssl.a */; };
 		3944F05A1A27361900429734 /* libVitamio.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3944F0551A27361900429734 /* libVitamio.a */; };
@@ -749,6 +754,16 @@
 		392265781A35B00F00767721 /* ChatModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ChatModel.h; sourceTree = "<group>"; };
 		392265791A35B00F00767721 /* ChatModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatModel.m; sourceTree = "<group>"; };
 		3922657E1A35B8AE00767721 /* ChatCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ChatCell.m; sourceTree = "<group>"; };
+		392E6C811A6E2A5A00140022 /* EBPurchase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EBPurchase.h; sourceTree = "<group>"; };
+		392E6C821A6E2A5A00140022 /* EBPurchase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EBPurchase.m; sourceTree = "<group>"; };
+		392E6C831A6E2A5A00140022 /* EBPurchaseHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EBPurchaseHelper.h; sourceTree = "<group>"; };
+		392E6C841A6E2A5A00140022 /* EBPurchaseHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = EBPurchaseHelper.m; sourceTree = "<group>"; };
+		392E6C881A6E2A9700140022 /* SVProgressHUD-Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SVProgressHUD-Prefix.pch"; sourceTree = "<group>"; };
+		392E6C891A6E2A9700140022 /* SVProgressHUD.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = SVProgressHUD.bundle; sourceTree = "<group>"; };
+		392E6C8A1A6E2A9700140022 /* SVProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SVProgressHUD.h; sourceTree = "<group>"; };
+		392E6C8B1A6E2A9700140022 /* SVProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SVProgressHUD.m; sourceTree = "<group>"; };
+		392E6C911A6E2F4400140022 /* NSData+Base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+Base64.h"; sourceTree = "<group>"; };
+		392E6C921A6E2F4400140022 /* NSData+Base64.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+Base64.m"; sourceTree = "<group>"; };
 		3944F04B1A27361900429734 /* VDefines.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VDefines.h; sourceTree = "<group>"; };
 		3944F04C1A27361900429734 /* Vitamio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vitamio.h; sourceTree = "<group>"; };
 		3944F04D1A27361900429734 /* VMediaExtracter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = VMediaExtracter.h; sourceTree = "<group>"; };
@@ -1691,6 +1706,28 @@
 			path = Cell;
 			sourceTree = "<group>";
 		};
+		392E6C801A6E2A5A00140022 /* EBPurchase */ = {
+			isa = PBXGroup;
+			children = (
+				392E6C811A6E2A5A00140022 /* EBPurchase.h */,
+				392E6C821A6E2A5A00140022 /* EBPurchase.m */,
+				392E6C831A6E2A5A00140022 /* EBPurchaseHelper.h */,
+				392E6C841A6E2A5A00140022 /* EBPurchaseHelper.m */,
+			);
+			path = EBPurchase;
+			sourceTree = "<group>";
+		};
+		392E6C871A6E2A9700140022 /* SVProgressHUD */ = {
+			isa = PBXGroup;
+			children = (
+				392E6C881A6E2A9700140022 /* SVProgressHUD-Prefix.pch */,
+				392E6C891A6E2A9700140022 /* SVProgressHUD.bundle */,
+				392E6C8A1A6E2A9700140022 /* SVProgressHUD.h */,
+				392E6C8B1A6E2A9700140022 /* SVProgressHUD.m */,
+			);
+			path = SVProgressHUD;
+			sourceTree = "<group>";
+		};
 		3944F0471A27361900429734 /* Vitamio */ = {
 			isa = PBXGroup;
 			children = (
@@ -1939,6 +1976,8 @@
 		39BB5C571A3AF2D400BA7B20 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				392E6C911A6E2F4400140022 /* NSData+Base64.h */,
+				392E6C921A6E2F4400140022 /* NSData+Base64.m */,
 				39BB5C581A3AF2D400BA7B20 /* CommonUtil.h */,
 				39BB5C591A3AF2D400BA7B20 /* CommonUtil.m */,
 				39BB5C5A1A3AF2D400BA7B20 /* NSString+TrimmingAdditions.h */,
@@ -2151,6 +2190,8 @@
 				F7456F0119986A2800CF28E8 /* XDSSegmentedViewController.h */,
 				F7456F0219986A2800CF28E8 /* XDSSegmentedViewController.m */,
 				39A56EBC1A37EBCA008D0BB8 /* Common.h */,
+				392E6C871A6E2A9700140022 /* SVProgressHUD */,
+				392E6C801A6E2A5A00140022 /* EBPurchase */,
 				390E31E11A5BBBAE00B31038 /* ShareSDK */,
 				39BB5C771A3AF2FF00BA7B20 /* MLEmojiLabel */,
 				39BB5C5E1A3AF2EA00BA7B20 /* MJRefresh */,
@@ -3220,6 +3261,7 @@
 				39B662A91A2499DE0033D28C /* 16fu.png in Resources */,
 				39BC42371A47F56600271572 /* liaotianbeijing.png in Resources */,
 				F78FA85A19CBFAD900445235 /* shoucangdianji@2x.png in Resources */,
+				392E6C8C1A6E2A9700140022 /* SVProgressHUD.bundle in Resources */,
 				F7456EDA1998692300CF28E8 /* shezhi.png in Resources */,
 				F7B5B8A319F1019C0006ACCB /* ziV@2x.png in Resources */,
 				F756ED611A3EE5DC00B170A7 /* shangla@2x.png in Resources */,
@@ -3386,6 +3428,7 @@
 				39935B6D1A43D3DE008CB5BE /* UserInfoModel.m in Sources */,
 				39BB5C701A3AF2EA00BA7B20 /* MJRefreshBaseView.m in Sources */,
 				F7076E281A666D8900CA2DBE /* RetrieveViewController.m in Sources */,
+				392E6C8D1A6E2A9700140022 /* SVProgressHUD.m in Sources */,
 				39935B701A43D412008CB5BE /* UIImageView+BoundsAdditions.m in Sources */,
 				F7456E2D1998609100CF28E8 /* AppDelegate.m in Sources */,
 				F703DB371A174D5200C53D4C /* SeatManageViewController.m in Sources */,
@@ -3393,6 +3436,7 @@
 				39BB5C741A3AF2EA00BA7B20 /* UIScrollView+MJExtension.m in Sources */,
 				F7C7CCB219AD8FE7003FCC03 /* Reachability.m in Sources */,
 				F7CC09E419A74CC0003298FF /* FirstRowTableViewCell.m in Sources */,
+				392E6C931A6E2F4400140022 /* NSData+Base64.m in Sources */,
 				F7C7CCAF19AD8FE7003FCC03 /* ASIHTTPRequest.m in Sources */,
 				F7C7CCCB19AD9007003FCC03 /* SDWebImageDecoder.m in Sources */,
 				39BB5C751A3AF2EA00BA7B20 /* UIScrollView+MJRefresh.m in Sources */,
@@ -3430,6 +3474,7 @@
 				F7C7CCE919ADC0F4003FCC03 /* SetViewController.m in Sources */,
 				F75D701419F242E0004C144B /* DatumViewController.m in Sources */,
 				F7C7CCE319ADB2F9003FCC03 /* RightMenuViewController.m in Sources */,
+				392E6C861A6E2A5A00140022 /* EBPurchaseHelper.m in Sources */,
 				F7BDC7921A482714007F1C09 /* BroadcastViewController.m in Sources */,
 				F7C7CCCF19AD9007003FCC03 /* UIButton+WebCache.m in Sources */,
 				39BB5C5D1A3AF2D400BA7B20 /* NSString+TrimmingAdditions.m in Sources */,
@@ -3454,6 +3499,7 @@
 				F7B70E5E1A1C5F680064D56E /* SeatManageModel.m in Sources */,
 				F7B1D7C119C83F3000C26A16 /* LoginViewController.m in Sources */,
 				F73C5BD11A5A7E0B0020DBD6 /* MyBadgeTableViewCell.m in Sources */,
+				392E6C851A6E2A5A00140022 /* EBPurchase.m in Sources */,
 				F78FAF2A1A0C96030055BEFC /* YellowVCollectionViewCell.m in Sources */,
 				39BB5C5C1A3AF2D400BA7B20 /* CommonUtil.m in Sources */,
 				F78FA81019CA976B00445235 /* PlayViewController.m in Sources */,

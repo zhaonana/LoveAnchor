@@ -17,6 +17,7 @@
 #import "UIImageView+BoundsAdditions.h"
 #import "ShareView.h"
 #import "ChatSelectView.h"
+#import "SVProgressHUD.h"
 
 #define REFRESH_PLAYVIEW_NOTIFITION @"refreshPlayViewNotifition"
 
@@ -1018,8 +1019,6 @@
             nameView.hidden = YES;
             [self textFieldShouldReturn:GTextField];
         }
-            break;
-        case 120:
             break;
         default: {
             switch (buttonIndex) {
@@ -2165,15 +2164,15 @@
         } else {
             switch (code.intValue) {
                 case 30412: {
-                    [self showGrabErrorAlert:@"余额不足，请充值" requestTag:_grabTag];
+                    [SVProgressHUD showErrorWithStatus:@"余额不足，请充值"];
                 }
                     break;
                 case 30420: {
-                    [self showGrabErrorAlert:@"沙发已经被捷足先登了，来！再战一次！" requestTag:_grabTag];
+                    [SVProgressHUD showErrorWithStatus:@"沙发已经被捷足先登了，来！再战一次！"];
                 }
                     break;
                 case 30415: {
-                    [self showGrabErrorAlert:@"房间已经关闭直播" requestTag:_grabTag];
+                    [SVProgressHUD showErrorWithStatus:@"房间已经关闭直播"];
                 }
                     break;
                 default:
@@ -2192,7 +2191,7 @@
         switch (tag) {
             case 50: {  //第一个昵称
                 if ([playVC.model.userName isEqualToString:chatModel.nick_name]) {
-                    [[[UIAlertView alloc] initWithTitle:@"提示" message:@"不能对自己操作" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
+                    [SVProgressHUD showErrorWithStatus:@"不能对自己操作"];
                 } else {
                     [playVC requestUserInfo:@"user_info" userId:chatModel._id tag:300];
                     [playVC.view addSubview:_chatSelectView];
@@ -2201,7 +2200,7 @@
                 break;
             case 60: {  //第二个昵称
                 if ([playVC.model.userName isEqualToString:chatModel.toNick_name]) {
-                    [[[UIAlertView alloc] initWithTitle:@"提示" message:@"不能对自己操作" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
+                    [SVProgressHUD showErrorWithStatus:@"不能对自己操作"];
                 } else {
                     [playVC requestUserInfo:@"user_info" userId:chatModel.to_id tag:300];
                     [playVC.view addSubview:_chatSelectView];
@@ -2212,23 +2211,6 @@
                 break;
         }
     };
-}
-//弹出alertView
-- (void)showGrabErrorAlert:(NSString *)message requestTag:(NSInteger)tag
-{
-    switch (tag) {
-        case 1:
-        case 2:
-        case 3:
-        case 4: {
-            UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"提示" message:message delegate:self cancelButtonTitle:@"确定" otherButtonTitles: nil];
-            alertView.tag = 120;
-            [alertView show];
-        }
-            break;
-        default:
-            break;
-    }
 }
 
 //是否关注

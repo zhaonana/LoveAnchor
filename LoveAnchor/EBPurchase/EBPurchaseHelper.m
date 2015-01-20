@@ -116,7 +116,7 @@ static EBPurchaseHelper * _sharedHelper;
         request.delegate = self;
         
         NSString *ticket = [transactionReceipt base64Encoding];
-        [request setPostValue:ticket forKey:@"ticket"];
+        [request setPostValue:ticket forKey:@"receipt"];
         [request startAsynchronous];
     }
 }

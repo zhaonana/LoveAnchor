@@ -155,6 +155,9 @@
             
         }
             break;
+        case 102: {
+            [self requst];
+        }
         default:
             break;
     }
@@ -177,26 +180,48 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@ttus/registerMobile2?user_name=%@&password=%@&qd=%@&nick_name=%@&checkNo=%@",BaseURL,self.tel,passTextField.text,str,izhuboStr,nameTextField.text];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
+    request.tag = 100;
     [request setTimeOutSeconds:100];
     [request startAsynchronous];
 }
+- (void)requst
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@ttus/registerMobile?user_name=%@&auth_code=%@&auth_key=%@",BaseURL,self.tel,self.text,self.auto_key];
+    ASIHTTPRequest *request8 = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    [request8 setTimeOutSeconds:100];
+    
+    request8.delegate = self;
+    [request8 startAsynchronous];
+}
+
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     NSLog(@"hehe == %@",request.responseString);
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
     if ([result isKindOfClass:[NSDictionary class]]) {
-        int code = [[result objectForKey:@"code"]intValue];
-        if (code == 1) {
-            UIAlertView *alert = [[UIAlertView alloc]init];
-            alert.title = @"提示";
-            alert.message = @"注册成功！";
-            [alert addButtonWithTitle:@"确定"];
-            alert.delegate = self;
-            [alert show];
-        }else if (code == 31510) {
-            NSLog(@"验证码过期");
-        } else if (code == 31512) {
-            NSLog(@"手机号已被注册");
+        if (request.tag == 100) {
+            int code = [[result objectForKey:@"code"]intValue];
+            if (code == 1) {
+                UIAlertView *alert = [[UIAlertView alloc]init];
+                alert.title = @"提示";
+                alert.message = @"注册成功！";
+                [alert addButtonWithTitle:@"确定"];
+                alert.delegate = self;
+                [alert show];
+            }else if (code == 31510) {
+                NSLog(@"验证码过期");
+            } else if (code == 31512) {
+                NSLog(@"手机号已被注册");
+            }
+        } else {
+            int code = [[result objectForKey:@"code"]intValue];
+            if (code == 1) {
+                UIAlertView *alert = [[UIAlertView alloc]init];
+                alert.title = @"提示";
+                alert.message = @"发送成功！";
+                [alert addButtonWithTitle:@"确定"];
+                [alert show];
+            }
         }
     }
 }

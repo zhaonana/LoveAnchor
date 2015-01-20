@@ -254,6 +254,8 @@
                     NSLog(@"调到下一页");
                     RetrieveViewController *retrieve = [[RetrieveViewController alloc]init];
                     retrieve.tel = _telTextField.text;
+                    retrieve.text = _YZTextField.text;
+                    retrieve.auth_key = _auth_key;
                     UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:retrieve];
                     [self presentViewController:nc animated:YES completion:nil];
                 } else if (code == 31509) {

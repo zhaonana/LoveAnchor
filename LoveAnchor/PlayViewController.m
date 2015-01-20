@@ -160,6 +160,9 @@
 @property (nonatomic, strong) NSMutableArray          *badgeArray;
 //聊天输入框
 @property (nonatomic, strong) UITextField             *chatTextField;
+//悄悄话
+@property (nonatomic, assign) BOOL                    isPrivateis;
+@property (nonatomic, strong) UIButton                *privateBtn;
 
 @end
 
@@ -689,9 +692,12 @@
     QQHView.backgroundColor = [UIColor clearColor];
     [_inputView addSubview:QQHView];
     //悄悄话
-    UIImageView *quietlyImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 20, 20)];
-    quietlyImageView.image = [UIImage imageNamed:@"qiaoqiaohuaweixuanzhong"];
-    [QQHView addSubview:quietlyImageView];
+     _privateBtn = [[UIButton alloc] initWithFrame:CGRectMake(0, 0, 20, 20)];
+    [_privateBtn setBackgroundImage:[UIImage imageNamed:@"qiaoqiaohuaweixuanzhong"] forState:UIControlStateNormal];
+    [_privateBtn setBackgroundImage:[UIImage imageNamed:@"qiaoqiaohuaxuanzhong"] forState:UIControlStateSelected];
+    [_privateBtn setTag:1200];
+    [_privateBtn addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
+    [QQHView addSubview:_privateBtn];
     // 悄悄话
     UILabel *QQHLabel = [[UILabel alloc]initWithFrame:CGRectMake(25, 0, 55, 20)];
     QQHLabel.text = @"悄悄话";
@@ -719,7 +725,7 @@
     //发送
     UIButton *sendButton = [UIButton buttonWithType:UIButtonTypeCustom];
     sendButton.frame = CGRectMake(260, 38, 45, 30);
-    sendButton.tag = 1000000;
+    sendButton.tag = 1300;
     [sendButton setBackgroundImage:[UIImage imageNamed:@"fasong"] forState:UIControlStateNormal];
     [sendButton setBackgroundImage:[UIImage imageNamed:@"fasongdianji"] forState:UIControlStateHighlighted];
     [sendButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
@@ -1025,22 +1031,41 @@
         } else {
             [CommonUtil loginAlertViewShow:self];
         }
-    } else if (button.tag == 1000000) { //发送消息
+    } else if (button.tag == 1200) { //悄悄话
+        button.selected = !button.selected;
+        if (button.selected) {
+            _isPrivateis = YES;
+        } else {
+            _isPrivateis = NO;
+        }
+        [self refreshChatTextField:_chatPeopleLabel.text];
+    } else if (button.tag == 1300) { //发送消息
         if (_chatTextField.text.length && _chatTextField.text) {
             NSDictionary *message = [NSDictionary dictionary];
+            NSRange range = [_chatTextField.placeholder rangeOfString:@"悄悄"];
             if ([_chatTextField.placeholder isEqualToString:@"对所有人说"]) {
                 //公聊
                 message = @{@"msg": @{@"content": _chatTextField.text,
                                                     @"level": [self getUserLevel:_model.finance],
                                                     @"from_medals": @"{}"
                                                     }};
-            } else {
-                //对某人公聊
+            } else if (range.location != NSNotFound) { //对某人私聊
+                NSDictionary *peopleJson = @{@"private": @"1",
+                                             @"_id": _userModel._id,
+                                             @"nick_name": _userModel.nick_name,
+                                             @"level": [self getUserLevel:_userModel.finance]
+                                             };
+                message = @{@"msg": @{@"content": _chatTextField.text,
+                                      @"level": [self getUserLevel:_model.finance],
+                                      @"from_medals": @"{}",
+                                      @"to": peopleJson
+                                      }};
+            } else { //对某人公聊
                 NSDictionary *peopleJson = @{@"private": @"0",
-                                            @"_id": _userModel._id,
-                                            @"nick_name": _userModel.nick_name,
-                                            @"level": [self getUserLevel:_userModel.finance]
-                                            };
+                                             @"_id": _userModel._id,
+                                             @"nick_name": _userModel.nick_name,
+                                             @"level": [self getUserLevel:_userModel.finance]
+                                             };
                 message = @{@"msg": @{@"content": _chatTextField.text,
                                       @"level": [self getUserLevel:_model.finance],
                                       @"from_medals": @"{}",
@@ -1450,32 +1475,8 @@
                 default:
                     break;
             }
-            __block PlayViewController *playVC = self;
-            cell.nickTapBlock = ^(NSInteger tag) {
-                switch (tag) {
-                    case 50: {  //第一个昵称
-                        if ([playVC.model.userName isEqualToString:chatModel.nick_name]) {
-                            [[[UIAlertView alloc] initWithTitle:@"提示" message:@"不能对自己操作" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
-                        } else {
-                            [playVC requestUserInfo:@"user_info" userId:chatModel._id tag:300];
-                            [playVC.view addSubview:_chatSelectView];
-                        }
-                    }
-                        break;
-                    case 60: {  //第二个昵称
-                        if ([playVC.model.userName isEqualToString:chatModel.toNick_name]) {
-                            [[[UIAlertView alloc] initWithTitle:@"提示" message:@"不能对自己操作" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
-                        } else {
-                            [playVC requestUserInfo:@"user_info" userId:chatModel.to_id tag:300];
-                            [playVC.view addSubview:_chatSelectView];
-                        }
-                    }
-                        break;
-                    default:
-                        break;
-                }
-            };
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [self tapNickWithCell:cell chatModel:chatModel];
             return cell;
         }
             break;
@@ -1487,6 +1488,7 @@
             ChatModel *chatModel = [_publicDataArray objectAtIndex:indexPath.row];
             [cell loadContentWithModel:chatModel];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [self tapNickWithCell:cell chatModel:chatModel];
             return cell;
         }
             break;
@@ -1498,6 +1500,7 @@
             ChatModel *chatModel = [_privateArray objectAtIndex:indexPath.row];
             [cell loadContentWithModel:chatModel];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            [self tapNickWithCell:cell chatModel:chatModel];
             return cell;
         }
             break;
@@ -1649,8 +1652,8 @@
             UserInfoModel *user = [_chooseArray objectAtIndex:indexPath.row];
             [self requestUserInfo:@"user_info" userId:user._id tag:300];
             _chatPeopleLabel.text = user.nick_name;
-            _chatTextField.placeholder = [NSString stringWithFormat:@"对%@说",user.nick_name];
             [_chooseTableView setHidden:YES];
+            [self refreshChatTextField:user.nick_name];
         }
             break;
             
@@ -1867,6 +1870,14 @@
     _inputView.hidden = NO;
     chatBView.frame = CGRectMake(5, 38, 250, 30);
     [_inputView addSubview:chatBView];
+    NSRange range = [_chatTextField.placeholder rangeOfString:@"悄悄"];
+    if (range.location != NSNotFound) {
+        _privateBtn.selected = YES;
+        _isPrivateis = YES;
+    } else {
+        _privateBtn.selected = NO;
+        _isPrivateis = NO;
+    }
 }
 
 - (BOOL)textFieldShouldBeginEditing:(UITextField *)textField
@@ -2140,6 +2151,37 @@
     }
 }
 
+#pragma mark - show/refreshView
+//点击cell上昵称
+- (void)tapNickWithCell:(ChatCell *)cell chatModel:(ChatModel *)chatModel
+{
+    __block PlayViewController *playVC = self;
+    cell.nickTapBlock = ^(NSInteger tag) {
+        switch (tag) {
+            case 50: {  //第一个昵称
+                if ([playVC.model.userName isEqualToString:chatModel.nick_name]) {
+                    [[[UIAlertView alloc] initWithTitle:@"提示" message:@"不能对自己操作" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
+                } else {
+                    [playVC requestUserInfo:@"user_info" userId:chatModel._id tag:300];
+                    [playVC.view addSubview:_chatSelectView];
+                }
+            }
+                break;
+            case 60: {  //第二个昵称
+                if ([playVC.model.userName isEqualToString:chatModel.toNick_name]) {
+                    [[[UIAlertView alloc] initWithTitle:@"提示" message:@"不能对自己操作" delegate:nil cancelButtonTitle:@"确定" otherButtonTitles:nil] show];
+                } else {
+                    [playVC requestUserInfo:@"user_info" userId:chatModel.to_id tag:300];
+                    [playVC.view addSubview:_chatSelectView];
+                }
+            }
+                break;
+            default:
+                break;
+        }
+    };
+}
+//弹出alertView
 - (void)showGrabErrorAlert:(NSString *)message requestTag:(NSInteger)tag
 {
     switch (tag) {
@@ -2157,6 +2199,7 @@
     }
 }
 
+//是否关注
 - (BOOL)isAttentionWithRoomid:(NSNumber *)roomid
 {
     BOOL isAttention = NO;
@@ -2167,6 +2210,7 @@
     }
     return isAttention;
 }
+
 //刷新聊天选框
 - (void)refreshChatSelectView:(UserInfoModel *)userModel
 {
@@ -2207,12 +2251,25 @@
                 [playVC presentViewController:datum animated:YES completion:nil];
             }
                 break;
-            case 20:    //公聊
-            case 30: {  //私聊
+            case 20: {  //公聊
                 playVC.chatTextField.placeholder = [NSString stringWithFormat:@"对%@说",userModel.nick_name];
                 for (UserInfoModel *users in playVC.chooseArray) {
                     if ([users.nick_name isEqualToString:userModel.nick_name]) {
                         [playVC.chooseArray removeObject:users];
+                        break;
+                    }
+                }
+                playVC.chatPeopleLabel.text = userModel.nick_name;
+                [playVC.chooseArray addObject:userModel];
+                [playVC.chooseTableView reloadData];
+            }
+                break;
+            case 30: {  //私聊
+                playVC.chatTextField.placeholder = [NSString stringWithFormat:@"悄悄对%@说",userModel.nick_name];
+                for (UserInfoModel *users in playVC.chooseArray) {
+                    if ([users.nick_name isEqualToString:userModel.nick_name]) {
+                        [playVC.chooseArray removeObject:users];
+                        break;
                     }
                 }
                 playVC.chatPeopleLabel.text = userModel.nick_name;
@@ -2291,6 +2348,16 @@
             default:
                 break;
         }
+    }
+}
+
+//刷新聊天输入框
+- (void)refreshChatTextField:(NSString *)nick_name
+{
+    if (_isPrivateis) {
+        _chatTextField.placeholder = [NSString stringWithFormat:@"悄悄对%@说",nick_name];
+    } else {
+        _chatTextField.placeholder = [NSString stringWithFormat:@"对%@说",nick_name];
     }
 }
 

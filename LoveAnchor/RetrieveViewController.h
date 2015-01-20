@@ -11,6 +11,7 @@
 @interface RetrieveViewController : UIViewController
 
 @property (nonatomic, strong)NSString *tel;
-
+@property (nonatomic, strong)NSString *auth_key;
+@property (nonatomic, strong)NSString *text;
 
 @end

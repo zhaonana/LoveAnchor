@@ -11,5 +11,7 @@
 @interface VerifyViewController : UIViewController<UITextFieldDelegate>
 
 @property (nonatomic, strong)NSString *tel;
+@property (nonatomic, strong)NSString *text;
+@property (nonatomic, strong)NSString *auto_key;
 
 @end

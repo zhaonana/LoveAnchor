@@ -95,6 +95,7 @@
     UIView       *nameView;
     //改昵称背景
     UIView       *nickView;
+    //礼物界面
     UIScrollView *_gifScrollView;
     //改昵称输入框
     UITextField  *GTextField;
@@ -562,13 +563,20 @@
     gifView.userInteractionEnabled = YES;
     gifView.hidden = YES;
     [self.view addSubview:gifView];
+/************************************************************************************************/
     //不要删
-//    _gifScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, kScreenWidth, 140)];
-//    _gifScrollView.contentSize = CGSizeMake(kScreenWidth*7, 140);
+    _gifScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, kScreenWidth, 140)];
+    _gifScrollView.contentSize = CGSizeMake(kScreenWidth*7, 140);
+    _gifScrollView.backgroundColor = [UIColor redColor];
+    _gifScrollView.showsHorizontalScrollIndicator = NO;
+    _gifScrollView.showsVerticalScrollIndicator = NO;
+    _gifScrollView.pagingEnabled = YES;
+    _gifScrollView.delegate = self;
+    [gifView addSubview:_gifScrollView];
     
     
     
-    
+
     //横线
     UIImageView *gifHXImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 30, kScreenWidth, 0.5)];
     gifHXImageView.backgroundColor = [UIColor lightGrayColor];

@@ -467,6 +467,8 @@
             if (code == 1) {
                 VerifyViewController *verify = [[VerifyViewController alloc]init];
                 verify.tel = _telTextField.text;
+                verify.text =_YZTextField.text;
+                verify.auto_key = auth_key;
                 UINavigationController *nc = [[UINavigationController alloc]initWithRootViewController:verify];
                 [self presentViewController:nc animated:YES completion:nil];
             } else {

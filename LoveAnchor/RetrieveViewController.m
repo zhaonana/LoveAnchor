@@ -139,6 +139,8 @@
         [self dismissViewControllerAnimated:YES completion:nil];
     } else if (button.tag == 101) {
         [self request];
+    } else if (button.tag == 102) {
+        [self requestnew];
     }
 }
 #pragma mark - 数据解析
@@ -149,37 +151,58 @@
     NSString *urlStr = [NSString stringWithFormat:@"%@public/resetPw?checkNo=%@&pw=%@",BaseURL,nameTextField.text,newPass];
     ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
     request.delegate = self;
+    request.tag = 100;
     [request startAsynchronous];
     [request setTimeOutSeconds:100];
     NSLog(@"pass = %@",newPass);
 }
-
+//重新发送
+- (void)requestnew
+{
+    NSString *urlStr = [NSString stringWithFormat:@"%@public/forgotPassword?mobileNo=%@&auth_code=%@&auth_key=%@",BaseURL,self.tel,self.text,self.auth_key];
+    ASIHTTPRequest *request = [ASIHTTPRequest requestWithURL:[NSURL URLWithString:urlStr]];
+    request.tag = 101;
+    request.delegate = self;
+    [request setTimeOutSeconds:100];
+    [request startAsynchronous];
+}
 
 - (void)requestFinished:(ASIHTTPRequest *)request
 {
     id result = [NSJSONSerialization JSONObjectWithData:request.responseData options:NSJSONReadingMutableContainers error:nil];
     if ([result isKindOfClass:[NSDictionary class]]) {
-        int code = [[result objectForKey:@"code"]intValue];
-        if (code == 1) {
-            UIAlertView *alert = [[UIAlertView alloc]init];
-            alert.title = @"提示";
-            alert.message = @"密码修改成功！";
-            [alert addButtonWithTitle:@"确定"];
-            alert.delegate = self;
-            [alert show];
-
-        } else if (code == 31510) {
-            UIAlertView *alert = [[UIAlertView alloc]init];
-            alert.title = @"提示";
-            alert.message = @"验证码输入错误！";
-            [alert addButtonWithTitle:@"确定"];
-            [alert show];
-        } else if (code == 31508) {
-            UIAlertView *alert = [[UIAlertView alloc]init];
-            alert.title = @"提示";
-            alert.message = @"修改密码失败！";
-            [alert addButtonWithTitle:@"确定"];
-            [alert show];
+        if (request.tag == 100) {
+            int code = [[result objectForKey:@"code"]intValue];
+            if (code == 1) {
+                UIAlertView *alert = [[UIAlertView alloc]init];
+                alert.title = @"提示";
+                alert.message = @"密码修改成功！";
+                [alert addButtonWithTitle:@"确定"];
+                alert.delegate = self;
+                [alert show];
+                
+            } else if (code == 31510) {
+                UIAlertView *alert = [[UIAlertView alloc]init];
+                alert.title = @"提示";
+                alert.message = @"验证码输入错误！";
+                [alert addButtonWithTitle:@"确定"];
+                [alert show];
+            } else if (code == 31508) {
+                UIAlertView *alert = [[UIAlertView alloc]init];
+                alert.title = @"提示";
+                alert.message = @"修改密码失败！";
+                [alert addButtonWithTitle:@"确定"];
+                [alert show];
+            } else {
+                int code = [[result objectForKey:@"code"]intValue];
+                if (code == 1) {
+                    UIAlertView *alert = [[UIAlertView alloc]init];
+                    alert.title = @"提示";
+                    alert.message = @"发送成功！";
+                    [alert addButtonWithTitle:@"确定"];
+                    [alert show];
+                }
+            }
         }
     }
 }

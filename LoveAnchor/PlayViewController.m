@@ -576,38 +576,64 @@
     gifView.userInteractionEnabled = YES;
     gifView.hidden = YES;
     [self.view addSubview:gifView];
+    NSLog(@"1234eee == %f",kScreenHeight-260);
 /************************************************************************************************/
     //不要删
-    _gifScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, kScreenWidth, 140)];
-    _gifScrollView.contentSize = CGSizeMake(kScreenWidth*7, 140);
-    _gifScrollView.backgroundColor = [UIColor redColor];
-    _gifScrollView.showsHorizontalScrollIndicator = NO;
-    _gifScrollView.showsVerticalScrollIndicator = NO;
+    _gifScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 30, kScreenWidth, 300)];
+    _gifScrollView.contentSize = CGSizeMake(kScreenWidth*7, 300);
+    _gifScrollView.backgroundColor = [UIColor clearColor];
+    _gifScrollView.showsHorizontalScrollIndicator = YES;
+    _gifScrollView.showsVerticalScrollIndicator = YES;
     _gifScrollView.pagingEnabled = YES;
     _gifScrollView.delegate = self;
     [gifView addSubview:_gifScrollView];
     
+    UIView *gifGivingView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, _gifScrollView.frame.size.height)];
+    gifGivingView.backgroundColor = [UIColor purpleColor];
+    [_gifScrollView addSubview:gifGivingView];
     
+    UIView *gifGivingView1 = [[UIView alloc]initWithFrame:CGRectMake(kScreenWidth, 0, kScreenWidth, _gifScrollView.frame.size.height)];
+    gifGivingView1.backgroundColor = [UIColor yellowColor];
+    [_gifScrollView addSubview:gifGivingView1];
     
+    UIView *gifGivingView2 = [[UIView alloc]initWithFrame:CGRectMake(kScreenWidth*2, 0, kScreenWidth, _gifScrollView.frame.size.height)];
+    gifGivingView2.backgroundColor = [UIColor redColor];
+    [_gifScrollView addSubview:gifGivingView2];
+    
+    UIView *gifGivingView3 = [[UIView alloc]initWithFrame:CGRectMake(kScreenWidth*3, 0, kScreenWidth, _gifScrollView.frame.size.height)];
+    gifGivingView3.backgroundColor = [UIColor lightGrayColor];
+    [_gifScrollView addSubview:gifGivingView3];
+    
+    UIView *gifGivingView4 = [[UIView alloc]initWithFrame:CGRectMake(kScreenWidth*4, 0, kScreenWidth, _gifScrollView.frame.size.height)];
+    gifGivingView4.backgroundColor = [UIColor blackColor];
+    [_gifScrollView addSubview:gifGivingView4];
+    
+    UIView *gifGivingView5 = [[UIView alloc]initWithFrame:CGRectMake(kScreenWidth*5, 0, kScreenWidth, _gifScrollView.frame.size.height)];
+    gifGivingView5.backgroundColor = [UIColor blueColor];
+    [_gifScrollView addSubview:gifGivingView5];
+    
+    UIView *gifGivingView6 = [[UIView alloc]initWithFrame:CGRectMake(kScreenWidth*6, 0, kScreenWidth, _gifScrollView.frame.size.height)];
+    gifGivingView6.backgroundColor = [UIColor whiteColor];
+    [_gifScrollView addSubview:gifGivingView6];
 
     //横线
     UIImageView *gifHXImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 30, kScreenWidth, 0.5)];
     gifHXImageView.backgroundColor = [UIColor lightGrayColor];
     [gifView addSubview:gifHXImageView];
     //充值到赠送背景
-    UIView *grayView = [[UIView alloc]initWithFrame:CGRectMake(0, gifView.frame.size.height-90, kScreenWidth, 90)];
+    UIView *grayView = [[UIView alloc]initWithFrame:CGRectMake(0, gifView.frame.size.height-120, kScreenWidth, 120)];
     grayView.backgroundColor = [UIColor colorWithRed:249/255.0 green:249/255.0 blue:249/255.0 alpha:1];
     [gifView addSubview:grayView];
     //20横线
-    UIImageView *ESHXImageVIew = [[UIImageView alloc]initWithFrame:CGRectMake(0, 20, kScreenWidth, 0.5)];
+    UIImageView *ESHXImageVIew = [[UIImageView alloc]initWithFrame:CGRectMake(0, 30, kScreenWidth, 0.5)];
     ESHXImageVIew.backgroundColor = [UIColor lightGrayColor];
     [grayView addSubview:ESHXImageVIew];
     //55横线
-    UIImageView *WWHXImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 55, kScreenWidth, 0.5)];
+    UIImageView *WWHXImageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 65, kScreenWidth, 0.5)];
     WWHXImageView.backgroundColor = [UIColor lightGrayColor];
     [grayView addSubview:WWHXImageView];
     //余额
-    UILabel *balanceLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 150, 20)];
+    UILabel *balanceLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 150, 30)];
     balanceLabel.backgroundColor = [UIColor clearColor];
     balanceLabel.text = [NSString stringWithFormat:@"余额：%d金币",1245];
     balanceLabel.textColor = [UIColor grayColor];
@@ -615,7 +641,7 @@
     [grayView addSubview:balanceLabel];
     //充值
     UIButton *topUpButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    topUpButton.frame = CGRectMake(250, 0, 60, 20);
+    topUpButton.frame = CGRectMake(250, 0, 60, 30);
     topUpButton.tag = 110;
     [topUpButton setTitle:@"立刻充值" forState:UIControlStateNormal];
     [topUpButton setTitleColor:textFontColor forState:UIControlStateNormal];
@@ -623,14 +649,14 @@
     [topUpButton addTarget:self action:@selector(buttonClick:) forControlEvents:UIControlEventTouchUpInside];
     [grayView addSubview:topUpButton];
     //送给
-    UILabel *donateLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 30, 30, 15)];
+    UILabel *donateLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 40, 30, 15)];
     donateLabel.text = @"送给";
     donateLabel.font = [UIFont systemFontOfSize:15];
     donateLabel.backgroundColor = [UIColor clearColor];
     donateLabel.textColor = textFontColor;
     [grayView addSubview:donateLabel];
     //名字
-    UIImageView *nameImageView = [[UIImageView alloc]initWithFrame:CGRectMake(45, 27, 125, 22)];
+    UIImageView *nameImageView = [[UIImageView alloc]initWithFrame:CGRectMake(45, 37, 125, 22)];
     nameImageView.image = [UIImage imageNamed:@"xiala"];
     [grayView addSubview:nameImageView];
     //名字的字
@@ -641,7 +667,7 @@
     nameLabel.backgroundColor = [UIColor clearColor];
     [nameImageView addSubview:nameLabel];
     //数量
-    UIImageView *nuberImageView = [[UIImageView alloc]initWithFrame:CGRectMake(180, 27, 125, 22)];
+    UIImageView *nuberImageView = [[UIImageView alloc]initWithFrame:CGRectMake(180, 37, 125, 22)];
     nuberImageView.image = [UIImage imageNamed:@"xiala"];
     [grayView addSubview:nuberImageView];
     //数量的字
@@ -654,7 +680,7 @@
     [nuberImageView addSubview:nuberLabel];
     
     //礼物跑到
-    UILabel *trackLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 64, 60, 15)];
+    UILabel *trackLabel = [[UILabel alloc]initWithFrame:CGRectMake(10, 84, 60, 15)];
     trackLabel.text = @"礼物跑道";
     trackLabel.textColor = textFontColor;
     trackLabel.font = [UIFont systemFontOfSize:14];
@@ -663,7 +689,7 @@
     
     //赠送
     UIButton *ZXButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    ZXButton.frame = CGRectMake(180, 60, 125, 25);
+    ZXButton.frame = CGRectMake(180, 80, 125, 25);
     ZXButton.tag = 111;
     [ZXButton setTitle:@"赠送" forState:UIControlStateNormal];
     [ZXButton setBackgroundColor:textFontColor];

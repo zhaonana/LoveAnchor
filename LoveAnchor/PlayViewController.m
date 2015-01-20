@@ -522,7 +522,6 @@
     [_scrollView addSubview:_privateTableView];
     //聊天框背景
     chatView = [[UIView alloc]initWithFrame:CGRectMake(0, kScreenHeight-45, kScreenWidth, 45)];
-    chatView.backgroundColor = [UIColor clearColor];
     chatView.backgroundColor = [UIColor colorWithRed:242/255.0 green:242/255.0 blue:242/255.0 alpha:1];
     chatView.userInteractionEnabled = YES;
     [self.view addSubview:chatView];
@@ -1043,8 +1042,7 @@
         if (_chatTextField.text.length && _chatTextField.text) {
             NSDictionary *message = [NSDictionary dictionary];
             NSRange range = [_chatTextField.placeholder rangeOfString:@"悄悄"];
-            if ([_chatTextField.placeholder isEqualToString:@"对所有人说"]) {
-                //公聊
+            if ([_chatTextField.placeholder isEqualToString:@"对所有人说"] || [_chatTextField.placeholder isEqualToString:@"点此输入文字聊天"]) { //公聊
                 message = @{@"msg": @{@"content": _chatTextField.text,
                                                     @"level": [self getUserLevel:_model.finance],
                                                     @"from_medals": @"{}"
@@ -1859,7 +1857,6 @@
 #pragma mark - 键盘回收
 - (BOOL)textFieldShouldReturn:(UITextField *)textField
 {
-    _inputView.hidden = YES;
     [_chooseTableView setHidden:YES];
     [_chatTextField resignFirstResponder];
     return YES;
@@ -1867,9 +1864,6 @@
 
 - (void)textFieldDidBeginEditing:(UITextField *)textField
 {
-    _inputView.hidden = NO;
-    chatBView.frame = CGRectMake(5, 38, 250, 30);
-    [_inputView addSubview:chatBView];
     NSRange range = [_chatTextField.placeholder rangeOfString:@"悄悄"];
     if (range.location != NSNotFound) {
         _privateBtn.selected = YES;
@@ -1899,7 +1893,10 @@
     
     NSLog(@"keyBoard:%f", keyboardSize.height);  //216 184 252
     _inputView.frame = CGRectMake(0, kScreenHeight-keyboardSize.height - 75, kScreenWidth, 75);
+    chatBView.frame = CGRectMake(5, 38, 250, 30);
+    [_inputView addSubview:chatBView];
     _chooseTableView.frame = CGRectMake(5, _inputView.frame.origin.y - 130, 130, 130);
+    chatView.hidden = YES;
 }
 
 - (void)keyboardWasHidden:(NSNotification *)notif
@@ -1912,6 +1909,7 @@
     _inputView.frame = CGRectMake(0, kScreenHeight, kScreenWidth, 75);
     chatBView.frame = CGRectMake(5, 5, 260, 35);
     [chatView addSubview:chatBView];
+    chatView.hidden = NO;
 }
 
 #pragma mark - request
@@ -2262,6 +2260,7 @@
                 playVC.chatPeopleLabel.text = userModel.nick_name;
                 [playVC.chooseArray addObject:userModel];
                 [playVC.chooseTableView reloadData];
+                [playVC.chatTextField becomeFirstResponder];
             }
                 break;
             case 30: {  //私聊
@@ -2275,6 +2274,7 @@
                 playVC.chatPeopleLabel.text = userModel.nick_name;
                 [playVC.chooseArray addObject:userModel];
                 [playVC.chooseTableView reloadData];
+                [playVC.chatTextField becomeFirstResponder];
             }
                 break;
             case 40: {  //送礼

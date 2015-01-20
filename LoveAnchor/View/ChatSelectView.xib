@@ -28,10 +28,10 @@
                                     <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VNc-NN-2rt">
-                                    <rect key="frame" x="14" y="19" width="40" height="40"/>
+                                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VNc-NN-2rt" userLabel="Image View - 头像">
+                                    <rect key="frame" x="8" y="14" width="46" height="46"/>
                                 </imageView>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="123" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cZ3-oF-JGv">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cZ3-oF-JGv" userLabel="Label - 昵称">
                                     <rect key="frame" x="62" y="8" width="184" height="21"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -121,6 +121,8 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
+                <outlet property="backView" destination="Ihr-EO-PmO" id="qFk-OA-xb1"/>
+                <outlet property="bgView" destination="1vH-My-ahy" id="WlC-Ya-HcP"/>
                 <outlet property="headImgView" destination="VNc-NN-2rt" id="PF2-si-8CZ"/>
                 <outlet property="levelImgView" destination="uzp-fL-ypL" id="jON-7X-M8x"/>
                 <outlet property="nickNameLab" destination="cZ3-oF-JGv" id="u6G-Tp-V3I"/>

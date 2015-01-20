@@ -10,16 +10,28 @@
 
 @implementation ChatCell
 
-- (void)awakeFromNib {
-    // Initialization code
+- (void)awakeFromNib
+{
+    UITapGestureRecognizer *nickTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
+    [_nickNameLab addGestureRecognizer:nickTap];
+    
+    UITapGestureRecognizer *toNickTap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesture:)];
+    [_toNickLab addGestureRecognizer:toNickTap];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
     [super setSelected:selected animated:animated];
 
     // Configure the view for the selected state
 }
 
+- (void)tapGesture:(UITapGestureRecognizer *)tap
+{
+    if (self.nickTapBlock) {
+        self.nickTapBlock(tap.view.tag);
+    }
+}
 
 - (void)loadContentWithModel:(ChatModel *)chatModel
 {

@@ -23,6 +23,8 @@
 @property (weak, nonatomic) IBOutlet UILabel      *enterIntoLab;
 //礼物
 @property (weak, nonatomic) IBOutlet UILabel      *giftLab;
+//点击昵称
+@property (copy, nonatomic) void (^nickTapBlock)(NSInteger tag);
 
 //进入房间提示/送给主播羽毛
 - (void)loadChangeWithModel:(ChatModel *)chatModel;

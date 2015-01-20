@@ -13,5 +13,8 @@
 @property (weak, nonatomic) IBOutlet UIImageView *headImgView;
 @property (weak, nonatomic) IBOutlet UILabel *nickNameLab;
 @property (weak, nonatomic) IBOutlet UIImageView *levelImgView;
+@property (weak, nonatomic) IBOutlet UIView *backView;
+
+@property (copy, nonatomic) void (^selectTypeBlock)(NSInteger tag);
 
 @end

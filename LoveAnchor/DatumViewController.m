@@ -194,7 +194,11 @@
             [twoCell.contentLab setHidden:YES];
             [twoCell setSelectionStyle:UITableViewCellSelectionStyleNone];
             NSMutableArray *urlArr = [NSMutableArray array];
-            for (int i = 0; i <_carArray.count; i++) {
+            NSInteger carCount = _carArray.count;
+            if (carCount > 6) {
+                carCount = 6;
+            }
+            for (int i = 0; i < carCount; i++) {
                 for (NSString *ids in _userModel.car.allKeys) {
                     if (ids.intValue == [_carArray[i] ID].intValue) {
                         NSString *picUrl = [_carArray[i] pic_url];
